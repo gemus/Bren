@@ -81,7 +81,7 @@ class UserProfile(models.Model):
 # -- API METHODS -------------- #
 def get_element(element_id):
     elm = Element.objects.get(id=element_id)
-    return {"name": elm.name}
+    return {"id": elm.id, "name": elm.name}
 
 def get_workout(workout_date, class_id):
     workout = Workout.objects.get(id=1)
@@ -101,3 +101,18 @@ def get_workout(workout_date, class_id):
                   }
 
     return return_dict
+
+def create_completed_workout(create_dict):
+    """expects dictionary like
+    {
+        "user_id":          <int>,
+        "date_of_class":    <int>,
+        "class_name":       <string>,
+
+        "mins":             <int>,
+        "sec":              <int>,
+        "rounds":           <int>,
+        "variations":       [{stuff}, {more stuff}],
+    }
+    """
+    pass
