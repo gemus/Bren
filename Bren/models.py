@@ -83,6 +83,12 @@ def get_element(element_id):
     elm = Element.objects.get(id=element_id)
     return {"id": elm.id, "name": elm.name}
 
+def get_workout_name(completed_workout_id):
+    workout_name = Completed_workout.objects.get(id = completed_workout_id)
+    workout_name = workout_name.workout_class.workout.name
+    return {"id": completed_workout_id, "name": workout_name}
+
+
 def get_workout(workout_date, class_id):
     workout = Workout.objects.get(id=1)
 
@@ -98,6 +104,18 @@ def get_workout(workout_date, class_id):
                     "rounds"   : workout.rounds,
                     "type"     : workout.workout_type.name,
                     "elements" : elements,
+                  }
+
+    return return_dict
+
+def get_completed_workout(workout_id, user_id):
+    workout = get_workout_name(28)
+    completed_workouts = []
+    for workouts in Completed_workout.objects.filter(workout_class__workout__id__exact= 1):#, user__id__exact=user_id)
+        completed_workouts.append({"workout": workouts.workout_class.workout.name , "date": workouts.workout_class.date.isoformat()})
+
+    return_dict = {
+                    "completed_workouts"       : completed_workouts,
                   }
 
     return return_dict
