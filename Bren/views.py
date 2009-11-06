@@ -10,26 +10,13 @@ import datetime
 from django import forms
 from django.contrib.auth import authenticate, login, logout
 
-def fun(request):
-    t = loader.get_template('Bren/veiw.html')
-    user_list = User.objects.all()
-    user = User.objects.get(id=1)
-    completed_workout_list = Completed_workout.objects.filter(user__exact=user)
-    c = Context({
-            'completed_workout_list' : completed_workout_list,
-            'user_list': user_list,
-            'user': user,
-        })
-    return HttpResponse(t.render(c))
-
-
 def index(request):
     t = loader.get_template('index/index.html')
     c = Context((
     ))
     return HttpResponse(t.render(c))
 
-def user_index(request):   
+def user_index(request):
     if (request.user.is_staff):
         user_list = User.objects.all()
         t = loader.get_template('index/user_index.html')
@@ -64,7 +51,7 @@ def input_workout(request, user_id):
             variation_list += Variation.objects.filter(element__exact = workout_element.element)
 
         variation_list = list(set(variation_list))
-        
+
         t = loader.get_template('user/input.html')
         c = Context({
             'workout_class' : workout_class,
@@ -89,14 +76,14 @@ def completed_workout_page(request, user_id, completed_workout_id):
         'element_used_list' : element_used_list,
     })
     return HttpResponse(t.render(c))
-    
+
 def roster(request):
     if (request.user.is_staff):
         dates_list = Workout_class.objects.values('date').distinct()
         t = loader.get_template('trainer/dates.html')
         c = Context({
             'dates_list': dates_list,
-        
+
         })
         return HttpResponse(t.render(c))
     else:
@@ -104,7 +91,7 @@ def roster(request):
 
 def get_classes(request, date):
     if (request.user.is_staff):
-        workout_class_list = Workout_class.objects.filter(date__exact=date).distinct()    
+        workout_class_list = Workout_class.objects.filter(date__exact=date).distinct()
         t = loader.get_template('trainer/workout_times.html')
         c = Context({
             'workout_class_list': workout_class_list,
@@ -124,7 +111,7 @@ def class_roster(request, workout_class_id):
         c = Context({
             'completed_workout_list': completed_workout_list,
             'workout': workout
-        
+
         })
         return HttpResponse(t.render(c))
     else:
@@ -139,7 +126,7 @@ def save_info(request):
     if request.method == 'POST': # If the form has been submitted...
         form = Completed_workoutForm(request.POST) # A form bound to the POST data
         if form.is_valid(): # All validation rules pass
-            co = Completed_workout()               
+            co = Completed_workout()
             co.user = request.user
             co.mins = request.POST['mins']
             co.secs = request.POST['secs']
@@ -159,7 +146,7 @@ def save_info(request):
                 v_u.completed_workout = co
                 v_u.completed_workout
                 v_u.save()
-            
+
             return HttpResponse("Awesome")
         else:
             return HttpResponse("BAD")
@@ -175,7 +162,7 @@ def user_info(request, user_id):
         user = User.objects.get(id=user_id)
         t = loader.get_template('user/User_info.html')
         c = Context({
-            'user': user,     
+            'user': user,
         })
         return HttpResponse(t.render(c))
     else:
@@ -189,7 +176,7 @@ class Log_inForm(forms.Form):
 def login_check(request):
     if request.method == 'POST':
         form = Log_inForm(request.POST)
-        if form.is_valid():          
+        if form.is_valid():
             user = authenticate(username=request.POST['user_name'], password=request.POST['password'])
             if user is not None:
                 if user.is_active:
@@ -205,4 +192,4 @@ def login_check(request):
             ))
             return HttpResponse(t.render(c))
     return HttpResponse("Nothing posted")
-    
+

@@ -4,7 +4,7 @@ import datetime
 from django.contrib.auth.models import User
 from Crossfit.Bren.calcs import*
 
-   
+
 class Workout_type(models.Model):
     name = models.CharField(max_length=20)
     def __unicode__(self):
@@ -23,7 +23,7 @@ class Class_info(models.Model):
     title = models.CharField(max_length=30)
     def __unicode__(self):
         return self.title
-    
+
 class Workout_class(models.Model):
     date = models.DateField('Date Completed')
     workout = models.ForeignKey(Workout)
@@ -43,10 +43,10 @@ class Completed_workout(models.Model):
 
     def get_month(self):
         return get_month(self.workout_class.date.month)
-        
+
     def get_weekday(self):
         return get_weekday(self.workout_class.date.weekday())
-    
+
 class Element(models.Model):
     name = models.CharField(max_length=20)
     def __unicode__(self):
@@ -73,8 +73,8 @@ class Variation_used(models.Model):
 
 class UserProfile(models.Model):
     user = models.ForeignKey(User, unique=True)
-    
-    
+
+
 # -- API METHODS -------------- #
-def get_workout(workout_date. class_id):
+def get_workout(workout_date, class_id):
     return "some fancy JSON stuff"

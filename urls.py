@@ -6,7 +6,6 @@ admin.autodiscover()
 
 urlpatterns = patterns('Crossfit.Bren.views',
     (r'^admin/', include(admin.site.urls)),
-    (r'^fun/$', 'fun'),
     (r'^index/$', 'index'),
     (r'^users/$', 'user_index'),
     (r'^users/(?P<user_id>\d+)/$', 'user_info'),
@@ -19,5 +18,5 @@ urlpatterns = patterns('Crossfit.Bren.views',
     (r'^login/$', 'user_login'),
     (r'^login_check/$', 'login_check'),
     (r'^userinfo/(?P<user_id>\d+)/$', 'user_info'),
-                       
+
 )
