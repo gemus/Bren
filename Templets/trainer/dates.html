@@ -1,0 +1,10 @@
+<h1>Workout dates list</h1>
+{% if dates_list %}
+    <ul>
+    {% for completed_workout in dates_list %}
+	<a href="http://localhost:8000/roster/{{completed_workout.date}}/"> {{completed_workout.date}}</a><br>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No workout dates available.</p>
+{% endif %}

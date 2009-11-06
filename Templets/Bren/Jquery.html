@@ -1,0 +1,43 @@
+ <html>                                                                  
+ 	<head>                                                                  
+		<script type="text/javascript" src="jquery.js"></script>          
+		<script type="text/javascript">                                         
+
+		$(document).ready(function() 
+		{
+			$("p#p1").hide();			
+ 		
+			$("a#p1c").click(function() 
+			{
+				$("p#p1").show("slow");	
+     			
+			});
+			
+			
+			$("a#p2c").click(function() 
+			{
+				$("p#p1").hide("slow");	
+     			
+			});
+
+				
+		});
+                                      
+ 		</script>                                                               
+ 	</head>                                                                 
+ 	
+
+	<body>              
+		<a href= "#" id = "p1C"> <h1> Show client List </a>    
+                <a href= "#" id = "p2C"> <h1> Hide client list </a>                                   
+ 		<p id ="p1">
+			asdsad sa
+		</p>
+	
+		<p id = "p2">
+			<h1> Non hidden Heading </h1>
+			This shouldn't be hidden
+
+		</p>
+	</body>                                                                 
+ </html>

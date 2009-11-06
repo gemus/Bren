@@ -1,0 +1,72 @@
+{% if user %}
+<h1>{{user}}'s Completed Workout List</h1>
+{% endif %}
+{% if completed_workout_list %}
+    <ul>
+    {% for completed_workout in completed_workout_list %}
+        <a href="http://localhost:8000/users/{{user.id}}/{{completed_workout.id}}/"> {{completed_workout.workout}} done {{completed_workout.get_month}} {{completed_workout.date.day}} {{completed_workout.date.year}} </a><br>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No Workouts are available.</p>
+{% endif %}
+<h1>Your wod is {{wod}}</h1>
+
+{%ifequal wod.workout_type.workout_type 'Timed' %}
+<h2>{{wod.comments}}
+	For Time</h2>
+{% endifequal %}
+
+{%ifequal wod.workout_type.workout_type 'AMRAP' %}
+<h2>AMRAP in {{wod.time}}min. of</h2>
+{% endifequal %}
+
+
+
+
+
+
+{% for workout_element in wod_element_list %}
+	 {{workout_element.reps}} {{workout_element.element}}<br>
+{% endfor %}
+<br>
+
+
+<h2>Your Score</h2>
+<form action= "/users/{{user.id}}/inputwod/" method="post">
+
+		{%ifequal wod.workout_type.workout_type 'Timed' %}
+			Times: <input type="text" name="minutes" /><b> : </b> <input type="text" name="seconds" /><br />
+			<input type="hidden" name="rounds" value = {{workout.rounds}}>
+		{% endifequal %}		
+
+		{%ifequal wod.workout_type.workout_type 'AMRAP' %}
+			Rounds: <input type="text" name="rounds" /><br />
+			<input type="hidden" name="Times" value ={{wod.time}} />
+			{{Times}}
+		{% endifequal %}
+		
+	
+	<h2>Your variations used:</h2> 
+		{% for workout_element in wod_element_list %}
+			{{workout_element.element}}<b> : </b> 
+				<SELECT NAME="FIXTHIS">
+				{% for variation in variation_list %}	
+					{%ifequal workout_element.element variation.elements %}
+						<OPTION>{{variation.name}}
+					{% endifequal %}		
+				{% endfor %}
+			</SELECT><br>			
+		{% endfor %}
+
+ 	<h2>Your class time:</h2> 
+		<SELECT NAME="time">
+		{% for workout_time in workout_time_list %}
+        		<OPTION> {{workout_time}}
+		{% endfor %}
+		</SELECT>
+		<br>
+	<input type="submit" value="Submit Wod" />
+</form> 
+
+

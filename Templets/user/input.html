@@ -1,0 +1,54 @@
+{% if user %}
+	<h1>{{user}}'s input for:</h1>
+{% endif %}
+
+<h1>{{workout_class.workout}}</h1>
+
+{%ifequal workout_class.workout.workout_type.name 'Timed' %}
+<h2>{{workout_class.workout.comments}}
+	For Time</h2>
+{% endifequal %}
+
+{%ifequal workout_class.workout.workout_type.name 'AMRAP' %}
+	<h2>AMRAP in {{workout_class.workout.time}}min. of</h2>
+{% endifequal %}
+
+
+{% for elements_used in element_used_list %}
+	 {{elements_used.reps}} {{elements_used.element}}<br>
+{% endfor %}
+<br>
+
+<h2>Your Score</h2>
+
+<form action= "/users/save_info/" method="post">
+
+		{%ifequal workout_class.workout.workout_type.name 'Timed' %}
+			Times: <input type="text" name="mins" /><b> : </b> <input type="text" name="secs" /><br />
+			<input type="hidden" name="rounds" value = {{workout_class.workout.rounds}}>
+		{% endifequal %}		
+
+		{%ifequal workout_class.workout.workout_type.name 'AMRAP' %}
+			Rounds: <input type="text" name="rounds" /><br />
+			<input type="hidden" name="mins" value = {{workout_class.workout.time}}>
+			<input type="hidden" name="secs" value = 0>
+		{% endifequal %}
+		
+		<input type="hidden" name="workout_class_id" value = {{workout_class.id}}>
+
+	<h2>Your variations used:</h2> 
+		{% for elements_used in element_used_list %}
+			{{elements_used.element}}<b> : </b> 
+				<SELECT NAME="variation_{{forloop.counter0}}">
+				{% for variation in variation_list %}	
+					{%ifequal elements_used.element variation.element %}
+						<OPTION value="{{variation.id}}">{{variation.name}}
+					{% endifequal %}		
+				{% endfor %}
+			</SELECT><br>			
+		{% endfor %}
+
+	<input type="submit" value="Submit Wod" />
+</form> 
+
+

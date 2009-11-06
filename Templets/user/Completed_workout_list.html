@@ -1,0 +1,21 @@
+{% if user %}
+	<h1>{{user}}'s Completed Workout List</h1>
+{% endif %}
+{% if completed_workout_list %}
+    <ul>
+{% for completed_workout in completed_workout_list %}
+
+	{%ifequal completed_workout.workout_class.workout.workout_type.name "Timed"%}
+        	<a href="http://localhost:8000/users/{{user.id}}/{{completed_workout.id}}/"> {{completed_workout.mins}}:{{completed_workout.secs}} {{completed_workout.workout_class.workout.name}} done {{completed_workout.get_month}} {{completed_workout.workout_class.date.day}} {{completed_workout.workout_class.date.year}} </a><br/>
+	{% endifequal %}
+
+	{%ifequal completed_workout.workout_class.workout.workout_type.name "AMRAP"%}
+        	<a href="http://localhost:8000/users/{{user.id}}/{{completed_workout.id}}/"> {{completed_workout.rounds}} rounds of {{completed_workout.workout_class.workout.name}} done {{completed_workout.get_month}} {{completed_workout.workout_class.date.day}} {{completed_workout.workout_class.date.year}} </a><br/>
+	{% endifequal %}    
+
+
+{% endfor %}
+    </ul>
+{% else %}
+	No Completed Workouts
+{% endif %} 

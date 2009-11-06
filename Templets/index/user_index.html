@@ -1,0 +1,11 @@
+<h1>User Index</h2>
+{% if user_list %}
+    <ul>
+    {% for user in user_list %}
+	<a href="http://localhost:8000/users/{{user.id}}/"> {{user.first_name}}  {{user.last_name}}</a><br>
+
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No users are available.</p>
+{% endif %}

@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <link rel="stylesheet" href="style.css" />
+    <title>{% block title %}My amazing site{% endblock %}</title>
+</head>
+
+<body>
+    
+
+<table border="1">
+<tr>
+ 
+    <td>	
+	<div id="client_list">
+        {% block client_list %}{% endblock %}
+	</div>
+    </td>
+	
+    <td>
+	<div id="co_list">
+	{% block co_list %}{% endblock %}
+        </div>
+    </td>
+
+
+    <td>
+        <div id="client_info">
+	{% block client_info %}{% endblock %}
+        </div>
+    </td>
+	
+<tr>
+</body>
+</html>

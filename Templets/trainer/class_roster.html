@@ -1,0 +1,13 @@
+{% if completed_workout_list %}
+	<h1>The following people did {{workout}}</h1>
+{% endif %}
+
+{% if completed_workout_list %}
+    <ul>
+    	{% for completed_workout in completed_workout_list %}
+        	<h3><a href="http://localhost:8000/users/{{completed_workout.user.id}}/{{completed_workout.id}}"> {{completed_workout.user}} </a><br></h3>
+    	{% endfor %}
+    </ul>
+{% else %}
+    <p><h1>No one has entered data for that class.</h1></p>
+{% endif %}
