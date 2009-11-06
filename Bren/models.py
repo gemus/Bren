@@ -3,7 +3,7 @@ from django.contrib import admin
 import datetime
 from django.contrib.auth.models import User
 from Crossfit.Bren.calcs import*
-
+from django.utils import simplejson
 
 class Workout_type(models.Model):
     name = models.CharField(max_length=20)
@@ -14,6 +14,9 @@ class Workout(models.Model):
     name = models.CharField(max_length=20)
     comments = models.CharField(max_length=200)
     workout_type = models.ForeignKey(Workout_type)
+    # TODO : Change this to a 'choices' field
+    #        http://docs.djangoproject.com/en/dev/ref/models/fields/#ref-models-fields
+
     time = models.IntegerField()
     rounds = models.IntegerField()
     def __unicode__(self):
@@ -76,5 +79,25 @@ class UserProfile(models.Model):
 
 
 # -- API METHODS -------------- #
+def get_element(element_id):
+    elm = Element.objects.get(id=element_id)
+    return {"name": elm.name}
+
 def get_workout(workout_date, class_id):
-    return "some fancy JSON stuff"
+    workout = Workout.objects.get(id=1)
+
+    elements = []
+    for elm_used in workout.element_used_set.all():
+        elements.append({"reps": elm_used.reps, "element": get_element(elm_used.element.id)})
+
+    return_dict = {
+                    "id"       : workout.id,
+                    "name"     : workout.name,
+                    "comments" : workout.comments,
+                    "time"     : workout.time,
+                    "rounds"   : workout.rounds,
+                    "type"     : workout.workout_type.name,
+                    "elements" : elements,
+                  }
+
+    return return_dict

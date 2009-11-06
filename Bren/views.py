@@ -11,10 +11,8 @@ from django import forms
 from django.contrib.auth import authenticate, login, logout
 
 def index(request):
-    t = loader.get_template('index/index.html')
-    c = Context((
-    ))
-    return HttpResponse(t.render(c))
+    my_return = get_workout(None, None)
+    return HttpResponse(simplejson.dumps(my_return))
 
 def user_index(request):
     if (request.user.is_staff):

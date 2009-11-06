@@ -18,5 +18,4 @@ urlpatterns = patterns('Crossfit.Bren.views',
     (r'^login/$', 'user_login'),
     (r'^login_check/$', 'login_check'),
     (r'^userinfo/(?P<user_id>\d+)/$', 'user_info'),
-
 )
