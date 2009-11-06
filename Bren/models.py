@@ -75,6 +75,6 @@ class UserProfile(models.Model):
     user = models.ForeignKey(User, unique=True)
     
     
-
-
-    
+# -- API METHODS -------------- #
+def get_workout(workout_date. class_id):
+    return "some fancy JSON stuff"
