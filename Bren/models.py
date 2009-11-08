@@ -124,18 +124,12 @@ def get_completed_workout(workout_id, user_id):
                   }
     return return_dict
 
-def get_date():
-    return "2009-11-06"
-
-def get_classes(date):      #Expecting string comming in as YYYY-MM-DD
-    date = get_date()                       #date needs to become a string
+def get_classes(date):      #Expecting string comming in as "YYYY-MM-DD"
 
     year = int(date[:4])                    #Formating the incomming string
     month = int(date[5:7])
-    day = int(date[8:10])
-    
+    day = int(date[8:10]) 
     date = datetime.date(year, month, day)
-    print date.isoformat()
     workout_class_list = Workout_class.objects.filter(date__exact=date).distinct()
     return_dict = {
             "workout_class_list": workout_class_list,
