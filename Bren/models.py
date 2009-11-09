@@ -140,7 +140,73 @@ def get_classes(date):      #Expecting string comming in as "YYYY-MM-DD"
         }
     return return_dict
 
+def get_week_roster(date):      #Expecting string comming in as SUNDAY! as "YYYY-MM-DD"
 
+    year = int(date[:4])                    #Formating the incomming string
+    month = int(date[5:7])
+    day = int(date[8:10])
+    
+    sunday = datetime.date(year, month, day)
+    monday = datetime.date(year, month, day+1)
+    tuesday = datetime.date(year, month, day+2)
+    wednesday = datetime.date(year, month, day+3)
+    thursday = datetime.date(year, month, day+4)
+    friday = datetime.date(year, month, day+5)
+    saturday = datetime.date(year, month, day+6)
+ 
+    sclass = ["Sunday"]
+    mclass = ["Monday"]
+    tclass = ["Tuesday"]
+    wclass = ["Wednesday"]
+    thclass = ["Thursday"]
+    fclass = ["Friday"]
+    saclass = ["Saturday"]
+
+    for workout_class in Workout_class.objects.filter(date__exact=sunday).distinct():
+        sclass.append({"class": workout_class.class_info.title})
+        for completed_workout in Completed_workout.objects.filter(workout_class__id = workout_class.id):
+            sclass.append({"user": completed_workout.user})
+
+    for workout_class in Workout_class.objects.filter(date__exact=monday).distinct():
+        mclass.append({"class": workout_class.class_info.title})
+        for completed_workout in Completed_workout.objects.filter(workout_class__id = workout_class.id):
+            mclass.append({"user": completed_workout.user})
+            
+    for workout_class in Workout_class.objects.filter(date__exact=tuesday).distinct():
+        tclass.append({"class": workout_class.class_info.title})
+        for completed_workout in Completed_workout.objects.filter(workout_class__id = workout_class.id):
+            tclass.append({"user": completed_workout.user})
+
+    for workout_class in Workout_class.objects.filter(date__exact=wednesday).distinct():
+        wclass.append({"class": workout_class.class_info.title})
+        for completed_workout in Completed_workout.objects.filter(workout_class__id = workout_class.id):
+            wclass.append({"user": completed_workout.user})
+
+    for workout_class in Workout_class.objects.filter(date__exact=thursday).distinct():
+        thclass.append({"class": workout_class.class_info.title})
+        for completed_workout in Completed_workout.objects.filter(workout_class__id = workout_class.id):
+            thclass.append({"user": completed_workout.user})
+
+    for workout_class in Workout_class.objects.filter(date__exact=friday).distinct():
+        fclass.append({"class": workout_class.class_info.title})
+        for completed_workout in Completed_workout.objects.filter(workout_class__id = workout_class.id):
+            fclass.append({"user": completed_workout.user})
+
+    for workout_class in Workout_class.objects.filter(date__exact=saturday).distinct():
+        saclass.append({"class": workout_class.class_info.title})
+        for completed_workout in Completed_workout.objects.filter(workout_class__id = workout_class.id):
+            saclass.append({"user": completed_workout.user})
+    
+    return_dict = {
+            "sclass": sclass,
+            "mclass": mclass,
+            "tclass": tclass,
+            "wclass": wclass,
+            "thclass": thclass,
+            "fclass": fclass,
+            "saclass": saclass,
+        }
+    return return_dict
 
 
 

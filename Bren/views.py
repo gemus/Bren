@@ -11,7 +11,7 @@ from django import forms
 from django.contrib.auth import authenticate, login, logout
 
 def index(request):
-    my_return = get_workout(None, None)
+    my_return = get_completed_workout(1,1)
     return HttpResponse(simplejson.dumps(my_return))
 
 def user_index(request):
