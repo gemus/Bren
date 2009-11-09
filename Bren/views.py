@@ -14,6 +14,15 @@ def index(request):
     my_return = get_completed_workout(1,1)
     return HttpResponse(simplejson.dumps(my_return))
 
+
+def fun(request):
+    clients = User.objects.all()
+    t = loader.get_template('base.html')
+    c = Context({
+    'clients': clients
+        })
+    return HttpResponse(t.render(c))
+
 def user_index(request):
     if (request.user.is_staff):
         user_list = User.objects.all()
