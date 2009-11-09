@@ -93,6 +93,10 @@ def get_workout_date(completed_workout_id): #Gets a Date from a completed Workou
     workout_date = workout_date.workout_class.date
     return workout_date.isoformat()
 
+def get_workout_time(completed_workout_id):
+    workout = Completed_workout.objects.get(id = completed_workout_id)
+    return {"mins": workout.mins, "secs": workout.secs}
+
 
 def get_workout(workout_date, class_id):
     workout = Workout.objects.get(id=1)
@@ -115,7 +119,7 @@ def get_workout(workout_date, class_id):
 def get_completed_workout(workout_id, user_id):
     completed_workouts = []
     for workouts in Completed_workout.objects.filter(workout_class__workout__id__exact= workout_id, user__id__exact=user_id):
-        completed_workouts.append({"workout": get_workout_name(workouts.id) , "date": get_workout_date(workouts.id)})
+        completed_workouts.append({"workout": get_workout_name(workouts.id) , "date": get_workout_date(workouts.id), "time": get_workout_time(workouts.id)})
         for variation_used in Variation_used.objects.filter(completed_workout__id__exact=workouts.id):
             completed_workouts.append({"element": variation_used.variation.element.name , "Variation": variation_used.variation.name})
 
