@@ -3,15 +3,15 @@ from django.contrib import admin
 from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin
  
-class Variation_usedInline(admin.StackedInline):
-    model = Variation_used
+class Completed_elementInline(admin.StackedInline):
+    model = Completed_element
     
 class Workout_elementInline(admin.StackedInline):
     model = Element_used 
 
 class Element_usedAdmin(admin.ModelAdmin):    
-    list_display = ('workout', 'element','reps')
-    fields = ['workout', 'element', 'reps']
+    list_display = ('workout', 'element','reps', 'order')
+    fields = ['workout', 'element', 'reps' , 'order']
     list_filter = ['workout', 'element']
 
 class Workout_classAdmin(admin.ModelAdmin):    
@@ -23,7 +23,7 @@ class Completed_workoutAdmin(admin.ModelAdmin):
     list_display = ('user', 'workout_class', 'mins', 'secs', 'rounds')
     fields = ['user', 'workout_class', 'mins', 'secs', 'rounds']
     list_filter = ['user', 'workout_class', 'mins', 'rounds']
-    inlines = [Variation_usedInline]
+    inlines = [Completed_elementInline]
 
     def day_of_week(self, completed_workout):
         return get_weekday(completed_workout.date.weekday())
@@ -37,7 +37,7 @@ class WorkoutAdmin(admin.ModelAdmin):
     fields = ['name', 'comments', 'workout_type', 'time', 'rounds']
     inlines = [Workout_elementInline]
 
-class Variation_usedAdmin(admin.ModelAdmin):
+class Completed_elementAdmin(admin.ModelAdmin):
      list_display = ('completed_workout', 'variation')
      list_filter = ['variation']
 
@@ -66,7 +66,7 @@ admin.site.register(Element)
 admin.site.register(Element_used, Element_usedAdmin)
 admin.site.register(Workout, WorkoutAdmin)
 admin.site.register(Variation, VariationAdmin)
-admin.site.register(Variation_used, Variation_usedAdmin)
+admin.site.register(Completed_element, Completed_elementAdmin)
 
 
 

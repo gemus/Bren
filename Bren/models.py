@@ -60,6 +60,7 @@ class Element_used(models.Model):
     workout = models.ForeignKey(Workout)
     element = models.ForeignKey(Element)
     reps = models.IntegerField()
+    order = models.IntegerField(null=True)
     def __unicode__(self):
         return self.workout.name+ ", "+ self.element.name
 
@@ -69,8 +70,9 @@ class Variation(models.Model):
     def __unicode__(self):
         return self.element.name+ ", "+ self.name
 
-class Variation_used(models.Model):
-    completed_workout= models.ForeignKey(Completed_workout)
+class Completed_element(models.Model):
+    completed_workout = models.ForeignKey(Completed_workout)
+    element_used = models.ForeignKey(Element_used)
     variation= models.ForeignKey(Variation)
     def __unicode__(self):
         return self.completed_workout.user.username+ ", "+self.completed_workout.workout_class.workout.name+  ", "+ self.variation.name
@@ -84,7 +86,8 @@ class UserProfile(models.Model):
 def get_all_users():
     users = User.objects.all()
     return_dict = {
-            "users" : users 
+            "users" : users
+            }
     return return_dict
             
 def get_element(element_id):
@@ -132,8 +135,8 @@ def get_completed_workout(workout_id, user_id):
     completed_workouts = []
     for workouts in Completed_workout.objects.filter(workout_class__workout__id__exact= workout_id, user__id__exact=user_id):
         completed_workouts.append({"workout": get_workout_name(workouts.id) , "date": get_workout_date(workouts.id), "time": get_workout_time(workouts.id)})
-        for variation_used in Variation_used.objects.filter(completed_workout__id__exact=workouts.id):
-            completed_workouts.append({"element": variation_used.variation.element.name , "Variation": variation_used.variation.name})
+        for completed_element in Completed_element.objects.filter(completed_workout__id__exact=workouts.id):
+            completed_workouts.append({"element": completed_element.variation.element.name , "Variation": completed_element.variation.name})
 
     return_dict = {
                     "completed_workouts"       : completed_workouts,
@@ -141,7 +144,6 @@ def get_completed_workout(workout_id, user_id):
     return return_dict
 
 def get_classes(date):      #Expecting string comming in as "YYYY-MM-DD"
-
     year = int(date[:4])                    #Formating the incomming string
     month = int(date[5:7])
     day = int(date[8:10])
@@ -255,7 +257,7 @@ def create_completed_workout(create_dict):
             variations = [Variation.objects.get(id=x) for x in variation_ids]
             ### End of change###
             for variation in variations:
-                v_u= Variation_used()
+                v_u= Completed_element()
                 v_u.variation = variation
                 v_u.completed_workout = co
                 v_u.completed_workout
