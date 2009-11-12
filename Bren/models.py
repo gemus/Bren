@@ -107,6 +107,10 @@ def get_workout_time(completed_workout_id):
 
 
 def get_workout(workout_date, class_id):
+    """
+    This is where the comments would go
+    """
+
     workout = Workout.objects.get(id=1)
 
     elements = []
@@ -140,7 +144,7 @@ def get_classes(date):      #Expecting string comming in as "YYYY-MM-DD"
 
     year = int(date[:4])                    #Formating the incomming string
     month = int(date[5:7])
-    day = int(date[8:10]) 
+    day = int(date[8:10])
     date = datetime.date(year, month, day)
     workout_class_list = Workout_class.objects.filter(date__exact=date).distinct()
     return_dict = {
@@ -153,7 +157,7 @@ def get_week_roster(date):      #Expecting string comming in as SUNDAY! as "YYYY
     year = int(date[:4])                    #Formating the incomming string
     month = int(date[5:7])
     day = int(date[8:10])
-    
+
     sunday = datetime.date(year, month, day)
     monday = datetime.date(year, month, day+1)
     tuesday = datetime.date(year, month, day+2)
@@ -161,7 +165,7 @@ def get_week_roster(date):      #Expecting string comming in as SUNDAY! as "YYYY
     thursday = datetime.date(year, month, day+4)
     friday = datetime.date(year, month, day+5)
     saturday = datetime.date(year, month, day+6)
- 
+
     sclass = ["Sunday"]
     mclass = ["Monday"]
     tclass = ["Tuesday"]
@@ -179,7 +183,7 @@ def get_week_roster(date):      #Expecting string comming in as SUNDAY! as "YYYY
         mclass.append({"class": workout_class.class_info.title})
         for completed_workout in Completed_workout.objects.filter(workout_class__id = workout_class.id):
             mclass.append({"user": completed_workout.user})
-            
+
     for workout_class in Workout_class.objects.filter(date__exact=tuesday).distinct():
         tclass.append({"class": workout_class.class_info.title})
         for completed_workout in Completed_workout.objects.filter(workout_class__id = workout_class.id):
@@ -204,7 +208,7 @@ def get_week_roster(date):      #Expecting string comming in as SUNDAY! as "YYYY
         saclass.append({"class": workout_class.class_info.title})
         for completed_workout in Completed_workout.objects.filter(workout_class__id = workout_class.id):
             saclass.append({"user": completed_workout.user})
-    
+
     return_dict = {
             "sunday": sclass,
             "monday": mclass,
