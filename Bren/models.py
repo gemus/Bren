@@ -99,6 +99,10 @@ def get_workout_time(completed_workout_id):
 
 
 def get_workout(workout_date, class_id):
+    """
+    This is where the comments would go
+    """
+
     workout = Workout.objects.get(id=1)
 
     elements = []
