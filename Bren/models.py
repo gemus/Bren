@@ -4,6 +4,7 @@ import datetime
 from django.contrib.auth.models import User
 from Crossfit.Bren.calcs import*
 from django.utils import simplejson
+from django import forms
 
 class Workout_type(models.Model):
     name = models.CharField(max_length=20)
@@ -79,6 +80,13 @@ class UserProfile(models.Model):
 
 
 # -- API METHODS -------------- #
+
+def get_all_users():
+    users = User.objects.all()
+    return_dict = {
+            "users" : users 
+    return return_dict
+            
 def get_element(element_id):
     elm = Element.objects.get(id=element_id)
     return {"id": elm.id, "name": elm.name}
@@ -198,31 +206,58 @@ def get_week_roster(date):      #Expecting string comming in as SUNDAY! as "YYYY
             saclass.append({"user": completed_workout.user})
     
     return_dict = {
-            "sclass": sclass,
-            "mclass": mclass,
-            "tclass": tclass,
-            "wclass": wclass,
-            "thclass": thclass,
-            "fclass": fclass,
-            "saclass": saclass,
+            "sunday": sclass,
+            "monday": mclass,
+            "tuesday": tclass,
+            "wednesday": wclass,
+            "thursday": thclass,
+            "friday": fclass,
+            "sunday": saclass,
         }
     return return_dict
 
-
-
-
+class Completed_workoutForm(forms.Form):
+    mins = forms.IntegerField()
+    secs = forms.IntegerField()
+    rounds = forms.IntegerField()
 
 def create_completed_workout(create_dict):
     """expects dictionary like
     {
-        "user_id":          <int>,
-        "date_of_class":    <int>,
-        "class_name":       <string>,
-
         "mins":             <int>,
         "sec":              <int>,
         "rounds":           <int>,
         "variations":       [{stuff}, {more stuff}],
     }
     """
-    pass
+    if request.method == 'POST': # If the form has been submitted...
+        form = Completed_workoutForm(request.POST) # A form bound to the POST data
+        if form.is_valid(): # All validation rules pass
+            co = Completed_workout()
+            co.user = request.user
+            co.mins = request.POST['mins']
+            co.secs = request.POST['secs']
+            co.rounds = request.POST['rounds']
+            co.workout_class = Workout_class.objects.get(id=request.POST['workout_class_id'])
+            co.save()
+            variation_counter = 0
+            variation_ids = []
+
+            ### This may need to be changed ###
+            while "variation_%d" % variation_counter in request.POST:
+                variation_ids.append(request.POST["variation_%d" % variation_counter])
+                variation_counter += 1
+
+            variations = [Variation.objects.get(id=x) for x in variation_ids]
+            ### End of change###
+            for variation in variations:
+                v_u= Variation_used()
+                v_u.variation = variation
+                v_u.completed_workout = co
+                v_u.completed_workout
+                v_u.save()
+
+            return HttpResponse("Completed Workout Created")
+        else:
+            return HttpResponse("Invalid Workout,  Non created !")
+
