@@ -89,7 +89,7 @@ def get_all_users():
             "users" : users
             }
     return return_dict
-            
+
 def get_element(element_id):
     elm = Element.objects.get(id=element_id)
     element = []
@@ -121,7 +121,7 @@ def get_workout(workout_date, class_id):
     workout = Workout.objects.get(id=1)
     #workout = Workout_class.objects.filter(class_info__id exact= class_id).filter(date = workout_date)
     #workout = workout.workout
-    
+
     elements = []
     for elm_used in workout.element_used_set.all():
         elements.append({"reps": elm_used.reps, "element": get_element(elm_used.element.id), "order": elm_used.order})
