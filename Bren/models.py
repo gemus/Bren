@@ -92,10 +92,11 @@ def get_all_users():
 
 def get_element(element_id):
     elm = Element.objects.get(id=element_id)
-    element = []
-    element.append({"id": elm.id, "name": elm.name})
+    variations = []
     for variation in Variation.objects.filter(element__id = elm.id):
-        element.append({"variation": variation.element, "name": variation.name})       
+        variations.append({"id": variation.id, "name": variation.name})
+    element = {"id": elm.id, "name": elm.name, "variations": variations}
+
     return element
 
 def get_workout_name(completed_workout_id): #Gets a workout name from a completed Workout
@@ -165,7 +166,7 @@ def get_week_roster(date):      #Expecting string comming in as SUNDAY! as "YYYY
     year = int(date[:4])                    #Formating the incomming string
     month = int(date[5:7])
     day = int(date[8:10])
-   
+
     sunday = datetime.date(year, month, day)
     monday = datetime.date(year, month, day+1)
     tuesday = datetime.date(year, month, day+2)
