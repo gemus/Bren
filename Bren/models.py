@@ -178,8 +178,6 @@ def get_week_roster(date):      #Expecting string comming in as SUNDAY! as "YYYY
     fclass = ["Friday"]
     aclass = ["Saturday"]
 
-    roster
-
     for workout_class in Workout_class.objects.filter(date__exact=sunday).distinct():
         sclass.append({"class": workout_class.class_info.title})
         for completed_workout in Completed_workout.objects.filter(workout_class__id = workout_class.id):
