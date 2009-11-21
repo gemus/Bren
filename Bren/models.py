@@ -128,13 +128,13 @@ def get_workout(workout_date, class_id):
         elements.append({"reps": elm_used.reps, "element": get_element(elm_used.element.id), "order": elm_used.order})
 
     return_dict = {
-                    "id"       : workout.id,
-                    "name"     : workout.name,
-                    "comments" : workout.comments,
-                    "time"     : workout.time,
-                    "rounds"   : workout.rounds,
-                    "type"     : workout.workout_type.name,
-                    "elements" : elements,
+                    "id"           : workout.id,
+                    "name"         : workout.name,
+                    "comments"     : workout.comments,
+                    "time"         : workout.time,
+                    "rounds"       : workout.rounds,
+                    "workout_type" : workout.workout_type.name,
+                    "elements"     : elements,
                   }
     return return_dict
 
@@ -155,6 +155,7 @@ def get_classes(date):      #Expecting string comming in as "YYYY-MM-DD"
     month = int(date[5:7])
     day = int(date[8:10])
     date = datetime.date(year, month, day)
+
     workout_class_list = Workout_class.objects.filter(date__exact=date).distinct()
     return_dict = {
             "workout_class_list": workout_class_list,

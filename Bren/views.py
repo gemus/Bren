@@ -16,10 +16,12 @@ class WorkoutForm(forms.Form):
 def index(request):
     api_data = model.get_workout(1, 1)
     the_form = WorkoutForm(api_data['elements'])
+
     data = {
-        'name':     api_data['name'],
-        'comments': api_data['comments'],
-        'the_form': the_form,
+        'name':         api_data['name'],
+        'comments':     api_data['comments'],
+        'workout_type': api_data['workout_type'],
+        'the_form':     the_form,
     }
 
     return render_to_response('base.html', data)
