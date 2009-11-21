@@ -8,7 +8,10 @@ class WorkoutForm(forms.Form):
     def __init__(self, elements, *args, **kw):
         super(WorkoutForm, self).__init__(*args, **kw)
         for i, field_dict in enumerate(elements):
-            self.fields['extra_info_%d' % i] = forms.CharField(max_length=20)
+            print field_dict
+            field = forms.CharField(max_length=20)
+            field.label = "%d %s" % (field_dict['reps'], field_dict['element']['name'])
+            self.fields['extra_info_%d' % i] = field
 
 def index(request):
     #{
