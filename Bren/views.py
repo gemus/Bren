@@ -3,7 +3,6 @@ from django import forms
 import Crossfit.Bren.models as model
 
 class WorkoutForm(forms.Form):
-    name = forms.CharField(max_length=20)
 
     def __init__(self, elements, *args, **kw):
         super(WorkoutForm, self).__init__(*args, **kw)
@@ -36,6 +35,6 @@ def index(request):
         'the_form': the_form,
     }
 
-    print api_data
+    #print api_data
 
     return render_to_response('base.html', data)
