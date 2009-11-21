@@ -6,11 +6,8 @@ class WorkoutForm(forms.Form):
     name = forms.CharField(max_length=20)
 
     def __init__(self, elements, *args, **kw):
-        super(Crazy, self).__init__(*args, **kw)
+        super(WorkoutForm, self).__init__(*args, **kw)
         for i, field_dict in enumerate(elements):
-
-
-
             self.fields['extra_info_%d' % i] = forms.CharField(max_length=20)
 
 def index(request):
@@ -35,5 +32,7 @@ def index(request):
         'comments': api_data['comments'],
         'the_form': the_form,
     }
+
+    print api_data
 
     return render_to_response('base.html', data)
