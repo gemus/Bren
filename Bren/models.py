@@ -155,7 +155,11 @@ def get_classes(date):      #Expecting string comming in as "YYYY-MM-DD"
     month = int(date[5:7])
     day = int(date[8:10])
     date = datetime.date(year, month, day)
-    workout_class_list = Workout_class.objects.filter(date__exact=date).distinct()
+    workout_class_list = []
+     
+    for classes in Workout_class.objects.filter(date__exact=date):
+        workout_class_list.append ({"name": classes.class_info.title , "id": classes.id})  
+        
     return_dict = {
             "workout_class_list": workout_class_list,
         }
