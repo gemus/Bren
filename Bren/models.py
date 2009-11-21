@@ -120,7 +120,7 @@ def get_workout(workout_date, class_id):
 
     elements = []
     for elm_used in workout.element_used_set.all():
-        elements.append({"reps": elm_used.reps, "element": get_element(elm_used.element.id)})
+        elements.append({"reps": elm_used.reps, "element": get_element(elm_used.element.id), "order": elm_used.order})
 
     return_dict = {
                     "id"       : workout.id,
@@ -161,7 +161,7 @@ def get_week_roster(date):      #Expecting string comming in as SUNDAY! as "YYYY
     year = int(date[:4])                    #Formating the incomming string
     month = int(date[5:7])
     day = int(date[8:10])
-
+   
     sunday = datetime.date(year, month, day)
     monday = datetime.date(year, month, day+1)
     tuesday = datetime.date(year, month, day+2)
@@ -176,7 +176,7 @@ def get_week_roster(date):      #Expecting string comming in as SUNDAY! as "YYYY
     wclass = ["Wednesday"]
     thclass = ["Thursday"]
     fclass = ["Friday"]
-    saclass = ["Saturday"]
+    aclass = ["Saturday"]
 
     for workout_class in Workout_class.objects.filter(date__exact=sunday).distinct():
         sclass.append({"class": workout_class.class_info.title})
