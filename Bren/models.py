@@ -92,7 +92,11 @@ def get_all_users():
             
 def get_element(element_id):
     elm = Element.objects.get(id=element_id)
-    return {"id": elm.id, "name": elm.name}
+    element = []
+    element.append({"id": elm.id, "name": elm.name})
+    for variation in Variation.objects.filter(element__id = elm.id):
+        element.append({"variation": variation.element, "name": variation.name})       
+    return element
 
 def get_workout_name(completed_workout_id): #Gets a workout name from a completed Workout
     workout_name = Completed_workout.objects.get(id = completed_workout_id)
