@@ -203,10 +203,13 @@ class Completed_workoutForm(forms.Form):
 def create_completed_workout(create_dict):
     """expects dictionary like
     {
-        "mins":             <int>,
-        "sec":              <int>,
+        "time":             <int>,  (time in seconds)
         "rounds":           <int>,
-        "variations":       [{stuff}, {more stuff}],
+
+        "date":             <str>,  (format: yyyy/mm/dd)
+        "class_id":         <int>,
+
+        "variations":       [{"order": <int>, "variation_id": <int>, "element_id": <int> }, ...]
     }
     """
     if request.method == 'POST': # If the form has been submitted...
