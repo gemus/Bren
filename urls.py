@@ -6,6 +6,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     (r'^index/$', 'Crossfit.Bren.views.index'),
+    (r'^json_api/$', 'Crossfit.Bren.views.json_api'),
     (r'^admin/', include(admin.site.urls)),
 )
 

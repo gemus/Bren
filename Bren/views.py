@@ -1,6 +1,8 @@
 from django.shortcuts import render_to_response
 from django import forms
 import Crossfit.Bren.models as model
+from django.http import HttpResponse
+from django.utils import simplejson
 
 class WorkoutForm(forms.Form):
     date = forms.DateField()
@@ -29,3 +31,22 @@ def workout_form(request):
 
 def index(request):
     return render_to_response('index.html')
+
+def json_api(request):
+    """ JSON API Endpoint --
+    Request  : { id: <int>, method: <string>, params: [parameters] }
+    Response : { id: <int>, result: <object>, error: <object> }
+    """
+
+    method = request.GET['method']
+
+    if method == 'get_classes':
+        result = model.get_classes(request.GET['params'])['workout_class_list']
+        print result
+
+        to_return = {
+            "id"     : 1,
+            "result" : result
+        }
+
+    return HttpResponse(simplejson.dumps(to_return))

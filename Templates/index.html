@@ -12,7 +12,7 @@
 	<script type="text/javascript" charset="utf-8">
 	$(document).ready(function() {
 		// Setup the date picker
-		$("#date_picker").datepicker();
+		$("#date_picker").datepicker({ dateFormat: 'yy-mm-dd' });
 
 		var classChnagedFunc = function() {
 			var theDate = $("#date_picker")[0].value;
@@ -21,11 +21,19 @@
 		}
 
 		var dateChangedFunc = function() {
-			var class_drop_value = '<option value="1">5:00 PM</option>';
-			class_drop_value += '<option value="2">6:30 PM</option>';
-
-			$("#class_picker").html(class_drop_value);
-			classChnagedFunc();
+			var theDate = $("#date_picker")[0].value;
+			$.getJSON("/json_api/", {"id": 1, "method": "get_classes", "params" : [theDate]}, function(result, status) {
+				var class_drop_value = '';
+				for (i in result.result) {
+					var class_row = result.result[i];
+					class_drop_value += '<option value="'+class_row.id+'">'+class_row.name+'</option>';
+				}
+				if (class_drop_value == '') {
+					class_drop_value = '<option value="None">No Classes For Selected Date</option>';
+				}
+				$("#class_picker").html(class_drop_value);
+				classChnagedFunc();
+			})
 		}
 
 		// Hook in the onChange function
