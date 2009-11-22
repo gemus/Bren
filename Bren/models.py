@@ -6,6 +6,8 @@ from Crossfit.Bren.calcs import*
 from django.utils import simplejson
 from django import forms
 
+DATE_FORMAT = "%Y-%m-%d"
+
 class Workout_type(models.Model):
     name = models.CharField(max_length=20)
     def __unicode__(self):
@@ -114,29 +116,32 @@ def get_workout_time(completed_workout_id):
     return {"mins": workout.mins, "secs": workout.secs}
 
 
-def get_workout(workout_date, class_id):
+def get_workout(workout_date_str, class_id):
     """
     This is where the comments would go
     """
 
-    workout = Workout.objects.get(id=1)
-    #workout = Workout_class.objects.filter(class_info__id exact= class_id).filter(date = workout_date)
-    #workout = workout.workout
+    workout_date = datetime.datetime.strptime(workout_date_str, DATE_FORMAT).date()
+    workouts = Workout_class.objects.filter(class_info__id=class_id).filter(date=workout_date)
 
-    elements = []
-    for elm_used in workout.element_used_set.all():
-        elements.append({"reps": elm_used.reps, "element": get_element(elm_used.element.id), "order": elm_used.order})
+    if len(workouts) > 0:
+        workout = workouts[0].workout
+        elements = []
+        for elm_used in workout.element_used_set.all():
+            elements.append({"reps": elm_used.reps, "element": get_element(elm_used.element.id), "order": elm_used.order})
 
-    return_dict = {
-                    "id"           : workout.id,
-                    "name"         : workout.name,
-                    "comments"     : workout.comments,
-                    "time"         : workout.time,
-                    "rounds"       : workout.rounds,
-                    "workout_type" : workout.workout_type.name,
-                    "elements"     : elements,
-                  }
-    return return_dict
+        return_dict = {
+                        "id"           : workout.id,
+                        "name"         : workout.name,
+                        "comments"     : workout.comments,
+                        "time"         : workout.time,
+                        "rounds"       : workout.rounds,
+                        "workout_type" : workout.workout_type.name,
+                        "elements"     : elements,
+                        "class_name"   : Class_info.objects.get(pk=int(class_id)).title
+                      }
+        return return_dict
+    return {"error": "No Class Found"}
 
 def get_completed_workout(workout_id, user_id):
     completed_workouts = []
@@ -158,7 +163,7 @@ def get_classes(date):      #Expecting string comming in as "YYYY-MM-DD"
     workout_class_list = []
 
     for classes in Workout_class.objects.filter(date__exact=date):
-        workout_class_list.append ({"name": classes.class_info.title , "id": classes.id})
+        workout_class_list.append ({"name": classes.class_info.title , "id": classes.class_info.id})
 
     return_dict = {
             "workout_class_list": workout_class_list,
