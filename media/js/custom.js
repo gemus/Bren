@@ -1,25 +1,42 @@
-jQuery.fn.numPadInput = function() {
+jQuery.fn.numPadInput = function(isTime) {
+    // Create a numpad for an input field.
+    // isTime <bool> : Weather to display at time. Eg. 0:15
+
     return this.each(function() {
+
         var num_pad_id = this.id + "_numpad_input";
         var input_field_id = this.id;
         var is_open = false;
-
-        $("#"+input_field_id).addClass("numpad_input_field");
 
         var closeNumpad = function() {
             $("#"+num_pad_id).remove();
             is_open = false;
         }
-
+        var clearValue = function() {
+            if (isTime) {
+                $("#"+input_field_id).val("0:00");
+            } else {
+                $("#"+input_field_id).val("0");
+            }
+        }
         var addNumber = function(number) {
             var theVal = $("#"+input_field_id).val();
-            // Normalize the input
-            theVal = parseInt(theVal.replace(":", "").replace(/^0*/, "") + number);
-            minutes = parseInt(theVal / 100);
-            seconds = theVal % 100;
-            if (seconds < 10) seconds = "0" + seconds
-            $("#"+input_field_id).val( minutes + ":" + seconds );
+
+            if (isTime) {
+                // Normalize the input
+                theVal = parseInt(theVal.replace(":", "").replace(/^0*/, "") + number);
+                minutes = parseInt(theVal / 100);
+                seconds = theVal % 100;
+                if (seconds < 10) seconds = "0" + seconds
+                $("#"+input_field_id).val( minutes + ":" + seconds );
+            } else {
+                theVal = parseInt($("#"+input_field_id).val());
+                $("#"+input_field_id).val(theVal*10 + parseInt(number));
+            }
         }
+
+        $("#"+input_field_id).addClass("numpad_input_field");
+        clearValue();
 
         // ====================================
         // = When the User Focus On The Input =
@@ -42,7 +59,7 @@ jQuery.fn.numPadInput = function() {
             $("#"+num_pad_id + " > div > table > tbody > tr > td ").each(function() {
                 $(this).click(function() {
                     if (this.innerHTML == "C") {
-                        $("#"+input_field_id).val("0:00");
+                        clearValue();
                     } else if (this.innerHTML == "OK") {
                         closeNumpad();
                     } else {
