@@ -4,6 +4,17 @@ import Crossfit.Bren.models as model
 from django.http import HttpResponse
 from django.utils import simplejson
 
+# =============================================================================
+# = Index Page ================================================================
+# =============================================================================
+
+def index(request):
+    return render_to_response('index.html')
+
+# =============================================================================
+# = Workout Form ==============================================================
+# =============================================================================
+
 class WorkoutForm(forms.Form):
     date = forms.DateField()
 
@@ -29,8 +40,9 @@ def workout_form(request):
 
     return render_to_response('workout_form.html', data)
 
-def index(request):
-    return render_to_response('index.html')
+# =============================================================================
+# = APU Endpoint ==============================================================
+# =============================================================================
 
 def json_api(request):
     """ JSON API Endpoint --
