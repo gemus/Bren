@@ -128,13 +128,13 @@ def get_workout(workout_date, class_id):
         elements.append({"reps": elm_used.reps, "element": get_element(elm_used.element.id), "order": elm_used.order})
 
     return_dict = {
-                    "id"       : workout.id,
-                    "name"     : workout.name,
-                    "comments" : workout.comments,
-                    "time"     : workout.time,
-                    "rounds"   : workout.rounds,
-                    "type"     : workout.workout_type.name,
-                    "elements" : elements,
+                    "id"           : workout.id,
+                    "name"         : workout.name,
+                    "comments"     : workout.comments,
+                    "time"         : workout.time,
+                    "rounds"       : workout.rounds,
+                    "workout_type" : workout.workout_type.name,
+                    "elements"     : elements,
                   }
     return return_dict
 
@@ -156,10 +156,10 @@ def get_classes(date):      #Expecting string comming in as "YYYY-MM-DD"
     day = int(date[8:10])
     date = datetime.date(year, month, day)
     workout_class_list = []
-     
+
     for classes in Workout_class.objects.filter(date__exact=date):
-        workout_class_list.append ({"name": classes.class_info.title , "id": classes.id})  
-        
+        workout_class_list.append ({"name": classes.class_info.title , "id": classes.id})
+
     return_dict = {
             "workout_class_list": workout_class_list,
         }
@@ -171,15 +171,15 @@ def get_week_roster(date):      #Expecting string comming in as SUNDAY! as "YYYY
     month = int(date[5:7])
     day = int(date[8:10])
     date = datetime.date(year,month,day)
-    
+
     roster = []
-    i = 0    
+    i = 0
     while i < 6 :
         roster.append({"Day": get_weekday(i)})
         for workout_class in Workout_class.objects.filter(date__exact=date).distinct():
             roster.append({"class": workout_class.class_info.title})
             for completed_workout in Completed_workout.objects.filter(workout_class__id = workout_class.id):
-                roster.append({"user": completed_workout.user}) 
+                roster.append({"user": completed_workout.user})
         i = i + 1
         date = datetime.date(year,month,day+i)
 
