@@ -16,7 +16,6 @@ def index(request):
 # =============================================================================
 
 class WorkoutForm(forms.Form):
-    date = forms.DateField()
 
     def __init__(self, elements, *args, **kw):
         super(WorkoutForm, self).__init__(*args, **kw)
@@ -40,6 +39,10 @@ def workout_form(request, date_str, class_id):
     }
 
     return render_to_response('workout_form.html', data)
+
+def save_workout(request):
+    print request.POST
+    return render_to_response('save_workout.html')
 
 def no_workout_found(request, date, *args):
     return render_to_response('no_workout_found.html', {"date": date})
