@@ -232,4 +232,3 @@ def create_completed_workout(create_dict):
             return HttpResponse("Completed Workout Created")
         else:
             return HttpResponse("Invalid Workout,  Non created !")
-
