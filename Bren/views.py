@@ -27,8 +27,8 @@ class WorkoutForm(forms.Form):
             field.label = "%d %s" % (field_dict['reps'], field_dict['element']['name'])
             self.fields['extra_info_%d' % i] = field
 
-def workout_form(request):
-    api_data = model.get_workout(1, 1)
+def workout_form(request, date_str, class_id):
+    api_data = model.get_workout(date_str, class_id)
     the_form = WorkoutForm(api_data['elements'])
 
     data = {
