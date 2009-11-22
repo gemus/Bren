@@ -13,10 +13,10 @@ def get_month(month):
     if (month == 12): return "December"
 
 def get_weekday(weekday):
-    if (weekday == 6): return "Sunday"
-    if (weekday == 0): return "Monday"
-    if (weekday == 1): return "Tuesday"
-    if (weekday == 2): return "Wednesday"
-    if (weekday == 3): return "Thursday"
-    if (weekday == 4): return "Friday"
-    if (weekday == 5): return "Saturday"
+    if (weekday == 0): return "Sunday"
+    if (weekday == 1): return "Monday"
+    if (weekday == 2): return "Tuesday"
+    if (weekday == 3): return "Wednesday"
+    if (weekday == 4): return "Thursday"
+    if (weekday == 5): return "Friday"
+    if (weekday == 6): return "Saturday"

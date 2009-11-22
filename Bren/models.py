@@ -155,8 +155,11 @@ def get_classes(date):      #Expecting string comming in as "YYYY-MM-DD"
     month = int(date[5:7])
     day = int(date[8:10])
     date = datetime.date(year, month, day)
+    workout_class_list = []
 
-    workout_class_list = Workout_class.objects.filter(date__exact=date).distinct()
+    for classes in Workout_class.objects.filter(date__exact=date):
+        workout_class_list.append ({"name": classes.class_info.title , "id": classes.id})
+
     return_dict = {
             "workout_class_list": workout_class_list,
         }
@@ -167,66 +170,21 @@ def get_week_roster(date):      #Expecting string comming in as SUNDAY! as "YYYY
     year = int(date[:4])                    #Formating the incomming string
     month = int(date[5:7])
     day = int(date[8:10])
+    date = datetime.date(year,month,day)
 
-    sunday = datetime.date(year, month, day)
-    monday = datetime.date(year, month, day+1)
-    tuesday = datetime.date(year, month, day+2)
-    wednesday = datetime.date(year, month, day+3)
-    thursday = datetime.date(year, month, day+4)
-    friday = datetime.date(year, month, day+5)
-    saturday = datetime.date(year, month, day+6)
-
-    sclass = ["Sunday"]
-    mclass = ["Monday"]
-    tclass = ["Tuesday"]
-    wclass = ["Wednesday"]
-    thclass = ["Thursday"]
-    fclass = ["Friday"]
-    aclass = ["Saturday"]
-
-    for workout_class in Workout_class.objects.filter(date__exact=sunday).distinct():
-        sclass.append({"class": workout_class.class_info.title})
-        for completed_workout in Completed_workout.objects.filter(workout_class__id = workout_class.id):
-            sclass.append({"user": completed_workout.user})
-
-    for workout_class in Workout_class.objects.filter(date__exact=monday).distinct():
-        mclass.append({"class": workout_class.class_info.title})
-        for completed_workout in Completed_workout.objects.filter(workout_class__id = workout_class.id):
-            mclass.append({"user": completed_workout.user})
-
-    for workout_class in Workout_class.objects.filter(date__exact=tuesday).distinct():
-        tclass.append({"class": workout_class.class_info.title})
-        for completed_workout in Completed_workout.objects.filter(workout_class__id = workout_class.id):
-            tclass.append({"user": completed_workout.user})
-
-    for workout_class in Workout_class.objects.filter(date__exact=wednesday).distinct():
-        wclass.append({"class": workout_class.class_info.title})
-        for completed_workout in Completed_workout.objects.filter(workout_class__id = workout_class.id):
-            wclass.append({"user": completed_workout.user})
-
-    for workout_class in Workout_class.objects.filter(date__exact=thursday).distinct():
-        thclass.append({"class": workout_class.class_info.title})
-        for completed_workout in Completed_workout.objects.filter(workout_class__id = workout_class.id):
-            thclass.append({"user": completed_workout.user})
-
-    for workout_class in Workout_class.objects.filter(date__exact=friday).distinct():
-        fclass.append({"class": workout_class.class_info.title})
-        for completed_workout in Completed_workout.objects.filter(workout_class__id = workout_class.id):
-            fclass.append({"user": completed_workout.user})
-
-    for workout_class in Workout_class.objects.filter(date__exact=saturday).distinct():
-        saclass.append({"class": workout_class.class_info.title})
-        for completed_workout in Completed_workout.objects.filter(workout_class__id = workout_class.id):
-            saclass.append({"user": completed_workout.user})
+    roster = []
+    i = 0
+    while i < 6 :
+        roster.append({"Day": get_weekday(i)})
+        for workout_class in Workout_class.objects.filter(date__exact=date).distinct():
+            roster.append({"class": workout_class.class_info.title})
+            for completed_workout in Completed_workout.objects.filter(workout_class__id = workout_class.id):
+                roster.append({"user": completed_workout.user})
+        i = i + 1
+        date = datetime.date(year,month,day+i)
 
     return_dict = {
-            "sunday": sclass,
-            "monday": mclass,
-            "tuesday": tclass,
-            "wednesday": wclass,
-            "thursday": thclass,
-            "friday": fclass,
-            "sunday": saclass,
+            "roster": roster
         }
     return return_dict
 
