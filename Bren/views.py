@@ -40,13 +40,18 @@ def json_api(request):
 
     method = request.GET['method']
 
+    to_return = {
+        "id"     : request.GET['id'],
+        "result" : None,
+        "error"  : "Bad Method Specified '%s'" % method
+    }
+
     if method == 'get_classes':
         result = model.get_classes(request.GET['params'])['workout_class_list']
-        print result
-
         to_return = {
-            "id"     : 1,
-            "result" : result
+            "id"     : request.GET['id'],
+            "result" : result,
+            "error"  : None
         }
 
     return HttpResponse(simplejson.dumps(to_return))
