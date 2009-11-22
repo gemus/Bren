@@ -35,10 +35,14 @@ def workout_form(request, date_str, class_id):
         'name':         api_data['name'],
         'comments':     api_data['comments'],
         'workout_type': api_data['workout_type'],
+        'class_name':   api_data['class_name'],
         'the_form':     the_form,
     }
 
     return render_to_response('workout_form.html', data)
+
+def no_workout_found(request, date, *args):
+    return render_to_response('no_workout_found.html', {"date": date})
 
 # =============================================================================
 # = APU Endpoint ==============================================================

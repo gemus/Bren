@@ -138,6 +138,7 @@ def get_workout(workout_date_str, class_id):
                         "rounds"       : workout.rounds,
                         "workout_type" : workout.workout_type.name,
                         "elements"     : elements,
+                        "class_name"   : Class_info.objects.get(pk=int(class_id)).title
                       }
         return return_dict
     return {"error": "No Class Found"}
@@ -163,8 +164,6 @@ def get_classes(date):      #Expecting string comming in as "YYYY-MM-DD"
 
     for classes in Workout_class.objects.filter(date__exact=date):
         workout_class_list.append ({"name": classes.class_info.title , "id": classes.class_info.id})
-
-    print workout_class_list
 
     return_dict = {
             "workout_class_list": workout_class_list,
