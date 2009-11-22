@@ -150,10 +150,12 @@ def get_completed_workout(workout_id, user_id):
         for completed_element in Completed_element.objects.filter(completed_workout__id__exact=workouts.id):
             completed_workouts.append({"element": completed_element.variation.element.name , "Variation": completed_element.variation.name})
 
-    return_dict = {
+    if len(completed_workouts) > 0:
+        return_dict = {
                     "completed_workouts"       : completed_workouts,
                   }
-    return return_dict
+        return return_dict
+    return {"error": User.objects.get(id=user_id).username + " has never done : " + Workout.objects.get(id=workout_id).name + " Before"}
 
 def get_classes(date):      #Expecting string comming in as "YYYY-MM-DD"
     year = int(date[:4])                    #Formating the incomming string
