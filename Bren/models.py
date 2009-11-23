@@ -212,33 +212,57 @@ def create_completed_workout(create_dict):
         "variations":       [{"order": <int>, "variation_id": <int>, "element_id": <int> }, ...]
     }
     """
-    if request.method == 'POST': # If the form has been submitted...
-        form = Completed_workoutForm(request.POST) # A form bound to the POST data
-        if form.is_valid(): # All validation rules pass
-            co = Completed_workout()
-            co.user = request.user
-            co.mins = request.POST['mins']
-            co.secs = request.POST['secs']
-            co.rounds = request.POST['rounds']
-            co.workout_class = Workout_class.objects.get(id=request.POST['workout_class_id'])
-            co.save()
-            variation_counter = 0
-            variation_ids = []
+    year = int(create_dict['date'][:4])                    #Formating the incomming string
+    month = int(create_dict['date'][5:7])
+    day = int(create_dict['date'][8:10])
+    date = datetime.date(year, month, day)
+    co = Completed_workout()
+    co.user = User.objects.get(id=1)
 
-            ### This may need to be changed ###
-            while "variation_%d" % variation_counter in request.POST:
-                variation_ids.append(request.POST["variation_%d" % variation_counter])
-                variation_counter += 1
+            #to re romoved
+    co.mins = 0
+            #End of remove
+    
+    co.date = date        
+    co.secs = create_dict['time']
+    co.rounds = create_dict['rounds']
 
-            variations = [Variation.objects.get(id=x) for x in variation_ids]
-            ### End of change###
-            for variation in variations:
-                v_u= Completed_element()
-                v_u.variation = variation
-                v_u.completed_workout = co
-                v_u.completed_workout
-                v_u.save()
+    workout_class_id = Workout_class.objects.filter(date=date).get(class_info__id = create_dict['class_id']).id
+    co.workout_class = Workout_class.objects.get(id=workout_class_id)
+    co.save()
 
-            return HttpResponse("Completed Workout Created")
-        else:
-            return HttpResponse("Invalid Workout,  Non created !")
+    workout = Workout_class.objects.get(id=workout_class_id).workout
+         
+    for variation in create_dict['variations']:
+        ce = Completed_element()
+        ce.completed_workout = co
+        ce.variation = Variation.objects.get(id = variation['variation_id'])
+        ce.element_used = Element_used.objects.filter(workout__id = workout.id).get(id = variation['order'])
+        ce.save()
+        print ce
+            
+    return "Workout Saved"                
+
+def tests ():
+    create_dict= {
+                        "time"           : 200,
+                        "rounds"         : 10,
+                        "date"           : "2009-11-12",
+                        "class_id"       : 1,
+                        "variations"     : [{"order": 1, "variation_id" : 6,  "element_id" : 3}] 
+                        
+                }
+    
+    create_completed_workout(create_dict)
+    return "Done"
+"""
+### This may need to be changed ###
+    while "variation_%d" % variation_counter in request.POST:
+    variation_ids.append(request.POST["variation_%d" % variation_counter])
+    variation_counter += 1
+    variations = [Variation.objects.get(id=x) for x in variation_ids]                                                              
+    variation_counter = 0
+    variation_ids = []
+### End of change###   
+""" 
+    
