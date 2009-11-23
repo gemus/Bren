@@ -228,15 +228,15 @@ def create_completed_workout(create_dict):
     date = datetime.date(year, month, day)"""
 
     date = datetime.datetime.strptime(create_dict['date'], DATE_FORMAT).date()
-    
+
     co = Completed_workout()
     co.user = User.objects.get(id=1)
 
             #to re romoved
     co.mins = 0
             #End of remove
-    
-    co.date = date        
+
+    co.date = date
     co.secs = create_dict['time']
     co.rounds = create_dict['rounds']
 
@@ -245,7 +245,7 @@ def create_completed_workout(create_dict):
     co.save()
 
     workout = Workout_class.objects.get(id=workout_class_id).workout
-         
+
     for variation in create_dict['variations']:
         ce = Completed_element()
         ce.completed_workout = co
@@ -253,8 +253,8 @@ def create_completed_workout(create_dict):
         ce.element_used = Element_used.objects.filter(workout__id = workout.id).get(order = variation['order'])
         ce.save()
         print ce
-            
-    return "Workout Saved"                
+
+    return "Workout Saved"
 
 def tests ():
     create_dict= {
@@ -262,10 +262,10 @@ def tests ():
                         "rounds"         : 10,
                         "date"           : "2009-11-12",
                         "class_id"       : 1,
-                        "variations"     : [{"order": 1, "variation_id" : 6,  "element_id" : 3}] 
-                        
+                        "variations"     : [{"order": 1, "variation_id" : 6,  "element_id" : 3}]
+
                 }
-    
+
     create_completed_workout(create_dict)
     return "Done"
 """
@@ -273,9 +273,9 @@ def tests ():
     while "variation_%d" % variation_counter in request.POST:
     variation_ids.append(request.POST["variation_%d" % variation_counter])
     variation_counter += 1
-    variations = [Variation.objects.get(id=x) for x in variation_ids]                                                              
+    variations = [Variation.objects.get(id=x) for x in variation_ids]
     variation_counter = 0
     variation_ids = []
-### End of change###   
-""" 
-    
+### End of change###
+"""
+
