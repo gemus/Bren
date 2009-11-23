@@ -213,6 +213,7 @@ class Completed_workoutForm(forms.Form):
 def create_completed_workout(create_dict):
     """expects dictionary like
     {
+        "user_id":          <int>,
         "time":             <int>,  (time in seconds)
         "rounds":           <int>,
 

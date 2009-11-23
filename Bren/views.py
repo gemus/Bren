@@ -78,7 +78,8 @@ def save_workout(request):
         "rounds":     workout_rounds,
         "date":       date_str,
         "class_id":   class_id,
-        "variations": varient_list
+        "variations": varient_list,
+        "user_id":    request.user.id
     }
 
     model.create_completed_workout(save_dict);
