@@ -86,11 +86,21 @@ class UserProfile(models.Model):
 # -- API METHODS -------------- #
 
 def get_all_users():
-    users = User.objects.all()
-    return_dict = {
-            "users" : users
-            }
-    return return_dict
+    """
+    Returns:
+    {
+       "display_name": <str>,
+       "user_name":     <str>,
+    }
+    """
+
+    return [{"display_name": "%s %s" % (user.first_name, user.last_name), "user_name": user.username} for user in User.objects.all()]
+
+    #users = User.objects.all()
+    #return_dict = {
+    #        "users" : users
+    #        }
+    #return return_dict
 
 def get_element(element_id):
     elm = Element.objects.get(id=element_id)
