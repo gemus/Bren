@@ -215,7 +215,7 @@ def create_completed_workout(create_dict):
 
     date = datetime.datetime.strptime(create_dict['date'], DATE_FORMAT).date()
     co = Completed_workout()
-    co.user = User.objects.get(id=1)
+    co.user = User.objects.get(id=create_dict['user_id'])
             #to re romoved
     co.mins = 0
             #End of remove
