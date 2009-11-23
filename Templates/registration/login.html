@@ -2,26 +2,33 @@
 
 {% block head_content %}
 <style type="text/css" media="screen">
-	div.userPicker {
+	div#userPicker {
 		float: left;
 		border: 1px solid #999;
 		padding: 0px;
 		margin: 10px;
 	}
-		div.userPicker p {
+		div#userPicker p {
 			margin: 7px;
 			border: 1px solid #ccc;
 		}
 
 </style>
 <script type="text/javascript" charset="utf-8">
+	$.getJSON("/json_api/", {"id": 1, "method": "get_all_users", "params" : []}, function(result, status) {
+		result = result.result;
 
+		for (i in result) {
+			console.log(result[i]['display_name']);
+		}
+
+	});
 </script>
 {% endblock %}
 
 {% block content %}
 
-<div class="userPicker">
+<div id="userPicker">
 	<p>Owen</p>
 	<p>Wade</p>
 </div>

@@ -114,5 +114,12 @@ def json_api(request):
             "result" : result,
             "error"  : None
         }
+    elif method == 'get_all_users':
+        result = model.get_all_users()
+        to_return = {
+            "id"     : request.GET['id'],
+            "result" : result,
+            "error"  : None
+        }
 
     return HttpResponse(simplejson.dumps(to_return))
