@@ -2,25 +2,51 @@
 
 {% block head_content %}
 <style type="text/css" media="screen">
-	div#userPicker {
-		float: left;
-		border: 1px solid #999;
-		padding: 0px;
-		margin: 10px;
-	}
-		div#userPicker p {
-			margin: 7px;
-			border: 1px solid #ccc;
-		}
+#user_picker {
+	overflow:hidden;
+	float: left;
+}
+#user_picker dl {
+	list-style-type:none;
+	width:200px;
+	overflow:hidden;
+}
+#user_picker dd {
+	margin-left: 0pt;
+	display:block;
+	font-weight:bolder;
+}
+#user_picker dt {
+	border:1px solid #CCC;
+	border-width:1px 0;
+}
+#user_picker dt a {
+	color:#333;
+	display:block;
+	padding:5px;
+	text-decoration:none;
+}
+#user_picker dt a:hover {
+	background:#CAE0EE;
+}
+
+div#login_content {
+	margin: 40px;
+	float: left;
+}
 
 </style>
 <script type="text/javascript" charset="utf-8">
 	$.getJSON("/json_api/", {"id": 1, "method": "get_all_users", "params" : []}, function(result, status) {
-		result = result.result;
+		var result = result.result;
 
+		var user_picker_html = "<dl><dd>Select User</dd>";
 		for (i in result) {
-			console.log(result[i]['display_name']);
+			user_picker_html += "<dt><a href='#'>" + result[i]['display_name'] + "</a></dt>";
 		}
+		user_picker_html += "</dl>";
+
+		$("#user_picker").html(user_picker_html);
 
 	});
 </script>
@@ -28,29 +54,29 @@
 
 {% block content %}
 
-<div id="userPicker">
+<div id="user_picker">
 	<p>Owen</p>
 	<p>Wade</p>
 </div>
+<div id="login_content">
+	{% if form.errors %}
+	<p>Your username and password didn't match. Please try again.</p>
+	{% endif %}
 
-{% if form.errors %}
-<p>Your username and password didn't match. Please try again.</p>
-{% endif %}
+	<form method="post" action="{% url django.contrib.auth.views.login %}">{% csrf_token %}
+		<table>
+			<tr>
+				<td>{{ form.username.label_tag }}</td>
+				<td>{{ form.username }}</td>
+			</tr>
+			<tr>
+				<td>{{ form.password.label_tag }}</td>
+				<td>{{ form.password }}</td>
+			</tr>
+		</table>
 
-<form method="post" action="{% url django.contrib.auth.views.login %}">{% csrf_token %}
-	<table>
-		<tr>
-			<td>{{ form.username.label_tag }}</td>
-			<td>{{ form.username }}</td>
-		</tr>
-		<tr>
-			<td>{{ form.password.label_tag }}</td>
-			<td>{{ form.password }}</td>
-		</tr>
-	</table>
-
-	<input type="submit" value="login" />
-	<input type="hidden" name="next" value="{{ next }}" />
-</form>
-
+		<input type="submit" value="login" />
+		<input type="hidden" name="next" value="{{ next }}" />
+	</form>
+</div>
 {% endblock %}
