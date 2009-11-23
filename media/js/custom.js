@@ -1,6 +1,14 @@
-jQuery.fn.numPadInput = function(isTime) {
+jQuery.fn.numPadInput = function(isTime, clearValue) {
     // Create a numpad for an input field.
     // isTime <bool> : Weather to display at time. Eg. 0:15
+
+    if (clearValue == undefined) {
+        if (isTime) {
+            clearValue = "0:00";
+        } else {
+            clearValue = "0";
+        }
+    }
 
     return this.each(function() {
 
@@ -12,22 +20,20 @@ jQuery.fn.numPadInput = function(isTime) {
             $("#"+num_pad_id).remove();
             is_open = false;
         }
-        var clearValue = function() {
-            if (isTime) {
-                $("#"+input_field_id).val("0:00");
-            } else {
-                $("#"+input_field_id).val("0");
-            }
+        var clearField = function() {
+            $("#"+input_field_id).val(clearValue);
         }
         var addNumber = function(number) {
             var theVal = $("#"+input_field_id).val();
 
-            if (isTime) {
+            if ($("#"+input_field_id).val() == "") {
+                $("#"+input_field_id).val(number);
+            } else if (isTime) {
                 // Normalize the input
                 theVal = parseInt(theVal.replace(":", "").replace(/^0*/, "") + number);
                 minutes = parseInt(theVal / 100);
                 seconds = theVal % 100;
-                if (seconds < 10) seconds = "0" + seconds
+                if (seconds < 10) seconds = "0" + seconds;
                 $("#"+input_field_id).val( minutes + ":" + seconds );
             } else {
                 theVal = parseInt($("#"+input_field_id).val());
@@ -36,7 +42,7 @@ jQuery.fn.numPadInput = function(isTime) {
         }
 
         $("#"+input_field_id).addClass("numpad_input_field");
-        clearValue();
+        clearField();
 
         // ====================================
         // = When the User Focus On The Input =
@@ -59,7 +65,7 @@ jQuery.fn.numPadInput = function(isTime) {
             $("#"+num_pad_id + " > div > table > tbody > tr > td ").each(function() {
                 $(this).click(function() {
                     if (this.innerHTML == "C") {
-                        clearValue();
+                        clearField();
                     } else if (this.innerHTML == "OK") {
                         closeNumpad();
                     } else {
