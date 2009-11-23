@@ -6,7 +6,7 @@ import django.contrib.auth.views
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    (r'^index/$', 'Crossfit.Bren.views.index'),
+    (r'^$', 'Crossfit.Bren.views.index'),
     # /workout_form/<date>/<class_id>        /workout_form/2009-11-21/3
     (r'^workout_form/(\d{4}-\d{2}-\d{2})/(\d+)/$', 'Crossfit.Bren.views.workout_form'),
     (r'^workout_form/(\d{4}-\d{2}-\d{2})/None/$', 'Crossfit.Bren.views.no_workout_found'),
