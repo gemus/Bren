@@ -212,10 +212,13 @@ def create_completed_workout(create_dict):
         "variations":       [{"order": <int>, "variation_id": <int>, "element_id": <int> }, ...]
     }
     """
-    year = int(create_dict['date'][:4])                    #Formating the incomming string
+    """ year = int(create_dict['date'][:4])                    #Formating the incomming string
     month = int(create_dict['date'][5:7])
     day = int(create_dict['date'][8:10])
-    date = datetime.date(year, month, day)
+    date = datetime.date(year, month, day)"""
+
+    date = datetime.datetime.strptime(create_dict['date'], DATE_FORMAT).date()
+    
     co = Completed_workout()
     co.user = User.objects.get(id=1)
 
@@ -237,7 +240,7 @@ def create_completed_workout(create_dict):
         ce = Completed_element()
         ce.completed_workout = co
         ce.variation = Variation.objects.get(id = variation['variation_id'])
-        ce.element_used = Element_used.objects.filter(workout__id = workout.id).get(id = variation['order'])
+        ce.element_used = Element_used.objects.filter(workout__id = workout.id).get(order = variation['order'])
         ce.save()
         print ce
             
