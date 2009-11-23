@@ -1,6 +1,7 @@
 from django.conf.urls.defaults import *
 from django.conf import settings
 from django.contrib import admin
+import django.contrib.auth.views
 
 admin.autodiscover()
 
@@ -11,6 +12,8 @@ urlpatterns = patterns('',
     (r'^workout_form/(\d{4}-\d{2}-\d{2})/None/$', 'Crossfit.Bren.views.no_workout_found'),
 
     (r'^save_workout/$', 'Crossfit.Bren.views.save_workout'),
+
+    (r'^accounts/login/$', 'django.contrib.auth.views.login'),
 
     (r'^json_api/$', 'Crossfit.Bren.views.json_api'),
     (r'^admin/', include(admin.site.urls)),

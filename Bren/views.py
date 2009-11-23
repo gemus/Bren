@@ -3,11 +3,13 @@ from django import forms
 import Crossfit.Bren.models as model
 from django.http import HttpResponse
 from django.utils import simplejson
+from django.contrib.auth.decorators import login_required
 
 # =============================================================================
 # = Index Page ================================================================
 # =============================================================================
 
+@login_required
 def index(request):
     return render_to_response('index.html')
 
@@ -29,6 +31,7 @@ class WorkoutForm(forms.Form):
 
             self.fields[field_id] = field
 
+@login_required
 def workout_form(request, date_str, class_id):
     api_data = model.get_workout(date_str, class_id)
     the_form = WorkoutForm(api_data['elements'])
@@ -45,6 +48,7 @@ def workout_form(request, date_str, class_id):
 
     return render_to_response('workout_form.html', data)
 
+@login_required
 def save_workout(request):
     varient_list = []
     varient_keys = [x for x in request.POST.keys() if x[:8] == 'varient_']
@@ -77,11 +81,11 @@ def save_workout(request):
         "variations": varient_list
     }
 
-    print save_dict
-    # This is where we actually save it...
+    model.create_completed_workout(save_dict);
 
     return render_to_response('save_workout.html')
 
+@login_required
 def no_workout_found(request, date, *args):
     return render_to_response('no_workout_found.html', {"date": date})
 
