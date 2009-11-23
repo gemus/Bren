@@ -19,12 +19,15 @@ class WorkoutForm(forms.Form):
 
     def __init__(self, elements, *args, **kw):
         super(WorkoutForm, self).__init__(*args, **kw)
-        for i, field_dict in enumerate(elements):
+        for field_dict in elements:
+            # In the style of 'varient_<element_id>_<order_num>'
+            field_id = "varient_%d_%d" % (field_dict['element']['id'], field_dict['order'])
+
             field = forms.ChoiceField()
             field.choices = [ (varient['id'], varient['name']) for varient in field_dict['element']['variations']]
-
             field.label = "%d %s" % (field_dict['reps'], field_dict['element']['name'])
-            self.fields['extra_info_%d' % i] = field
+
+            self.fields[field_id] = field
 
 def workout_form(request, date_str, class_id):
     api_data = model.get_workout(date_str, class_id)
