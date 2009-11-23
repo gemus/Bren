@@ -53,7 +53,7 @@ def save_workout(request):
         element_id = parts[1]
         order = parts[2]
         varient_id = request.POST.get(key)
-        varient_list.append({"order": order, "variation_id": varient_id, "element_id": element_id })
+        varient_list.append({"order": int(order), "variation_id": int(varient_id), "element_id": int(element_id) })
 
     # Deal with rounds and time
     workout_type = request.POST.get('workout_type')
