@@ -46,7 +46,14 @@ def workout_form(request, date_str, class_id):
     return render_to_response('workout_form.html', data)
 
 def save_workout(request):
-    print request.POST
+    varient_list = []
+    varient_keys = [x for x in request.POST.keys() if x[:8] == 'varient_']
+    for key in varient_keys:
+        parts = key.split('_')
+        element_id = parts[1]
+        order = parts[2]
+        varient_id = request.POST.get(key)
+        varient_list.append({"order": order, "variation_id": varient_id, "element_id": element_id })
 
     # Deal with rounds and time
     workout_type = request.POST.get('workout_type')
@@ -63,16 +70,15 @@ def save_workout(request):
     class_id = request.POST.get('class_id')
 
     save_dict = {
-        "time":     workout_time,
-        "rounds":   workout_rounds,
-        "date":     date_str,
-        "class_id": class_id,
-
-        #"variations":       [{"order": <int>, "variation_id": <int>, "element_id": <int> }, ...]
+        "time":       workout_time,
+        "rounds":     workout_rounds,
+        "date":       date_str,
+        "class_id":   class_id,
+        "variations": varient_list
     }
 
     print save_dict
-
+    # This is where we actually save it...
 
     return render_to_response('save_workout.html')
 
