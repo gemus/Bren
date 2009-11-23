@@ -13,7 +13,8 @@ urlpatterns = patterns('',
 
     (r'^save_workout/$', 'Crossfit.Bren.views.save_workout'),
 
-    (r'^accounts/login/$', 'django.contrib.auth.views.login'),
+    (r'^login/$', 'django.contrib.auth.views.login'),
+    (r'^logout/$', 'django.contrib.auth.views.logout_then_login'),
 
     (r'^json_api/$', 'Crossfit.Bren.views.json_api'),
     (r'^admin/', include(admin.site.urls)),
