@@ -222,39 +222,28 @@ def create_completed_workout(create_dict):
         "variations":       [{"order": <int>, "variation_id": <int>, "element_id": <int> }, ...]
     }
     """
-    """ year = int(create_dict['date'][:4])                    #Formating the incomming string
-    month = int(create_dict['date'][5:7])
-    day = int(create_dict['date'][8:10])
-    date = datetime.date(year, month, day)"""
 
     date = datetime.datetime.strptime(create_dict['date'], DATE_FORMAT).date()
-
     co = Completed_workout()
-    co.user = User.objects.get(id=1)
-
+    co.user = User.objects.get(id=create_dict['user_id'])
             #to re romoved
     co.mins = 0
             #End of remove
-
     co.date = date
     co.secs = create_dict['time']
     co.rounds = create_dict['rounds']
-
     workout_class_id = Workout_class.objects.filter(date=date).get(class_info__id = create_dict['class_id']).id
     co.workout_class = Workout_class.objects.get(id=workout_class_id)
     co.save()
-
     workout = Workout_class.objects.get(id=workout_class_id).workout
-
     for variation in create_dict['variations']:
         ce = Completed_element()
         ce.completed_workout = co
         ce.variation = Variation.objects.get(id = variation['variation_id'])
         ce.element_used = Element_used.objects.filter(workout__id = workout.id).get(order = variation['order'])
         ce.save()
-        print ce
-
     return "Workout Saved"
+
 
 def tests ():
     create_dict= {
@@ -278,4 +267,3 @@ def tests ():
     variation_ids = []
 ### End of change###
 """
-
