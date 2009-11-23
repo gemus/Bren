@@ -42,13 +42,22 @@ div#login_content {
 
 		var user_picker_html = "<dl><dd>Select User</dd>";
 		for (i in result) {
-			user_picker_html += "<dt><a href='#'>" + result[i]['display_name'] + "</a></dt>";
+			user_picker_html += "<dt><a href='javascript:void(0);' onclick='populate_user_field(\""+result[i]['user_name']+"\")'>" + result[i]['display_name'] + "</a></dt>";
 		}
 		user_picker_html += "</dl>";
 
 		$("#user_picker").html(user_picker_html);
 
 	});
+
+	var populate_user_field = function(user_name) {
+		$("#id_username").val(user_name);
+	}
+
+	$(document).ready(function() {
+		$("#id_password").numPadInput();
+	});
+
 </script>
 {% endblock %}
 
