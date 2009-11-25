@@ -53,6 +53,7 @@ ADMIN_MEDIA_PREFIX = '/mediass/'
 # URL to direct users to if the need to login.
 # Using the built in Django auth modules
 LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/'
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = '!_osfgf^saypyx=w21k+s1&(bci2c9nghi74(&ne*!!t*z)tf%'
