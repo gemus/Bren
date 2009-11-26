@@ -20,9 +20,9 @@ class Workout_classAdmin(admin.ModelAdmin):
     list_filter = ['date', 'workout', 'class_info']
 
 class Completed_workoutAdmin(admin.ModelAdmin):
-    list_display = ('user', 'workout_class', 'mins', 'secs', 'rounds')
-    fields = ['user', 'workout_class', 'mins', 'secs', 'rounds']
-    list_filter = ['user', 'workout_class', 'mins', 'rounds']
+    list_display = ('user', 'workout_class', 'secs', 'rounds')
+    fields = ['user', 'workout_class', 'secs', 'rounds']
+    list_filter = ['user', 'workout_class', 'rounds']
     inlines = [Completed_elementInline]
 
     def day_of_week(self, completed_workout):
