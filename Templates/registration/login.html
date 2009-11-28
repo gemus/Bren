@@ -7,7 +7,8 @@
 	<title>Crossfit DPL</title><link rel="stylesheet" type="text/css" href="/site_media/css/reset-min.css">
 
 	<link rel="stylesheet" type="text/css" href="/site_media/css/global.css">
-	<link rel="stylesheet" type="text/css" href="/site_media/css/login.css">
+	<link rel="stylesheet" type="text/css" href="/site_media/css/scrollablelist.css">
+	<link rel="stylesheet" type="text/css" href="/site_media/css/numpad_input.css" />
 
 	<script type="text/javascript" src="/site_media/js/jquery-1.3.2.min.js"></script>
 	<script type="text/javascript" src="/site_media/js/jquery-ui-1.7.2.custom.min.js"></script>
@@ -23,18 +24,23 @@
 	<script type="text/javascript" src="/site_media/js/yui/connection-min.js"></script>
 	<script type="text/javascript" src="/site_media/js/yui/json-min.js"></script>
 
-	<script type="text/javascript" src="/site_media/js/login.js"></script>
+	<script type="text/javascript" src="/site_media/js/scrollablelist.js"></script>
 
 	<style type="text/css" media="screen">
 		div#userPickerCanvas { float: left; width: 30%;}
 	</style>
 	
 	<script type="text/javascript" charset="utf-8">
-		var menuItemManager = new MenuItemManager("userPickerToScroll", "userPickerCanvas");
+		var menuItemManager = new ScrollableListManager("userPickerToScroll", "userPickerCanvas");
+		
+		$(document).ready(function() {
+			$("#id_password").numPadInput(false, "");
+		});
 	</script>
 	
 </head>
-<body onLoad="menuItemManager.init();">	
+<body onLoad="menuItemManager.init();">
+	<h1> Welcome To CrossFit </h1>
 	<div id="userPickerCanvas" class="canvas">
 		<dl id="userPickerToScroll"></dl>
 	</div>

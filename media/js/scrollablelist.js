@@ -1,29 +1,29 @@
 function styleToInt(el, style) {
 	// Grab the style which is a string
 	var theTop = el.getStyle(style);
-	
+
 	if (theTop == 'auto') return 0;
 
 	// Chop the negative sign, and the 'px'
 	return parseInt(theTop.substr(0, theTop.length-2));
 }
 
-//  __  __                  ___ _                 __  __                                   
-// |  \/  | ___ _ __  _   _|_ _| |_ ___ _ __ ___ |  \/  | __ _ _ __   __ _  __ _  ___ _ __ 
+//  __  __                  ___ _                 __  __
+// |  \/  | ___ _ __  _   _|_ _| |_ ___ _ __ ___ |  \/  | __ _ _ __   __ _  __ _  ___ _ __
 // | |\/| |/ _ \ '_ \| | | || || __/ _ \ '_ ` _ \| |\/| |/ _` | '_ \ / _` |/ _` |/ _ \ '__|
-// | |  | |  __/ | | | |_| || || ||  __/ | | | | | |  | | (_| | | | | (_| | (_| |  __/ |   
-// |_|  |_|\___|_| |_|\__,_|___|\__\___|_| |_| |_|_|  |_|\__,_|_| |_|\__,_|\__, |\___|_|   
+// | |  | |  __/ | | | |_| || || ||  __/ | | | | | |  | | (_| | | | | (_| | (_| |  __/ |
+// |_|  |_|\___|_| |_|\__,_|___|\__\___|_| |_| |_|_|  |_|\__,_|_| |_|\__,_|\__, |\___|_|
 //                                                                         |___/
-MenuItemManager = function(scrollingDOMID, canvasDOMID) {
+ScrollableListManager = function(scrollingDOMID, canvasDOMID) {
     this.scrollManager = new ScrollManager(scrollingDOMID, canvasDOMID);
     this.scrollingDOMID = scrollingDOMID;
 }
 
-MenuItemManager.prototype.init = function() {
+ScrollableListManager.prototype.init = function() {
     this.redraw();
 }
 
-MenuItemManager.prototype.redraw = function() {
+ScrollableListManager.prototype.redraw = function() {
 	var callback = {
 		success: this.menuItemCallBack,
 		failure: this.menuItemCallBack_error,
@@ -34,14 +34,14 @@ MenuItemManager.prototype.redraw = function() {
 
 	YAHOO.util.Connect.asyncRequest('GET', url, callback, null);
 }
-MenuItemManager.prototype.menuItemCallBack = function(o) {
+ScrollableListManager.prototype.menuItemCallBack = function(o) {
 	var data = YAHOO.lang.JSON.parse(o.responseText).result;
 	this.drawMenuItems(data);
 }
-MenuItemManager.prototype.menuItemCallBack_error = function(o) {
+ScrollableListManager.prototype.menuItemCallBack_error = function(o) {
 	alert("Error getting Items");
 }
-MenuItemManager.prototype.drawMenuItems = function(data) {
+ScrollableListManager.prototype.drawMenuItems = function(data) {
 	var letters = ["A","B","C","D","E","F","G","H","I","J","K",
 					"L","M","N","O","P","Q","R","S","T","U",
 					"V","W","X","Y","Z"]
@@ -58,7 +58,7 @@ MenuItemManager.prototype.drawMenuItems = function(data) {
 			menu_item_pos++;
 		}
 	}
-	
+
 	if (data.length == 0 ) {
         collect = "<div class=\"noItems\">No Items Found, Sorry</div>";
     }
@@ -75,13 +75,13 @@ MenuItemManager.prototype.drawMenuItems = function(data) {
 	}
 }
 
-MenuItemManager.prototype.clickMenuItem = function(evnt, data) {
+ScrollableListManager.prototype.clickMenuItem = function(evnt, data) {
     if (!data['self'].scrollManager.isDragging) {
         data['self'].pickItem(data['id']);
     }
 }
 
-MenuItemManager.prototype.pickItem = function(itemID) {
+ScrollableListManager.prototype.pickItem = function(itemID) {
     var nodeApply = function(n) {
         // Lets do some fade action here :-)
         if (n.id == itemID) {
@@ -98,16 +98,18 @@ MenuItemManager.prototype.pickItem = function(itemID) {
     }
     YAHOO.util.Dom.getElementsBy(function(n) {return true}, "dd", this.scrollingDOMID, nodeApply);
 
-    console.log("Picked: " + itemID);
-    
+    // Fill in user username stuff
+    $("#id_username").val(itemID);
+    $("#id_password").val("");
+
 }
 
 
-//  ____                 _ _ __  __                                   
-// / ___|  ___ _ __ ___ | | |  \/  | __ _ _ __   __ _  __ _  ___ _ __ 
+//  ____                 _ _ __  __
+// / ___|  ___ _ __ ___ | | |  \/  | __ _ _ __   __ _  __ _  ___ _ __
 // \___ \ / __| '__/ _ \| | | |\/| |/ _` | '_ \ / _` |/ _` |/ _ \ '__|
-//  ___) | (__| | | (_) | | | |  | | (_| | | | | (_| | (_| |  __/ |   
-// |____/ \___|_|  \___/|_|_|_|  |_|\__,_|_| |_|\__,_|\__, |\___|_|   
+//  ___) | (__| | | (_) | | | |  | | (_| | | | | (_| | (_| |  __/ |
+// |____/ \___|_|  \___/|_|_|_|  |_|\__,_|_| |_|\__,_|\__, |\___|_|
 //                                                    |___/
 
 /*
@@ -130,10 +132,10 @@ ScrollManager.prototype.init = function() {
 
 	// Needed for on dragging events
 	this.scrollingDD.scrollManager = this;
-	
+
 	// Only drag in Y-axis
 	this.scrollingDD.setXConstraint(0, 0);
-	
+
 	this.scrollingDD.on('dragEvent', this.onDragging, this, true);
 	this.scrollingDD.on('endDragEvent', this.onEndDragging, this, true);
 	this.scrollingDD.on('startDragEvent', this.onStartDragging, this, true);
@@ -151,9 +153,8 @@ ScrollManager.prototype.onDragging = function(ev) {
 ScrollManager.prototype.onStartDragging = function(ev) {
 	this.isDragging = true;
 	this.startScrollPos = styleToInt(this.scrollingrEl, 'top');
-	console.log("START DRAGGING");
 	this.startScrollTime = new Date().getTime();
-	
+
 }
 
 ScrollManager.prototype.onEndDragging = function(ev) {
@@ -163,8 +164,6 @@ ScrollManager.prototype.onEndDragging = function(ev) {
 	var timeDiff = new Date().getTime() - this.startScrollTime;
 
 	this.animateList(posDiff, timeDiff);
-
-	console.log("END DRAGGING");
 }
 
 ScrollManager.prototype.animateList = function(posDiff, timeDiff) {
