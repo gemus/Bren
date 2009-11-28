@@ -1,4 +1,4 @@
-jQuery.fn.numPadInput = function(isTime, clearValue, alwaysShow) {
+jQuery.fn.numPadInput = function(isTime, clearValue, alwaysShow, showOK) {
     // Create a numpad for an input field.
     // isTime <bool> : Weather to display at time. Eg. 0:15
 
@@ -12,6 +12,10 @@ jQuery.fn.numPadInput = function(isTime, clearValue, alwaysShow) {
 
     if (alwaysShow == undefined) {
         alwaysShow = false;
+    }
+
+    if (showOK == undefined) {
+        showOK = true;
     }
 
     return this.each(function() {
@@ -70,7 +74,12 @@ jQuery.fn.numPadInput = function(isTime, clearValue, alwaysShow) {
         numPadHTML += "<tr><td>1</td><td>2</td><td>3</td></tr>";
         numPadHTML += "<tr><td>4</td><td>5</td><td>6</td></tr>";
         numPadHTML += "<tr><td>7</td><td>8</td><td>9</td></tr>";
-        numPadHTML += "<tr><td>C</td><td>0</td><td>OK</td></tr>";
+
+        if (showOK) {
+            numPadHTML += "<tr><td>C</td><td>0</td><td>OK</td></tr>";
+        } else {
+            numPadHTML += "<tr><td>C</td><td>0</td><td></td></tr>";
+        }
         numPadHTML += "</tbody></table>";
         numPadHTML += "</div></div>";
         $(this).after(numPadHTML);
@@ -78,7 +87,9 @@ jQuery.fn.numPadInput = function(isTime, clearValue, alwaysShow) {
         // Now bind the methods
         $("#"+num_pad_id + " > div > table > tbody > tr > td ").each(function() {
             $(this).click(function() {
-                if (this.innerHTML == "C") {
+                if (this.innerHTML == "") {
+                    //pass
+                } else if (this.innerHTML == "C") {
                     clearField();
                 } else if (this.innerHTML == "OK") {
                     closeNumpad();
