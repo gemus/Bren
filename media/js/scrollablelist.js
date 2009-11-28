@@ -14,9 +14,11 @@ function styleToInt(el, style) {
 // | |  | |  __/ | | | |_| || || ||  __/ | | | | | |  | | (_| | | | | (_| | (_| |  __/ |
 // |_|  |_|\___|_| |_|\__,_|___|\__\___|_| |_| |_|_|  |_|\__,_|_| |_|\__,_|\__, |\___|_|
 //                                                                         |___/
-ScrollableListManager = function(scrollingDOMID, canvasDOMID) {
+ScrollableListManager = function(scrollingDOMID, canvasDOMID, itemPickCallback) {
     this.scrollManager = new ScrollManager(scrollingDOMID, canvasDOMID);
     this.scrollingDOMID = scrollingDOMID;
+
+    if (itemPickCallback != undefined) this.itemPickCallback = itemPickCallback;
 }
 
 ScrollableListManager.prototype.init = function() {
@@ -77,11 +79,12 @@ ScrollableListManager.prototype.drawMenuItems = function(data) {
 
 ScrollableListManager.prototype.clickMenuItem = function(evnt, data) {
     if (!data['self'].scrollManager.isDragging) {
-        data['self'].pickItem(data['id'], data['display_name']);
+        data['self'].pickItem({'id': data['id'], 'display_name': data['display_name']});
     }
 }
 
-ScrollableListManager.prototype.pickItem = function(itemID, display_name) {
+ScrollableListManager.prototype.pickItem = function(data) {
+    itemID = data['id'];
     var nodeApply = function(n) {
         // Lets do some fade action here :-)
         if (n.id == itemID) {
@@ -98,11 +101,7 @@ ScrollableListManager.prototype.pickItem = function(itemID, display_name) {
     }
     YAHOO.util.Dom.getElementsBy(function(n) {return true}, "dd", this.scrollingDOMID, nodeApply);
 
-    // Fill in user username stuff
-    $("#id_username").val(itemID);
-    $("#id_password").val("");
-
-    $("#name_plate").html(display_name);
+    this.itemPickCallback(data);
 }
 
 

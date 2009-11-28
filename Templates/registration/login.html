@@ -83,7 +83,16 @@
 	</style>
 
 	<script type="text/javascript" charset="utf-8">
-		var menuItemManager = new ScrollableListManager("userPickerToScroll", "userPickerCanvas");
+		var listItemClickFunction = function(data) {
+			$("#id_username").val(data['id']);
+		    $("#id_password").val("");
+		    $("#name_plate").html(data['display_name']);
+
+
+		}
+
+		var menuItemManager = new ScrollableListManager("userPickerToScroll", "userPickerCanvas", listItemClickFunction);
+
 
 		$(document).ready(function() {
 			$("#id_password").numPadInput(false, "", true, false);
