@@ -80,7 +80,7 @@ jQuery.fn.numPadInput = function(isTime, clearValue) {
         // ===================
         // = User clicks off =
         // ===================
-        $("body").click(function(e) {
+        $("html").click(function(e) {
             // Did the user click the popup widget, or the input box?
             if ($(e.target).parents().filter("#"+num_pad_id).length > 0 || $(e.target).is("#"+input_field_id)) {
                 // pass
