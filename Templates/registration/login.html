@@ -35,6 +35,19 @@
 			color: #FFF;
 		}
 
+		h2 {
+			font-size: 150%;
+			font-weight: bold;
+			color: #3C5F7F;
+			margin-bottom: 3px;
+		}
+
+		h3 {
+			font-weight: bold;
+			color: #3C5F7F;
+			font-size: 110%;
+		}
+
 		div#pageContainer {
 			padding: 10pt 20% 0pt;
 		}
@@ -46,16 +59,25 @@
 		}
 
 		button.big_button {
-			border: 1px solid #3C5F7F;
+			border: 2px solid #3C5F7F;
 			background-color: #FFF;
-			color: #000;
-			padding: 10px 50px;
+			color: #3C5F7F;
+			padding-top: 10px; padding-bottom: 10px;
 			cursor: pointer;
+			font-size: 200%;
+			width:300px;
 		}
 
 		p#errorBox {
 			color: #F00;
 			margin-top: 15px;
+		}
+
+		input#id_password {
+			border: 1px solid #3C5F7F;
+			text-align: center;
+			font-size: 30px;
+			width: 301px;
 		}
 
 	</style>
@@ -82,9 +104,8 @@
 				{{ form.username.label_tag }} <br />
 				{{ form.username }}
 			</div>
-			<p>Enter Your Pin:<br />
-				{{ form.password }}
-			</p>
+			<h2>Owen Mead-Robins</h2>
+			{{ form.password }}
 
 			<button type="submit" class="big_button">Login</button>
 			<input type="hidden" name="next" value="{{ next }}" />
