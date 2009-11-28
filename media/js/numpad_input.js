@@ -17,7 +17,7 @@ jQuery.fn.numPadInput = function(isTime, clearValue) {
         var is_open = false;
 
         var closeNumpad = function() {
-            $("#"+num_pad_id).remove();
+            $("#"+num_pad_id).addClass("invisible");
             is_open = false;
         }
         var clearField = function() {
@@ -49,33 +49,38 @@ jQuery.fn.numPadInput = function(isTime, clearValue) {
         // ====================================
         $(this).focus(function() {
             if (!is_open) {
-                var numPadHTML = '<div id="'+num_pad_id+'" class="numpad_input_container"><div>';
-                numPadHTML += "<table><tbody>";
-                numPadHTML += "<tr><td>1</td><td>2</td><td>3</td></tr>";
-                numPadHTML += "<tr><td>4</td><td>5</td><td>6</td></tr>";
-                numPadHTML += "<tr><td>7</td><td>8</td><td>9</td></tr>";
-                numPadHTML += "<tr><td>C</td><td>0</td><td>OK</td></tr>";
-                numPadHTML += "</tbody></table>";
-                numPadHTML += "</div></div>";
-
-                $(this).after(numPadHTML);
+                $("#"+num_pad_id).removeClass("invisible");
                 is_open = true;
             }
 
-            $("#"+num_pad_id + " > div > table > tbody > tr > td ").each(function() {
-                $(this).click(function() {
-                    if (this.innerHTML == "C") {
-                        clearField();
-                    } else if (this.innerHTML == "OK") {
-                        closeNumpad();
-                    } else {
-                        addNumber(this.innerHTML);
-                        //$("#"+input_field_id).val( $("#"+input_field_id).val() + this.innerHTML);
-                    }
-                })
-            })
         });
 
+        // =================
+        // = Create Numpad =
+        // =================
+        var numPadHTML = '<div id="'+num_pad_id+'" class="numpad_input_container invisible"><div>';
+        numPadHTML += "<table><tbody>";
+        numPadHTML += "<tr><td>1</td><td>2</td><td>3</td></tr>";
+        numPadHTML += "<tr><td>4</td><td>5</td><td>6</td></tr>";
+        numPadHTML += "<tr><td>7</td><td>8</td><td>9</td></tr>";
+        numPadHTML += "<tr><td>C</td><td>0</td><td>OK</td></tr>";
+        numPadHTML += "</tbody></table>";
+        numPadHTML += "</div></div>";
+        $(this).after(numPadHTML);
+
+        // Now bind the methods
+        $("#"+num_pad_id + " > div > table > tbody > tr > td ").each(function() {
+            $(this).click(function() {
+                if (this.innerHTML == "C") {
+                    clearField();
+                } else if (this.innerHTML == "OK") {
+                    closeNumpad();
+                } else {
+                    addNumber(this.innerHTML);
+                    //$("#"+input_field_id).val( $("#"+input_field_id).val() + this.innerHTML);
+                }
+            })
+        });
 
         // ===================
         // = User clicks off =
