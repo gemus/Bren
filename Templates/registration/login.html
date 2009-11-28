@@ -15,7 +15,7 @@
 	<script type="text/javascript" src="/site_media/js/custom.js"></script>
 
 	<script type="text/javascript" src="/site_media/js/yui/utilities.js"></script>
-	<script type="text/javascript" src="/site_media/js/yui/yahoo-min.js"></script> 
+	<script type="text/javascript" src="/site_media/js/yui/yahoo-min.js"></script>
 	<script type="text/javascript" src="/site_media/js/yui/dom-min.js"></script>
 	<script type="text/javascript" src="/site_media/js/yui/yahoo-dom-event.js"></script>
 	<script type="text/javascript" src="/site_media/js/yui/element-min.js"></script>
@@ -27,20 +27,45 @@
 	<script type="text/javascript" src="/site_media/js/scrollablelist.js"></script>
 
 	<style type="text/css" media="screen">
-		div#userPickerCanvas { float: left; width: 30%;}
+		h1 {
+			text-align: center;
+			padding: 60px 0pt 30px;
+			font-size: 200%;
+			background-color: #3C5F7F;
+			color: #FFF;
+		}
+
+		div#pageContainer {
+			padding: 10pt 20% 0pt;
+		}
+
+		div#userPickerCanvas {
+			float: left;
+			width: 30%;
+		}
+
+		button.big_button {
+			border: 1px solid #3C5F7F;
+			background-color: #FFF;
+			color: #000;
+			padding: 10px 50px;
+			cursor: pointer;
+		}
+
 	</style>
-	
+
 	<script type="text/javascript" charset="utf-8">
 		var menuItemManager = new ScrollableListManager("userPickerToScroll", "userPickerCanvas");
-		
+
 		$(document).ready(function() {
 			$("#id_password").numPadInput(false, "");
 		});
 	</script>
-	
+
 </head>
 <body onLoad="menuItemManager.init();">
-	<h1> Welcome To CrossFit </h1>
+	<h1> Welcome To CrossFit DPL</h1>
+	<div id="pageContainer">
 	<div id="userPickerCanvas" class="canvas">
 		<dl id="userPickerToScroll"></dl>
 	</div>
@@ -51,20 +76,18 @@
 		{% endif %}
 
 		<form method="post" action="{% url django.contrib.auth.views.login %}">
-			<table>
-				<tr>
-					<td>{{ form.username.label_tag }}</td>
-					<td>{{ form.username }}</td>
-				</tr>
-				<tr>
-					<td>{{ form.password.label_tag }}</td>
-					<td>{{ form.password }}</td>
-				</tr>
-			</table>
+			<div style="display:none">
+				{{ form.username.label_tag }} <br />
+				{{ form.username }}
+			</div>
+			<p>Enter Your Pin:<br />
+				{{ form.password }}
+			</p>
 
-			<input type="submit" value="login" />
+			<button type="submit" class="big_button">Login</button>
 			<input type="hidden" name="next" value="{{ next }}" />
 		</form>
+	</div>
 	</div>
 </body>
 </html>
