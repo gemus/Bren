@@ -70,18 +70,18 @@ ScrollableListManager.prototype.drawMenuItems = function(data) {
     // Hook up the mouse click events
 	var dds = this.scrollManager.scrollingrEl.getElementsByTagName('dd');
 	for (var i=0; i<dds.length; i++) {
-	    var data = {'self': this, 'id': dds[i].id};
+	    var data = {'self': this, 'id': dds[i].id, 'display_name': dds[i].innerHTML};
 		new YAHOO.util.Element(dds[i]).addListener('mouseup', this.clickMenuItem, data);
 	}
 }
 
 ScrollableListManager.prototype.clickMenuItem = function(evnt, data) {
     if (!data['self'].scrollManager.isDragging) {
-        data['self'].pickItem(data['id']);
+        data['self'].pickItem(data['id'], data['display_name']);
     }
 }
 
-ScrollableListManager.prototype.pickItem = function(itemID) {
+ScrollableListManager.prototype.pickItem = function(itemID, display_name) {
     var nodeApply = function(n) {
         // Lets do some fade action here :-)
         if (n.id == itemID) {
@@ -102,6 +102,7 @@ ScrollableListManager.prototype.pickItem = function(itemID) {
     $("#id_username").val(itemID);
     $("#id_password").val("");
 
+    $("#name_plate").html(display_name);
 }
 
 
