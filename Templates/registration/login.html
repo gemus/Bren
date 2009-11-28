@@ -1,91 +1,64 @@
-{% extends "base.html" %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
 
-{% block head_content %}
-<style type="text/css" media="screen">
-#user_picker {
-	overflow:hidden;
-	float: left;
-}
-#user_picker dl {
-	list-style-type:none;
-	width:200px;
-	overflow:hidden;
-}
-#user_picker dd {
-	margin-left: 0pt;
-	display:block;
-	font-weight:bolder;
-}
-#user_picker dt {
-	border:1px solid #CCC;
-	border-width:1px 0;
-}
-#user_picker dt a {
-	color:#333;
-	display:block;
-	padding:5px;
-	text-decoration:none;
-}
-#user_picker dt a:hover {
-	background:#CAE0EE;
-}
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>Crossfit DPL</title><link rel="stylesheet" type="text/css" href="/site_media/css/reset-min.css">
 
-div#login_content {
-	margin: 40px;
-	float: left;
-}
+	<link rel="stylesheet" type="text/css" href="/site_media/css/global.css">
+	<link rel="stylesheet" type="text/css" href="/site_media/css/login.css">
 
-</style>
-<script type="text/javascript" charset="utf-8">
-	$.getJSON("/json_api/", {"id": 1, "method": "get_all_users", "params" : []}, function(result, status) {
-		var result = result.result;
+	<script type="text/javascript" src="/site_media/js/jquery-1.3.2.min.js"></script>
+	<script type="text/javascript" src="/site_media/js/jquery-ui-1.7.2.custom.min.js"></script>
+	<script type="text/javascript" src="/site_media/js/custom.js"></script>
 
-		var user_picker_html = "<dl><dd>Select User</dd>";
-		for (i in result) {
-			user_picker_html += "<dt><a href='javascript:void(0);' onclick='populate_user_field(\""+result[i]['user_name']+"\")'>" + result[i]['display_name'] + "</a></dt>";
-		}
-		user_picker_html += "</dl>";
+	<script type="text/javascript" src="/site_media/js/yui/utilities.js"></script>
+	<script type="text/javascript" src="/site_media/js/yui/yahoo-min.js"></script> 
+	<script type="text/javascript" src="/site_media/js/yui/dom-min.js"></script>
+	<script type="text/javascript" src="/site_media/js/yui/yahoo-dom-event.js"></script>
+	<script type="text/javascript" src="/site_media/js/yui/element-min.js"></script>
+	<script type="text/javascript" src="/site_media/js/yui/animation-min.js"></script>
+	<script type="text/javascript" src="/site_media/js/yui/event-min.js"></script>
+	<script type="text/javascript" src="/site_media/js/yui/connection-min.js"></script>
+	<script type="text/javascript" src="/site_media/js/yui/json-min.js"></script>
 
-		$("#user_picker").html(user_picker_html);
+	<script type="text/javascript" src="/site_media/js/login.js"></script>
 
-	});
+	<style type="text/css" media="screen">
+		div#userPickerCanvas { float: left; width: 30%;}
+	</style>
+	
+	<script type="text/javascript" charset="utf-8">
+		var menuItemManager = new MenuItemManager("userPickerToScroll", "userPickerCanvas");
+	</script>
+	
+</head>
+<body onLoad="menuItemManager.init();">	
+	<div id="userPickerCanvas" class="canvas">
+		<dl id="userPickerToScroll"></dl>
+	</div>
 
-	var populate_user_field = function(user_name) {
-		$("#id_username").val(user_name);
-	}
+	<div id="login_content">
+		{% if form.errors %}
+		<p>Your username and password didn't match. Please try again.</p>
+		{% endif %}
 
-	$(document).ready(function() {
-		$("#id_password").numPadInput(false, "");
-	});
+		<form method="post" action="{% url django.contrib.auth.views.login %}">
+			<table>
+				<tr>
+					<td>{{ form.username.label_tag }}</td>
+					<td>{{ form.username }}</td>
+				</tr>
+				<tr>
+					<td>{{ form.password.label_tag }}</td>
+					<td>{{ form.password }}</td>
+				</tr>
+			</table>
 
-</script>
-{% endblock %}
-
-{% block content %}
-
-<div id="user_picker">
-	<p>Owen</p>
-	<p>Wade</p>
-</div>
-<div id="login_content">
-	{% if form.errors %}
-	<p>Your username and password didn't match. Please try again.</p>
-	{% endif %}
-
-	<form method="post" action="{% url django.contrib.auth.views.login %}">
-		<table>
-			<tr>
-				<td>{{ form.username.label_tag }}</td>
-				<td>{{ form.username }}</td>
-			</tr>
-			<tr>
-				<td>{{ form.password.label_tag }}</td>
-				<td>{{ form.password }}</td>
-			</tr>
-		</table>
-
-		<input type="submit" value="login" />
-		<input type="hidden" name="next" value="{{ next }}" />
-	</form>
-</div>
-{% endblock %}
+			<input type="submit" value="login" />
+			<input type="hidden" name="next" value="{{ next }}" />
+		</form>
+	</div>
+</body>
+</html>

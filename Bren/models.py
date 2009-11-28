@@ -92,9 +92,63 @@ def get_all_users():
        "display_name": <str>,
        "user_name":     <str>,
     }
+    # ordered by display_name
     """
 
-    return [{"display_name": "%s %s" % (user.first_name, user.last_name), "user_name": user.username} for user in User.objects.all()]
+    #return_dict = [{"display_name": "%s %s" % (user.first_name, user.last_name), "user_name": user.username} for user in User.objects.all()]
+
+    return_dict = [{"user_name":"ackotia","display_name":"Ackotia Echieos"},
+    {"user_name":"ashaos","display_name":"Ashaos Sigoos"},
+    {"user_name":"athuos","display_name":"Athuos Jahios"},
+    {"user_name":"beluos","display_name":"Beluos Kachyios"},
+    {"user_name":"ceruos","display_name":"Ceruos Taiautia"},
+    {"user_name":"critios","display_name":"Critios Douhios"},
+    {"user_name":"croipios","display_name":"Croipios Ustotia"},
+    {"user_name":"echayos","display_name":"Echayos Smuluios"},
+    {"user_name":"eldeeos","display_name":"Eldeeos Onitia"},
+    {"user_name":"enaos","display_name":"Enaos Clorios"},
+    {"user_name":"eretia","display_name":"Eretia Sysios"},
+    {"user_name":"esteeos","display_name":"Esteeos Ashatia"},
+    {"user_name":"ghaoos","display_name":"Ghaoos Druxios"},
+    {"user_name":"iraos","display_name":"Iraos Omios"},
+    {"user_name":"jichuos","display_name":"Jichuos Weugaos"},
+    {"user_name":"keipoos","display_name":"Keipoos Woraetia"},
+    {"user_name":"keloitia","display_name":"Keloitia Tinitia"},
+    {"user_name":"leitheos","display_name":"Leitheos Bacios"},
+    {"user_name":"lylios","display_name":"Lylios Lorytia"},
+    {"user_name":"moegaios","display_name":"Moegaios Linios"},
+    {"user_name":"mositia","display_name":"Mositia Seretia"},
+    {"user_name":"naekios","display_name":"Naekios Chrasios"},
+    {"user_name":"nanoos","display_name":"Nanoos Kawuos"},
+    {"user_name":"nibyos","display_name":"Nibyos Ceritia"},
+    {"user_name":"nysetia","display_name":"Nysetia Palios"},
+    {"user_name":"pafios","display_name":"Pafios Estutia"},
+    {"user_name":"peritia","display_name":"Peritia Engatia"},
+    {"user_name":"rayoitia","display_name":"Rayoitia Rodyos"},
+    {"user_name":"rheluos","display_name":"Rheluos Steydios"},
+    {"user_name":"rhilaios","display_name":"Rhilaios Lapios"},
+    {"user_name":"rhuhyios","display_name":"Rhuhyios Rynios"},
+    {"user_name":"riloos","display_name":"Riloos Eretia"},
+    {"user_name":"schapios","display_name":"Schapios Nieseios"},
+    {"user_name":"slarios","display_name":"Slarios Theritia"},
+    {"user_name":"smaisaos","display_name":"Smaisaos Belios"},
+    {"user_name":"snirtaios","display_name":"Snirtaios Vobios"},
+    {"user_name":"stivios","display_name":"Stivios Lalios"},
+    {"user_name":"stohios","display_name":"Stohios Sojios"},
+    {"user_name":"taieatia","display_name":"Taieatia Thryhoos"},
+    {"user_name":"teenaios","display_name":"Teenaios Ormytia"},
+    {"user_name":"tikeos","display_name":"Tikeos Shephyios"},
+    {"user_name":"tonoos","display_name":"Tonoos Onoos"},
+    {"user_name":"tragios","display_name":"Tragios Quehios"},
+    {"user_name":"trodeios","display_name":"Trodeios Meelios"},
+    {"user_name":"turaos","display_name":"Turaos Caibyos"},
+    {"user_name":"umeatia","display_name":"Umeatia Nalutia"},
+    {"user_name":"uskytia","display_name":"Uskytia Voreutia"},
+    {"user_name":"vesitia","display_name":"Vesitia Achios"},
+    {"user_name":"vesotia","display_name":"Vesotia Denatia"},
+    {"user_name":"yeicios","display_name":"Yeicios Chisios"}]
+
+    return return_dict
 
     #users = User.objects.all()
     #return_dict = {

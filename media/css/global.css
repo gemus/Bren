@@ -1,0 +1,46 @@
+* {
+	margin: 0pt;
+	padding: 0pt;
+}
+body {
+	font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
+	color: #1C3451;
+}
+
+h1 {
+	font-size: 24px;
+}
+
+h2 {
+	font-size: 16px;
+	border-bottom: 2px solid #1C3451;
+	line-height: 24px;
+	margin-bottom: 4px;
+}
+
+h3 {
+	font-weight: bold;
+	display: inline;
+	font-size: 14px;
+}
+
+p {
+	font-size: 14px;
+	line-height: 18px;
+	text-align: justify;
+	margin-bottom: 18px;
+}
+
+table {
+	width: 100%;
+	border-collapse:collapse;
+}
+
+table tr {
+	vertical-align: top;
+}
+
+table tr td {
+	border-bottom: 1px solid #C6D8EC;
+	padding: 3px;
+}
