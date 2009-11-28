@@ -6,7 +6,6 @@ div.numpad_input_container {
 
 div.numpad_input_container table {
 	border-collapse : collapse;
-	margin-left: 40px;
 	cursor: pointer;
 }
 

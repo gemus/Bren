@@ -49,13 +49,18 @@
 		}
 
 		div#pageContainer {
-			padding: 10pt 20% 0pt;
+			padding-top: 10pt;
+			width: 600px;
+			margin: 0pt auto;
 		}
 
 		div#userPickerCanvas {
-			float: left;
-			width: 30%;
-			margin-right: 20px;
+			position: absolute;
+			width: 600px;
+		}
+		
+		div#login_content {
+			margin-left: 270px;
 		}
 
 		button.big_button {
@@ -88,12 +93,13 @@
 		    $("#id_password").val("");
 		    $("#name_plate").html(data['display_name']);
 
-
+			var myAnim = new YAHOO.util.Anim('userPickerCanvas', {
+			  	width: { to: 250 } 
+			}, .5, YAHOO.util.Easing.easeOut);
+			myAnim.animate();
 		}
 
 		var menuItemManager = new ScrollableListManager("userPickerToScroll", "userPickerCanvas", listItemClickFunction);
-
-
 		$(document).ready(function() {
 			$("#id_password").numPadInput(false, "", true, false);
 		});

@@ -135,7 +135,7 @@ def get_all_users():
     {"user_name":"snirtaios","display_name":"Snirtaios Vobios"},
     {"user_name":"stivios","display_name":"Stivios Lalios"},
     {"user_name":"stohios","display_name":"Stohios Sojios"},
-    {"user_name":"taieatia","display_name":"Taieatia Thryhoos"},
+    {"user_name":"taieatia","display_name":"Taieatia Thryhoosreallyreallylongname"},
     {"user_name":"teenaios","display_name":"Teenaios Ormytia"},
     {"user_name":"tikeos","display_name":"Tikeos Shephyios"},
     {"user_name":"tonoos","display_name":"Tonoos Onoos"},
