@@ -1,4 +1,4 @@
-jQuery.fn.numPadInput = function(isTime, clearValue) {
+jQuery.fn.numPadInput = function(isTime, clearValue, alwaysShow) {
     // Create a numpad for an input field.
     // isTime <bool> : Weather to display at time. Eg. 0:15
 
@@ -10,6 +10,10 @@ jQuery.fn.numPadInput = function(isTime, clearValue) {
         }
     }
 
+    if (alwaysShow == undefined) {
+        alwaysShow = false;
+    }
+
     return this.each(function() {
 
         var num_pad_id = this.id + "_numpad_input";
@@ -19,6 +23,10 @@ jQuery.fn.numPadInput = function(isTime, clearValue) {
         var closeNumpad = function() {
             $("#"+num_pad_id).addClass("invisible");
             is_open = false;
+        }
+        var openNumpad = function() {
+            $("#"+num_pad_id).removeClass("invisible");
+            is_open = true;
         }
         var clearField = function() {
             $("#"+input_field_id).val(clearValue);
@@ -48,9 +56,8 @@ jQuery.fn.numPadInput = function(isTime, clearValue) {
         // = When the User Focus On The Input =
         // ====================================
         $(this).focus(function() {
-            if (!is_open) {
-                $("#"+num_pad_id).removeClass("invisible");
-                is_open = true;
+            if (!is_open && !alwaysShow) {
+                openNumpad();
             }
 
         });
@@ -82,17 +89,21 @@ jQuery.fn.numPadInput = function(isTime, clearValue) {
             })
         });
 
-        // ===================
-        // = User clicks off =
-        // ===================
-        $("html").click(function(e) {
-            // Did the user click the popup widget, or the input box?
-            if ($(e.target).parents().filter("#"+num_pad_id).length > 0 || $(e.target).is("#"+input_field_id)) {
-                // pass
-            } else {
-                closeNumpad();
-            }
+        if (alwaysShow) {
+            openNumpad();
+        } else {
+            // ===================
+            // = User clicks off =
+            // ===================
+            $("html").click(function(e) {
+                // Did the user click the popup widget, or the input box?
+                if ($(e.target).parents().filter("#"+num_pad_id).length > 0 || $(e.target).is("#"+input_field_id)) {
+                    // pass
+                } else {
+                    closeNumpad();
+                }
 
-        });
+            });
+        }
     });
 }

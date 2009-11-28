@@ -42,6 +42,7 @@
 		div#userPickerCanvas {
 			float: left;
 			width: 30%;
+			margin-right: 20px;
 		}
 
 		button.big_button {
@@ -52,13 +53,18 @@
 			cursor: pointer;
 		}
 
+		p#errorBox {
+			color: #F00;
+			margin-top: 15px;
+		}
+
 	</style>
 
 	<script type="text/javascript" charset="utf-8">
 		var menuItemManager = new ScrollableListManager("userPickerToScroll", "userPickerCanvas");
 
 		$(document).ready(function() {
-			$("#id_password").numPadInput(false, "");
+			$("#id_password").numPadInput(false, "", true);
 		});
 	</script>
 
@@ -71,10 +77,6 @@
 	</div>
 
 	<div id="login_content">
-		{% if form.errors %}
-		<p>Your username and password didn't match. Please try again.</p>
-		{% endif %}
-
 		<form method="post" action="{% url django.contrib.auth.views.login %}">
 			<div style="display:none">
 				{{ form.username.label_tag }} <br />
@@ -87,6 +89,7 @@
 			<button type="submit" class="big_button">Login</button>
 			<input type="hidden" name="next" value="{{ next }}" />
 		</form>
+		{% if form.errors %}<p id="errorBox">Your username and password didn't match. Please try again.</p>{% endif %}
 	</div>
 	</div>
 </body>

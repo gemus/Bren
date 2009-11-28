@@ -1,8 +1,7 @@
 div.numpad_input_container {
 	margin: 5px;
 	font-size: 200%;
-	position: absolute;
-	background-color: #FF0;
+	background-color: #FFF;
 }
 
 div.numpad_input_container table {
@@ -12,7 +11,7 @@ div.numpad_input_container table {
 }
 
 div.numpad_input_container td {
-	border: 1px solid #F00;
+	border: 1px solid #3C5F7F;
 	width: 80px;
 	text-align: center;
 	padding: 10px;
