@@ -15,7 +15,7 @@ class Workout_type(models.Model):
 
 class Workout(models.Model):
     name = models.CharField(max_length=20)
-    comments = models.CharField(max_length=200)
+    comments = models.CharField(max_length=200, blank = True)
     workout_type = models.ForeignKey(Workout_type)
     # TODO : Change this to a 'choices' field
     #        http://docs.djangoproject.com/en/dev/ref/models/fields/#ref-models-fields
@@ -38,7 +38,6 @@ class Workout_class(models.Model):
         return self.workout.name+ " "+self.class_info.title + " " +self.date.isoformat()
 
 class Completed_workout(models.Model):
-    mins = models.IntegerField()
     secs = models.IntegerField()
     user = models.ForeignKey(User)
     workout_class = models.ForeignKey(Workout_class)
@@ -97,12 +96,6 @@ def get_all_users():
 
     return [{"display_name": "%s %s" % (user.first_name, user.last_name), "user_name": user.username} for user in User.objects.all().order_by('first_name')]
 
-    #users = User.objects.all()
-    #return_dict = {
-    #        "users" : users
-    #        }
-    #return return_dict
-
 def get_element(element_id):
     elm = Element.objects.get(id=element_id)
     variations = []
@@ -122,9 +115,9 @@ def get_workout_date(completed_workout_id): #Gets a Date from a completed Workou
     workout_date = workout_date.workout_class.date
     return workout_date.isoformat()
 
-def get_workout_time(completed_workout_id):
+def _get_workout_time(completed_workout_id):
     workout = Completed_workout.objects.get(id = completed_workout_id)
-    return {"mins": workout.mins, "secs": workout.secs}
+    return workout.secs
 
 
 def get_workout(workout_date_str, class_id):
@@ -157,7 +150,17 @@ def get_workout(workout_date_str, class_id):
 def get_completed_workout(workout_id, user_id):
     completed_workouts = []
     for workouts in Completed_workout.objects.filter(workout_class__workout__id__exact= workout_id, user__id__exact=user_id):
-        completed_workouts.append({"workout": get_workout_name(workouts.id) , "date": get_workout_date(workouts.id), "time": get_workout_time(workouts.id)})
+        completed_workouts.append({"workout": get_workout_name(workouts.id) , "date": get_workout_date(workouts.id)})
+
+        if Workout.objects.get(id=workout_id).workout_type.name == "Timed":
+                completed_workouts.append({"Type": "Timed", "Time": workouts.secs})
+
+        if Workout.objects.get(id=workout_id).workout_type.name == "AMRAP":
+                completed_workouts.append({"Type": "AMRAP", "Rounds": workouts.rounds})
+            
+        if Workout.objects.get(id=workout_id).workout_type.name == "Done":
+                completed_workouts.append({"Type": "Done"})
+                
         for completed_element in Completed_element.objects.filter(completed_workout__id__exact=workouts.id):
             completed_workouts.append({"element": completed_element.variation.element.name , "Variation": completed_element.variation.name})
 
@@ -207,7 +210,6 @@ def get_week_roster(date):      #Expecting string comming in as SUNDAY! as "YYYY
     return return_dict
 
 class Completed_workoutForm(forms.Form):
-    mins = forms.IntegerField()
     secs = forms.IntegerField()
     rounds = forms.IntegerField()
 
@@ -226,11 +228,16 @@ def create_completed_workout(create_dict):
     """
 
     date = datetime.datetime.strptime(create_dict['date'], DATE_FORMAT).date()
-    co = Completed_workout()
+    workout_class_id = Workout_class.objects.filter(date=date).get(class_info__id = create_dict['class_id']).id
+    
+    if len( Completed_workout.objects.filter(user__id =create_dict['user_id'], workout_class__id = workout_class_id)) == 0:
+        co = Completed_workout()
+    else :
+        co = Completed_workout.objects.filter(user__id =create_dict['user_id']).get(workout_class__id = workout_class_id)
+        for completed_element in Completed_element.objects.filter(completed_workout__id = co.id):
+            completed_element.delete()   
+
     co.user = User.objects.get(id=create_dict['user_id'])
-            #to re romoved
-    co.mins = 0
-            #End of remove
     co.date = date
     co.secs = create_dict['time']
     co.rounds = create_dict['rounds']
@@ -244,28 +251,3 @@ def create_completed_workout(create_dict):
         ce.variation = Variation.objects.get(id = variation['variation_id'])
         ce.element_used = Element_used.objects.filter(workout__id = workout.id).get(order = variation['order'])
         ce.save()
-    return "Workout Saved"
-
-
-def tests ():
-    create_dict= {
-                        "time"           : 200,
-                        "rounds"         : 10,
-                        "date"           : "2009-11-12",
-                        "class_id"       : 1,
-                        "variations"     : [{"order": 1, "variation_id" : 6,  "element_id" : 3}]
-
-                }
-
-    create_completed_workout(create_dict)
-    return "Done"
-"""
-### This may need to be changed ###
-    while "variation_%d" % variation_counter in request.POST:
-    variation_ids.append(request.POST["variation_%d" % variation_counter])
-    variation_counter += 1
-    variations = [Variation.objects.get(id=x) for x in variation_ids]
-    variation_counter = 0
-    variation_ids = []
-### End of change###
-"""
