@@ -35,15 +35,18 @@ class WorkoutForm(forms.Form):
 def workout_form(request, date_str, class_id):
     api_data = model.get_workout(date_str, class_id)
     the_form = WorkoutForm(api_data['elements'])
+    co_list = model.get_completed_workout(api_data['id'], request.user.id)
 
     data = {
         'name':         api_data['name'],
         'comments':     api_data['comments'],
         'workout_type': api_data['workout_type'],
         'class_name':   api_data['class_name'],
+        'rounds':       api_data['rounds'],
         'date_str':     date_str,
         'class_id':     class_id,
         'the_form':     the_form,
+        'co_list' :     co_list,
     }
 
     return render_to_response('workout_form.html', data)
