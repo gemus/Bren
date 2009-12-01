@@ -173,8 +173,8 @@ ScrollManager.prototype.onEndDragging = function(ev) {
 }
 
 ScrollManager.prototype.animateList = function(posDiff, timeDiff) {
-	var deAcel = 3000; //px/sec/sec
-	var velocity = posDiff/timeDiff * 1000; // px / sec
+	var deAcel = 800; //px/sec/sec
+	var velocity = posDiff/timeDiff * 2000; // px / sec
 	var timeToStop = Math.abs(velocity/deAcel); // sec
 	var distanceToMove = timeToStop * velocity * -1; // px
 
