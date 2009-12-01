@@ -80,6 +80,7 @@
 		p#errorBox {
 			color: #F00;
 			margin-top: 15px;
+			font-size: 150%;
 		}
 
 		input#id_password {
@@ -132,7 +133,7 @@
 			<button type="submit" class="big_button">Login</button>
 			<input type="hidden" name="next" value="{{ next }}" />
 		</form>
-		{% if form.errors %}<p id="errorBox">Your username and password didn't match. Please try again.</p>{% endif %}
+		{% if form.errors %}<p id="errorBox">Wrong PIN. Please try again.</p>{% endif %}
 	</div>
 	</div>
 </body>
