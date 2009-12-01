@@ -50,7 +50,7 @@
 	<style type="text/css" media="screen">
 		h1 {
 			padding: 30px 0px 15px 15px;
-			font-size: 120%;
+			font-size: 175%;
 			background-color: #3C5F7F;
 			color: #FFF;
 		}
@@ -62,6 +62,7 @@
 			padding: 7px 15px;
 			color: #FFF;
 			margin: 10px;
+			font-weight: bold;
 		}
 
 		div#date_class_picker {
@@ -69,15 +70,20 @@
 		}
 
 		label {
-			font-size: 120%;
+			font-size: 150%;
 		}
 		input {
-			font-size: 120%;
+			font-size: 150%;
 			border: 1px solid #3C5F7F;
 		}
 		select {
 			border: 1px solid #3C5F7F;
-			font-size: 120%;
+			font-size: 150%;
+		}
+		
+		iframe {
+			width: 1020px;
+			height: 620px;
 		}
 
 	</style>
@@ -89,7 +95,7 @@
 
 	<div id="date_class_picker">
 		<label for="date_picker">Select Date:</label>
-		<input style="width: 150px" id="date_picker" type="text" />
+		<input style="width: 200px" id="date_picker" type="text" />
 
 		<label style="margin-left: 45px;" for="class_picker">Select Class:</label>
 		<select name="class_picker" id="class_picker">
