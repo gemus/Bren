@@ -149,17 +149,20 @@ def get_workout(workout_date_str, class_id):
 
 def get_completed_workout(workout_id, user_id):
     completed_workouts = []
+    workout_type = []
     for workouts in Completed_workout.objects.filter(workout_class__workout__id__exact= workout_id, user__id__exact=user_id):
-        completed_workouts.append({"workout": get_workout_name(workouts.id) , "date": get_workout_date(workouts.id)})
+        completed_workouts.append({'workout' : get_workout_name(workouts.id),'date': get_workout_date(workouts.id)})
 
         if Workout.objects.get(id=workout_id).workout_type.name == "Timed":
-                completed_workouts.append({"Type": "Timed", "Time": workouts.secs})
+                completed_workouts.append({"Type": {"Timed": workouts.secs}})
 
         if Workout.objects.get(id=workout_id).workout_type.name == "AMRAP":
-                completed_workouts.append({"Type": "AMRAP", "Rounds": workouts.rounds})
+                completed_workouts.append({"Type": {"AMRAP": workouts.rounds}})
             
         if Workout.objects.get(id=workout_id).workout_type.name == "Done":
                 completed_workouts.append({"Type": "Done"})
+        
+#        completed_workouts.update(workout_type)
                 
         for completed_element in Completed_element.objects.filter(completed_workout__id__exact=workouts.id):
             completed_workouts.append({"element": completed_element.variation.element.name , "Variation": completed_element.variation.name})
