@@ -56,9 +56,13 @@
 
 		div#userPickerCanvas {
 			position: absolute;
+			{% if form.errors %}
+			width: 250px;
+			{% else %}
 			width: 600px;
+			{% endif %}
 		}
-		
+
 		div#login_content {
 			margin-left: 270px;
 		}
@@ -94,19 +98,22 @@
 		    $("#name_plate").html(data['display_name']);
 
 			var myAnim = new YAHOO.util.Anim('userPickerCanvas', {
-			  	width: { to: 250 } 
+				width: { to: 250 }
 			}, .5, YAHOO.util.Easing.easeOut);
 			myAnim.animate();
 		}
 
-		var menuItemManager = new ScrollableListManager("userPickerToScroll", "userPickerCanvas", listItemClickFunction);
 		$(document).ready(function() {
+			var default_picked = $("#id_username").val();
+			var menuItemManager = new ScrollableListManager("userPickerToScroll", "userPickerCanvas", listItemClickFunction, default_picked);
+			menuItemManager.init();
+
 			$("#id_password").numPadInput(false, "", true, false);
 		});
 	</script>
 
 </head>
-<body onLoad="menuItemManager.init();">
+<body>
 	<h1> Welcome To CrossFit DPL</h1>
 	<div id="pageContainer">
 	<div id="userPickerCanvas" class="canvas">
