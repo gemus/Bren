@@ -148,7 +148,7 @@ def get_workout(workout_date_str, class_id):
 
 def get_completed_workout(workout_id, user_id):
     completed_workouts = []
-    for workouts in Completed_workout.objects.filter(workout_class__workout__id__exact= workout_id, user__id__exact=user_id):
+    for workouts in Completed_workout.objects.filter(workout_class__workout__id__exact= workout_id, user__id__exact=user_id).order_by('workout_class__date'):
         workout = {
             'workout' : get_workout_name(workouts.id),
             'date': get_workout_date(workouts.id),
@@ -159,7 +159,7 @@ def get_completed_workout(workout_id, user_id):
 
                 
         if Workout.objects.get(id=workout_id).workout_type.name == "AMRAP":
-                workout.update({"type": {"AMRAP": workouts.rounds}})
+                workout.update({"type": {"rounds": workouts.rounds}})
             
         if Workout.objects.get(id=workout_id).workout_type.name == "Done":
                 workout.update({"type": {"done" : "Done"}})

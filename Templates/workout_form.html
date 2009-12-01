@@ -50,17 +50,18 @@
 		<input type="hidden" name="workout_type" value="{{ workout_type }}" id="workout_type">
 		<input type="hidden" name="date_str" value="{{ date_str }}" id="date_str">
 		<input type="hidden" name="class_id" value="{{ class_id }}" id="class_id">
-		
-<ul>
+	<br><br>	
 	{% for workout in co_list%}
-		<b>{{workout.workout}} {{workout.date}} {{workout.type.timed}}</b><br>
+		<b>{{workout.workout}} {{workout.date}} 
+			{% ifequal workout_type 'Timed' %} {{workout.type.timed}}</b><br> {% endifequal %} 
+			{% ifequal workout_type 'AMRAP' %} {{workout.type.rounds}}</b><br> rounds {% endifequal %}
+
 			{% for variation in workout.variations%}
 				{{variation.variation}} {{variation.element}}<br>
 			{% endfor %}
 		<br>
 	{% endfor %}
 	<br>
-</ul>
 	</form>
 </body>
 </html>
