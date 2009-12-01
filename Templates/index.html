@@ -64,6 +64,22 @@
 			margin: 10px;
 		}
 
+		div#date_class_picker {
+			margin: 15px;
+		}
+
+		label {
+			font-size: 120%;
+		}
+		input {
+			font-size: 120%;
+			border: 1px solid #3C5F7F;
+		}
+		select {
+			border: 1px solid #3C5F7F;
+			font-size: 120%;
+		}
+
 	</style>
 
 </head>
@@ -71,17 +87,17 @@
 	<a id="logoutLink" href="/logout">Logout</a>
 	<h1>Welcome {{ display_name }}</h1>
 
+	<div id="date_class_picker">
+		<label for="date_picker">Select Date:</label>
+		<input style="width: 150px" id="date_picker" type="text" />
 
-	<strong>Select Date:</strong>
-	<input id="date_picker" type="text" />
+		<label style="margin-left: 45px;" for="class_picker">Select Class:</label>
+		<select name="class_picker" id="class_picker">
+			<option value="no_date">Please Select A Date</option>
+		</select>
+	</div>
 
-	<strong>Select Class:</strong>
 
-	<select name="class_picker" id="class_picker">
-		<option value="no_date">Please Select A Date</option>
-	</select>
-
-	<hr />
 
 	<iframe id="formViewer"></iframe>
 </body>
