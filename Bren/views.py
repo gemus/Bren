@@ -37,6 +37,15 @@ def workout_form(request, date_str, class_id):
     api_data = model.get_workout(date_str, class_id)
     the_form = WorkoutForm(api_data['elements'])
     co_list = model.get_completed_workout(api_data['id'], request.user.id)["completed_workouts"]
+    for workout in co_list:
+        time = workout['type']['timed']
+        mins = time / 60
+        secs = time % 60
+        workout['type']['timed'] = "%d:%d" % (mins, secs)
+        
+        
+
+        
     data = {
         'name':         api_data['name'],
         'comments':     api_data['comments'],

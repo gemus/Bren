@@ -53,8 +53,11 @@
 		
 <ul>
 	{% for workout in co_list%}
-		<b>{{workout.date}} {{workout.workout}}</b> {{workout.Type.Timed}}
-		{{workout.Variation}} {{workout.element}}<br>
+		<b>{{workout.workout}} {{workout.date}} {{workout.type.timed}}</b><br>
+			{% for variation in workout.variations%}
+				{{variation.variation}} {{variation.element}}<br>
+			{% endfor %}
+		<br>
 	{% endfor %}
 	<br>
 </ul>

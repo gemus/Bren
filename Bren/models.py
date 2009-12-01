@@ -76,7 +76,7 @@ class Completed_element(models.Model):
     element_used = models.ForeignKey(Element_used)
     variation= models.ForeignKey(Variation)
     def __unicode__(self):
-        return self.completed_workout.user.username+ ", "+self.completed_workout.workout_class.workout.name+  ", "+ self.variation.name
+        return self.completed_workout.user.username+ ", "+self.completed_workout.workout_class.workout.name+  ", "+ self.variation.name + ", " + self.element_used.element.name
 
 class UserProfile(models.Model):
     user = models.ForeignKey(User, unique=True)
@@ -148,24 +148,28 @@ def get_workout(workout_date_str, class_id):
 
 def get_completed_workout(workout_id, user_id):
     completed_workouts = []
-    workout_type = []
     for workouts in Completed_workout.objects.filter(workout_class__workout__id__exact= workout_id, user__id__exact=user_id):
-        completed_workouts.append({'workout' : get_workout_name(workouts.id),'date': get_workout_date(workouts.id)})
+        workout = {
+            'workout' : get_workout_name(workouts.id),
+            'date': get_workout_date(workouts.id),
+            }
 
         if Workout.objects.get(id=workout_id).workout_type.name == "Timed":
-                completed_workouts.append({"Type": {"Timed": workouts.secs}})
+                workout.update({"type": {"timed": workouts.secs}})
 
+                
         if Workout.objects.get(id=workout_id).workout_type.name == "AMRAP":
-                completed_workouts.append({"Type": {"AMRAP": workouts.rounds}})
+                workout.update({"type": {"AMRAP": workouts.rounds}})
             
         if Workout.objects.get(id=workout_id).workout_type.name == "Done":
-                completed_workouts.append({"Type": "Done"})
+                workout.update({"type": {"done" : "Done"}})
         
-#        completed_workouts.update(workout_type)
-                
-        for completed_element in Completed_element.objects.filter(completed_workout__id__exact=workouts.id):
-            completed_workouts.append({"element": completed_element.variation.element.name , "Variation": completed_element.variation.name})
+        variations = []    
+        for completed_element in Completed_element.objects.filter(completed_workout__id__exact=workouts.id).order_by('element_used__order'):
+            variations.append({"element": completed_element.variation.element.name , "variation": completed_element.variation.name})
 
+        workout.update({"variations" : variations})
+        completed_workouts.append(workout)
     if len(completed_workouts) > 0:
         return_dict = {
                     "completed_workouts"       : completed_workouts,
