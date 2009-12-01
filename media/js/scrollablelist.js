@@ -14,9 +14,10 @@ function styleToInt(el, style) {
 // | |  | |  __/ | | | |_| || || ||  __/ | | | | | |  | | (_| | | | | (_| | (_| |  __/ |
 // |_|  |_|\___|_| |_|\__,_|___|\__\___|_| |_| |_|_|  |_|\__,_|_| |_|\__,_|\__, |\___|_|
 //                                                                         |___/
-ScrollableListManager = function(scrollingDOMID, canvasDOMID, itemPickCallback) {
+ScrollableListManager = function(scrollingDOMID, canvasDOMID, itemPickCallback, defaultPicked) {
     this.scrollManager = new ScrollManager(scrollingDOMID, canvasDOMID);
     this.scrollingDOMID = scrollingDOMID;
+    this.defaultPicked = defaultPicked;
 
     if (itemPickCallback != undefined) this.itemPickCallback = itemPickCallback;
 }
@@ -73,6 +74,11 @@ ScrollableListManager.prototype.drawMenuItems = function(data) {
 	var dds = this.scrollManager.scrollingrEl.getElementsByTagName('dd');
 	for (var i=0; i<dds.length; i++) {
 	    var data = {'self': this, 'id': dds[i].id, 'display_name': dds[i].innerHTML};
+
+	    if (this.defaultPicked != undefined && this.defaultPicked == dds[i].id) {
+	        this.pickItem(data);
+	    }
+
 		new YAHOO.util.Element(dds[i]).addListener('mouseup', this.clickMenuItem, data);
 	}
 }

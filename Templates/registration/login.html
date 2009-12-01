@@ -4,8 +4,8 @@
 <html lang="en">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>Crossfit DPL</title><link rel="stylesheet" type="text/css" href="/site_media/css/reset-min.css">
-
+	<title>Crossfit DPL</title>
+	<link rel="stylesheet" type="text/css" href="/site_media/css/reset-min.css">
 	<link rel="stylesheet" type="text/css" href="/site_media/css/global.css">
 	<link rel="stylesheet" type="text/css" href="/site_media/css/scrollablelist.css">
 	<link rel="stylesheet" type="text/css" href="/site_media/css/numpad_input.css" />
@@ -56,9 +56,13 @@
 
 		div#userPickerCanvas {
 			position: absolute;
+			{% if form.errors %}
+			width: 250px;
+			{% else %}
 			width: 600px;
+			{% endif %}
 		}
-		
+
 		div#login_content {
 			margin-left: 270px;
 		}
@@ -76,6 +80,7 @@
 		p#errorBox {
 			color: #F00;
 			margin-top: 15px;
+			font-size: 150%;
 		}
 
 		input#id_password {
@@ -94,19 +99,22 @@
 		    $("#name_plate").html(data['display_name']);
 
 			var myAnim = new YAHOO.util.Anim('userPickerCanvas', {
-			  	width: { to: 250 } 
+				width: { to: 250 }
 			}, .5, YAHOO.util.Easing.easeOut);
 			myAnim.animate();
 		}
 
-		var menuItemManager = new ScrollableListManager("userPickerToScroll", "userPickerCanvas", listItemClickFunction);
 		$(document).ready(function() {
+			var default_picked = $("#id_username").val();
+			var menuItemManager = new ScrollableListManager("userPickerToScroll", "userPickerCanvas", listItemClickFunction, default_picked);
+			menuItemManager.init();
+
 			$("#id_password").numPadInput(false, "", true, false);
 		});
 	</script>
 
 </head>
-<body onLoad="menuItemManager.init();">
+<body>
 	<h1> Welcome To CrossFit DPL</h1>
 	<div id="pageContainer">
 	<div id="userPickerCanvas" class="canvas">
@@ -125,7 +133,7 @@
 			<button type="submit" class="big_button">Login</button>
 			<input type="hidden" name="next" value="{{ next }}" />
 		</form>
-		{% if form.errors %}<p id="errorBox">Your username and password didn't match. Please try again.</p>{% endif %}
+		{% if form.errors %}<p id="errorBox">Wrong PIN. Please try again.</p>{% endif %}
 	</div>
 	</div>
 </body>

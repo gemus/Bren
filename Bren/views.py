@@ -11,7 +11,8 @@ from django.contrib.auth.decorators import login_required
 
 @login_required
 def index(request):
-    return render_to_response('index.html')
+    data = {'display_name': "%s %s" % (request.user.first_name, request.user.last_name)}
+    return render_to_response('index.html', data)
 
 # =============================================================================
 # = Workout Form ==============================================================
