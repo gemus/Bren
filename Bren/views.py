@@ -36,16 +36,18 @@ class WorkoutForm(forms.Form):
 def workout_form(request, date_str, class_id):
     api_data = model.get_workout(date_str, class_id)
     the_form = WorkoutForm(api_data['elements'])
-    co_list = model.get_completed_workout(api_data['id'], request.user.id)["completed_workouts"]
+    ele_history = model.get_workout_element_history(request.user.id, api_data['id'])
+    co_list = model.get_completed_workout(request.user.id, api_data['id'])["completed_workouts"]
     for workout in co_list:
-        time = workout['type']['timed']
-        mins = time / 60
-        secs = time % 60
-        workout['type']['timed'] = "%d:%d" % (mins, secs)
+        if workout['info']['type'] == "timed":
+            time = workout['info']['time']
+            mins = time / 60
+            secs = time % 60
+            workout['info']['time'] = "%d:%d" % (mins, secs)
         
         
 
-        
+
     data = {
         'name':         api_data['name'],
         'comments':     api_data['comments'],
@@ -56,6 +58,7 @@ def workout_form(request, date_str, class_id):
         'class_id':     class_id,
         'the_form':     the_form,
         'co_list' :     co_list,
+        'ele_history':  ele_history,
     }
 
     return render_to_response('workout_form.html', data)

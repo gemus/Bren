@@ -146,7 +146,30 @@ def get_workout(workout_date_str, class_id):
         return return_dict
     return {"error": "No Class Found"}
 
-def get_completed_workout(workout_id, user_id):
+def get_element_history(user_id, element_id):
+    element_history = []
+    for completed_element in Completed_element.objects.filter(completed_workout__user__id = user_id, element_used__element__id = element_id).order_by('-completed_workout__workout_class__date')[:3]:
+        element_history.append({
+                                "date"      : completed_element.completed_workout.workout_class.date.isoformat(),
+                                "workout"   : completed_element.completed_workout.workout_class.workout.name,
+                                "rounds"    : completed_element.completed_workout.workout_class.workout.rounds,
+                                "reps"      : completed_element.element_used.reps,
+                                "variation" : completed_element.variation.name,
+        })  
+
+    return element_history
+
+def get_workout_element_history(user_id, workout_id):
+    workout_element_history = []
+    for element in Element_used.objects.filter(workout__id = workout_id):
+        workout_element_history.append({
+                                        "element" : element.element.name,
+                                        "history" : get_element_history(user_id, element.element.id),
+        })
+    return workout_element_history
+        
+
+def get_completed_workout(user_id, workout_id):
     completed_workouts = []
     for workouts in Completed_workout.objects.filter(workout_class__workout__id__exact= workout_id, user__id__exact=user_id).order_by('workout_class__date'):
         workout = {
@@ -155,14 +178,14 @@ def get_completed_workout(workout_id, user_id):
             }
 
         if Workout.objects.get(id=workout_id).workout_type.name == "Timed":
-                workout.update({"type": {"timed": workouts.secs}})
+                workout.update({"info": {"type" : "timed", "time": workouts.secs}})
 
                 
         if Workout.objects.get(id=workout_id).workout_type.name == "AMRAP":
-                workout.update({"type": {"rounds": workouts.rounds}})
+                workout.update({"info": {"type" : "AMRAP", "rounds": workouts.rounds}})
             
         if Workout.objects.get(id=workout_id).workout_type.name == "Done":
-                workout.update({"type": {"done" : "Done"}})
+                workout.update({"info": {"type" : "Done"}})
         
         variations = []    
         for completed_element in Completed_element.objects.filter(completed_workout__id__exact=workouts.id).order_by('element_used__order'):

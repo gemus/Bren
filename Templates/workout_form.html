@@ -52,16 +52,26 @@
 		<input type="hidden" name="class_id" value="{{ class_id }}" id="class_id">
 	<br><br>	
 	{% for workout in co_list%}
-		<b>{{workout.workout}} {{workout.date}} 
-			{% ifequal workout_type 'Timed' %} {{workout.type.timed}}</b><br> {% endifequal %} 
-			{% ifequal workout_type 'AMRAP' %} {{workout.type.rounds}}</b><br> rounds {% endifequal %}
-
+		<b>{{workout.workout}}  
+			{% ifequal workout_type 'Timed' %} {{workout.info.time}} {% endifequal %} 
+			{% ifequal workout_type 'AMRAP' %} {{workout.info.rounds}} rounds{% endifequal %}
+			{{workout.date}} </b><br>
 			{% for variation in workout.variations%}
 				{{variation.variation}} {{variation.element}}<br>
 			{% endfor %}
 		<br>
 	{% endfor %}
-	<br>
+
+	
+	{% for element in ele_history %}
+	<b>{{element.element}}</b><br>
+
+		{%for history in element.history%}
+			{{history.date}} {{history.workout}} {{history.rounds}} rounds of {{history.reps}} {{history.variation}} {{element.element}}<br>	
+		{% endfor %}
+		<br>
+	{% endfor %}
+
 	</form>
 </body>
 </html>
