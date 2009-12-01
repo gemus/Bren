@@ -81,7 +81,6 @@ class Completed_element(models.Model):
 class UserProfile(models.Model):
     user = models.ForeignKey(User, unique=True)
 
-
 # -- API METHODS -------------- #
 
 def get_all_users():
@@ -157,10 +156,10 @@ def get_completed_workout(workout_id, user_id):
 
         if Workout.objects.get(id=workout_id).workout_type.name == "AMRAP":
                 completed_workouts.append({"Type": "AMRAP", "Rounds": workouts.rounds})
-            
+
         if Workout.objects.get(id=workout_id).workout_type.name == "Done":
                 completed_workouts.append({"Type": "Done"})
-                
+
         for completed_element in Completed_element.objects.filter(completed_workout__id__exact=workouts.id):
             completed_workouts.append({"element": completed_element.variation.element.name , "Variation": completed_element.variation.name})
 
@@ -229,13 +228,13 @@ def create_completed_workout(create_dict):
 
     date = datetime.datetime.strptime(create_dict['date'], DATE_FORMAT).date()
     workout_class_id = Workout_class.objects.filter(date=date).get(class_info__id = create_dict['class_id']).id
-    
+
     if len( Completed_workout.objects.filter(user__id =create_dict['user_id'], workout_class__id = workout_class_id)) == 0:
         co = Completed_workout()
     else :
         co = Completed_workout.objects.filter(user__id =create_dict['user_id']).get(workout_class__id = workout_class_id)
         for completed_element in Completed_element.objects.filter(completed_workout__id = co.id):
-            completed_element.delete()   
+            completed_element.delete()
 
     co.user = User.objects.get(id=create_dict['user_id'])
     co.date = date
