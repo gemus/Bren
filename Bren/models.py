@@ -178,6 +178,7 @@ def get_completed_workout(user_id, workout_id):
     completed_workouts = []
     for workouts in Completed_workout.objects.filter(workout_class__workout__id__exact= workout_id, user__id__exact=user_id).order_by('workout_class__date'):
         workout = {
+            'id' : workouts.id,
             'workout' : get_workout_name(workouts.id),
             'date': get_workout_date(workouts.id),
             }
