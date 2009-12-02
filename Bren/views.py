@@ -47,8 +47,8 @@ def workout_form(request, date_str, class_id):
             if workout['info']['type'] == "timed":
                 time = workout['info']['time']
                 mins = time / 60
-                secs = time % 60
-                workout['info']['time'] = "%d:%d" % (mins, secs)
+                secs = time % 60 
+                workout['info']['time'] = "%d:%02d" % (mins, secs)
     data = {
         'name':         api_data['name'],
         'comments':     api_data['comments'],
