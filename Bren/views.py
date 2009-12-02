@@ -42,20 +42,12 @@ def workout_form(request, date_str, class_id):
         year = int(workout['date'][:4])
         month = model.get_month(int(workout['date'][5:7]))
         day = int(workout['date'][8:10])
-        print month
-        print day
-        print year
-        workout['date'] = str(month) + " " + str(day) + " " + str(year)
-    
+        workout['date'] = str(month) + " " + str(day) + " " + str(year)  
         if workout['info']['type'] == "timed":
             time = workout['info']['time']
             mins = time / 60
             secs = time % 60
             workout['info']['time'] = "%d:%d" % (mins, secs)
-        
-        
-
-
     data = {
         'name':         api_data['name'],
         'comments':     api_data['comments'],

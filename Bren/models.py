@@ -149,8 +149,13 @@ def get_workout(workout_date_str, class_id):
 def get_element_history(user_id, element_id):
     element_history = []
     for completed_element in Completed_element.objects.filter(completed_workout__user__id = user_id, element_used__element__id = element_id).order_by('-completed_workout__workout_class__date')[:3]:
+        #year = int(completed_element.completed_workout.workout_class.date.isoformat()[:4])
+        month = get_month(int (completed_element.completed_workout.workout_class.date.isoformat()[5:7]))
+        day = int(completed_element.completed_workout.workout_class.date.isoformat()[8:10])
+        date = str(month) + " " + str(day)# + " " + str(year)
+        
         element_history.append({
-                                "date"      : completed_element.completed_workout.workout_class.date.isoformat(),
+                                "date"      : date,
                                 "workout"   : completed_element.completed_workout.workout_class.workout.name,
                                 "rounds"    : completed_element.completed_workout.workout_class.workout.rounds,
                                 "reps"      : completed_element.element_used.reps,

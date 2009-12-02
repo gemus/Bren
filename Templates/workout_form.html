@@ -52,6 +52,8 @@
 		<input type="hidden" name="date_str" value="{{ date_str }}" id="date_str">
 		<input type="hidden" name="class_id" value="{{ class_id }}" id="class_id">
 	<br><br>	
+	
+
 	{% for workout in co_list%}
 		<b>{{workout.workout}}  
 			{% ifequal workout_type 'Timed' %} {{workout.info.time}} {% endifequal %} 
@@ -63,31 +65,16 @@
 		<br>
 	{% endfor %}
 
-	
-		<b>Element History:</b><br><br>
+		<b>Element History:</b><br>
 		{% for element in ele_history %}
-			<b>{{element.element}}</b><br>
+		<div onClick="expand('texter', '{{element.element}}')" class="mainExpand"><b>{{element.element}}:</b></div>
+			<div id="{{element.element}}" class="texter">
 				{% for history in element.history%}
 					{{history.date}} {{history.workout}} {{history.rounds}} rounds of {{history.reps}} {{history.variation}} {{element.element}}<br>	
 				{% endfor %}
-			<br>
+			</div>
+		</div>
 		{% endfor %}
-
-<div onClick="openClose('a1')" class="mainExpand">1] Example & Explanation:</div>
-<div id="a1" class="texter">
-Ma quande lingues coalesce, li grammatica del resultant lingue es plu simplic e regulari quam ti del coalescent lingues. Li nov lingua franca va esser plu simplic e regulari quam 
-</div>
-
-<div onClick="openClose('a2')" class="mainExpand">2] Compatibility:</div>
-<div id="a2" class="texter">
-Epsum factorial non deposit quid pro quo hic escorol. Olypian quarrels et gorilla congolium sic ad nauseum. Souvlaki ignitus carborundum e pluribus unum. Defacto lingo est igpay atinlay. Marquee selectus 
-</div>
-
-<div onClick="openClose('a3')" class="mainExpand">3] Notes:</div>
-<div id="a3" class="texter">
-Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut 
-</div>
-
 
 	</form>
 </body>
