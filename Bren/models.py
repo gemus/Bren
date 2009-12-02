@@ -162,7 +162,9 @@ def get_element_history(user_id, element_id):
                                 "variation" : completed_element.variation.name,
         })  
 
-    return element_history
+    if len(element_history) > 0:
+        return element_history 
+    return {"error": "You has never recorded " + Element.objects.get(id = element_id).name + " Before"}
 
 def get_workout_element_history(user_id, workout_id):
     workout_element_history = []
