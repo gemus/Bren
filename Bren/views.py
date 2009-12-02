@@ -37,17 +37,18 @@ def workout_form(request, date_str, class_id):
     api_data = model.get_workout(date_str, class_id)
     the_form = WorkoutForm(api_data['elements'])
     ele_history = model.get_workout_element_history(request.user.id, api_data['id'])
-    co_list = model.get_completed_workout(request.user.id, api_data['id'])["completed_workouts"]
-    for workout in co_list:
-        year = int(workout['date'][:4])
-        month = model.get_month(int(workout['date'][5:7]))
-        day = int(workout['date'][8:10])
-        workout['date'] = str(month) + " " + str(day) + " " + str(year)  
-        if workout['info']['type'] == "timed":
-            time = workout['info']['time']
-            mins = time / 60
-            secs = time % 60
-            workout['info']['time'] = "%d:%d" % (mins, secs)
+    co_list = model.get_completed_workout(request.user.id, api_data['id'])
+    if not 'error' in co_list:
+        for workout in co_list:
+            year = int(workout['date'][:4])
+            month = model.get_month(int(workout['date'][5:7]))
+            day = int(workout['date'][8:10])
+            workout['date'] = str(month) + " " + str(day) + " " + str(year)  
+            if workout['info']['type'] == "timed":
+                time = workout['info']['time']
+                mins = time / 60
+                secs = time % 60
+                workout['info']['time'] = "%d:%d" % (mins, secs)
     data = {
         'name':         api_data['name'],
         'comments':     api_data['comments'],

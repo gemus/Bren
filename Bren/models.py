@@ -185,11 +185,8 @@ def get_completed_workout(user_id, workout_id):
 
         if Workout.objects.get(id=workout_id).workout_type.name == "Timed":
                 workout.update({"info": {"type" : "timed", "time": workouts.secs}})
-
-                
         if Workout.objects.get(id=workout_id).workout_type.name == "AMRAP":
                 workout.update({"info": {"type" : "AMRAP", "rounds": workouts.rounds}})
-            
         if Workout.objects.get(id=workout_id).workout_type.name == "Done":
                 workout.update({"info": {"type" : "Done"}})
         
@@ -200,11 +197,9 @@ def get_completed_workout(user_id, workout_id):
         workout.update({"variations" : variations})
         completed_workouts.append(workout)
     if len(completed_workouts) > 0:
-        return_dict = {
-                    "completed_workouts"       : completed_workouts,
-                  }
-        return return_dict
-    return {"error": User.objects.get(id=user_id).username + " has never done : " + Workout.objects.get(id=workout_id).name + " Before"}
+        return completed_workouts
+        
+    return {"error": "You has never done " + Workout.objects.get(id=workout_id).name + " Before"}
 
 def get_classes(date):      #Expecting string comming in as "YYYY-MM-DD"
     year = int(date[:4])                    #Formating the incomming string

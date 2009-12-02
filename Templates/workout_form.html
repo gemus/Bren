@@ -54,6 +54,7 @@
 	<br><br>	
 	
 	<b><u>Previous {{ name }} History:</b></u><br>
+	<b>{{co_list.error}}</b>
 	{% for workout in co_list%}
 		<div onClick="expand('texter', '{{workout.id}}')" class="mainExpand"><b>{{workout.workout}}  
 			{% ifequal workout_type 'Timed' %} {{workout.info.time}} {% endifequal %} 
