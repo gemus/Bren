@@ -200,10 +200,8 @@ def get_completed_workout(user_id, workout_id):
 
         workout.update({"variations" : variations})
         completed_workouts.append(workout)
-    if len(completed_workouts) > 0:
-        return completed_workouts
-        
-    return {"error": "You has never done " + Workout.objects.get(id=workout_id).name + " Before"}
+
+    return completed_workouts
 
 def get_classes(date):      #Expecting string comming in as "YYYY-MM-DD"
     year = int(date[:4])                    #Formating the incomming string

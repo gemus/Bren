@@ -91,9 +91,8 @@
 
 	<div id="sidebar">
 		<div id="previous_history_container" class="side_container">
-			<h3>Previous {{ name }} History:</h3>
+			<h3>Previous {{ name }} History</h3>
 			<div class="content">
-				<span>{{co_list.error}}</span>
 				{% for workout in co_list%}
 					{{workout.workout}}
 					{% ifequal workout_type 'Timed' %} {{workout.info.time}} {% endifequal %}
@@ -103,6 +102,8 @@
 					{% for variation in workout.variations%}
 						{{variation.variation}} {{variation.element}}
 					{% endfor %}
+				{% empty %}
+					No History For {{ name }}
 				{% endfor %}
 			</div>
 		</div>
