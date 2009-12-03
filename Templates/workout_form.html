@@ -195,7 +195,7 @@
 				<div id="{{element.element}}" class="texter">
 					{{element.history.error}}
 					{% for history in element.history %}
-								{% if history.date %} {{history.date}} {{history.workout}} {{history.rounds}} rounds of {{history.reps}} {{history.variation}} {{element.element}}<br> {% endif %}
+								{% if history.date %} {{history.rounds}} rounds of {{history.reps}} {{history.variation}} {{element.element}}<br> {% endif %}
 					{% endfor %}
 				</div>
 				{% endfor %}

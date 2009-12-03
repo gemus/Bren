@@ -13,7 +13,7 @@
 		{% for day in week_data%}
 		<b>{{day.day}} :</b><br>
 				{% for classes in day.classes%}
-					{{classes.class_name}}
+					{{classes.class_name}} {% ifnotequal classes.user_number 0 %} ({{classes.user_number}}) {% endifnotequal %} <b>:</b>
 					{% for user in classes.users %} 
 						{{user.user}} 
 					{%endfor%}

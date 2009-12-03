@@ -231,9 +231,10 @@ def get_week_roster(date):      #Expecting string comming in as SUNDAY! as "YYYY
     dday = int(date[8:10])
     date = datetime.date(year,month,dday)
 
+    datedelta = datetime.timedelta(days=1)
+    
     while not date.weekday() == 6:
-        dday = dday - 1
-        date = datetime.date(year,month,dday)
+        date = date - datedelta
     days = []
     i = 0
     while i < 6:
@@ -243,11 +244,13 @@ def get_week_roster(date):      #Expecting string comming in as SUNDAY! as "YYYY
         classes = []
         for workout_class in Workout_class.objects.filter(date = date):
             users = []
+            user_number = 0
             for co in Completed_workout.objects.filter(workout_class__id = workout_class.id):
                 users.append({"user" : co.user.first_name})
-            classes.append({"class_name" : workout_class.class_info.title, "users" : users, "class_id" : workout_class.id})
-        dday = dday + 1
-        date = datetime.date(year,month,dday)
+                user_number = user_number + 1
+                
+            classes.append({"class_name" : workout_class.class_info.title, "users" : users, "class_id" : workout_class.id, "user_number" : user_number,})
+        date = date + datedelta
         day['classes'] = classes
     return days
 
