@@ -24,21 +24,70 @@
 	</script>
 	<style type="text/css" media="screen">
 		h1 {
-			font-size: 175%;
-			color: #3C5F7F;
-		}
-		h2 {
-			font-size: 125%;
+			font-size: 200%;
 			color: #3C5F7F;
 			font-weight: bold;
 		}
-
-		div#form_container {
-			float: left;
+		h2 {
+			font-size: 150%;
+			color: #3C5F7F;
+			font-weight: bold;
 		}
 
 		strong {
 			font-weight: bold;
+		}
+
+		div#time_rep_container label {
+			font-size: 150%;
+			color: #3C5F7F;
+			font-weight: bold;
+		}
+
+		div#time_rep_container label strong {
+			font-size: 150%;
+			margin-right: 20px;
+		}
+
+
+		div#form_container {
+			float: left;
+			margin-right: 30px;
+		}
+
+		div#form_container table tbody label, div#form_container table tbody select {
+			font-size: 120%;
+		}
+
+		div#form_container table tfoot label {
+			font-size: 150%;
+			color: #3C5F7F;
+			font-weight: bold;
+
+		}
+
+		div#form_container form table select {
+			width: 200px;
+			border: 1px solid #3C5F7F;
+			margin-left: 5px;
+			margin: 3px 0pt 3px 5px;
+		}
+
+		input.numbad_input {
+			width: 120px;
+			border: 1px solid #3C5F7F;
+			font-size: 150%;
+			color: #333;
+		}
+
+		button.save_button {
+			border: 2px solid #3C5F7F;
+			background-color: #FFF;
+			color: #3C5F7F;
+			padding-top: 7px; padding-bottom: 7px;
+			cursor: pointer;
+			font-size: 120%;
+			width:200px;
 		}
 
 		div#sidebar { float: left; }
@@ -71,41 +120,44 @@
 					margin-left: 15px;
 				}
 
-
 	</style>
 </head>
 <body>
-	<h1>{{ name }}</h1>
-	<h2>{{ comments }} {% ifnotequal rounds 1 %} {{rounds}} rounds of:{% endifnotequal %}</h2>
-
 	<div id="form_container">
-	<form action="/save_workout/" method="POST">
-		<table>
-		{{ the_form }}
-		</table>
+		<form action="/save_workout/" method="POST">
+			<div id="time_rep_container">
+			</div>
+			<h1>{{ name }} </h1>
+			<h2>{{ comments }} {% ifnotequal rounds 1 %} {{rounds}} rounds of:{% endifnotequal %}</h2>
 
-		<br>
-
-		{% ifequal workout_type 'AMRAP' %}
-		<strong>Rounds:</strong>
-		<input type="text" name="workout_reps" value="" id="workout_reps">
-		{% endifequal %}
-
-		{% ifequal workout_type 'Timed' %}
-		<label for="workout_time">Time:</label>
-		<input type="text" name="workout_time" value="" id="workout_time"> MM:SS
-		{% endifequal %}
-
-		<br>
-		<input type="submit" value="Save Workout">
-
-		<input type="hidden" name="workout_type" value="{{ workout_type }}" id="workout_type">
-		<input type="hidden" name="date_str" value="{{ date_str }}" id="date_str">
-		<input type="hidden" name="class_id" value="{{ class_id }}" id="class_id">
-	</form>
+			<table id="formTable">
+				{{ the_form }}
+				<tfoot>
+					<tr>
+						<td></td>
+						<td>{% ifequal workout_type 'AMRAP' %}
+						<label for="workout_reps">Rounds:</strong>
+						<input type="text" name="workout_reps" value="" id="workout_reps" class="numbad_input">
+						{% endifequal %}
+						{% ifequal workout_type 'Timed' %}
+						<label for="workout_time">Time:</label>
+						<input type="text" name="workout_time" value="" id="workout_time" class="numbad_input">
+						{% endifequal %}
+						</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td><div style="text-align: center; margin-top: 15px">
+						<button type="submit" class="save_button">Save Wokrout</button>
+						</div></td>
+					</tr>
+				</tfoot>
+			</table>
+			<input type="hidden" name="workout_type" value="{{ workout_type }}" id="workout_type">
+			<input type="hidden" name="date_str" value="{{ date_str }}" id="date_str">
+			<input type="hidden" name="class_id" value="{{ class_id }}" id="class_id">
+		</form>
 	</div>
-
-
 	<div id="sidebar">
 		<div id="previous_history_container" class="side_container">
 			<h3>Previous {{ name }} History</h3>
