@@ -44,6 +44,16 @@
 		// Hook in the onChange function
 		$("#date_picker").change(dateChangedFunc);
 		$("#class_picker").change(classChnagedFunc);
+
+		var curDate = new Date();
+		var year = curDate.getFullYear();
+		var month = curDate.getMonth()+1;
+		if (month < 10) month = "0" + month;
+		var day = curDate.getDate();
+		if (day < 10) day = "0" + day;
+		var dateStr = year+"-"+month+"-"+day;
+		$("#date_picker").val(dateStr);
+		dateChangedFunc();
 	});
 	</script>
 
