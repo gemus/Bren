@@ -31,7 +31,8 @@
 				var class_drop_value = '';
 				for (i in result.result) {
 					var class_row = result.result[i];
-					class_drop_value += '<option value="'+class_row.id+'">'+class_row.name+'</option>';
+					var selected = {{ last_class_id }} == class_row.id ? "selected" : "";
+					class_drop_value += '<option value="'+class_row.id+'" '+ selected +'>'+class_row.name+'</option>';
 				}
 				if (class_drop_value == '') {
 					class_drop_value = '<option value="None">No Classes For Selected Date</option>';

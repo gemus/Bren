@@ -12,7 +12,10 @@ from django.contrib.auth.decorators import login_required
 
 @login_required
 def index(request):
-    data = {'display_name': "%s %s" % (request.user.first_name, request.user.last_name)}
+    last_class = model.get_last_attended_class(request.user.id)
+
+    data = {'display_name': "%s %s" % (request.user.first_name, request.user.last_name),
+            'last_class_id' : last_class['id']}
     return render_to_response('index.html', data)
 
 # =============================================================================
