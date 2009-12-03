@@ -1,3 +1,4 @@
+import datetime
 from django.shortcuts import render_to_response
 from django import forms
 import Crossfit.Bren.models as model
@@ -40,11 +41,20 @@ def workout_form(request, date_str, class_id):
     co_list = model.get_completed_workout(request.user.id, api_data['id'])
 
     for workout in co_list:
-        year = int(workout['date'][:4])
-        month = model.get_month(int(workout['date'][5:7]))
-        day = int(workout['date'][8:10])
-        workout['date'] = str(month) + " " + str(day) + " " + str(year)
-        if workout['info']['type'] == "timed":
+        print workout
+
+        # Wade... it's elementry. Convert it to a date, then use the date formatting functions
+        OUTPUT_FORMAT = "%B %d, %Y" # December 1, 2009
+        workout_date = datetime.datetime.strptime(workout['date'], model.DATE_FORMAT)
+        workout['date'] = workout_date.strftime(OUTPUT_FORMAT).replace(' 0', ' ')
+
+        #print workout
+        #year = int(workout['date'][:4])
+        #month = model.get_month(int(workout['date'][5:7]))
+        #day = int(workout['date'][8:10])
+        #workout['date'] = str(month) + " " + str(day) + " " + str(year)
+
+        if workout['info']['type'] == "Timed":
             time = workout['info']['time']
             mins = time / 60
             secs = time % 60

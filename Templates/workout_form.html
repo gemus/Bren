@@ -37,6 +37,10 @@
 			float: left;
 		}
 
+		strong {
+			font-weight: bold;
+		}
+
 		div#sidebar { float: left; }
 
 			div#sidebar div.side_container {
@@ -52,6 +56,19 @@
 
 				div#sidebar div.side_container div.content {
 					padding: 7px;
+				}
+
+				div#sidebar div.side_container table.co_variations {
+					font-size: 80%;
+				}
+
+				div#sidebar div.side_container table.co_variations td {
+					border-bottom: 1px solid #ccc;
+					padding: 5px 0pt 2px;
+				}
+
+				div#sidebar div.side_container table.co_variations tr span {
+					margin-left: 15px;
 				}
 
 
@@ -94,14 +111,21 @@
 			<h3>Previous {{ name }} History</h3>
 			<div class="content">
 				{% for workout in co_list%}
-					{{workout.workout}}
-					{% ifequal workout_type 'Timed' %} {{workout.info.time}} {% endifequal %}
-					{% ifequal workout_type 'AMRAP' %} {{workout.info.rounds}} rounds{% endifequal %}
-
-					{{workout.date}}
-					{% for variation in workout.variations%}
-						{{variation.variation}} {{variation.element}}
-					{% endfor %}
+					<div>
+						<div style="float: left; margin-right: 5px;">
+							<strong style="margin-right: 5px;">{% ifequal workout_type 'Timed' %} {{workout.info.time}} {% endifequal %}
+							{% ifequal workout_type 'AMRAP' %} {{workout.info.rounds}} rounds{% endifequal %}</strong>
+						</div>
+						<div style="float: left;">
+							{{workout.date}}
+							<table class="co_variations">
+							{% for variation in workout.variations%}
+								<tr><td>{{variation.variation}}</td><td><span>{{variation.element}}<span></td></tr></div>
+							{% endfor %}
+							</table>
+						</div>
+						<br style="clear: left;">
+					</div>
 				{% empty %}
 					No History For {{ name }}
 				{% endfor %}
