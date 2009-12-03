@@ -41,8 +41,6 @@ def workout_form(request, date_str, class_id):
     co_list = model.get_completed_workout(request.user.id, api_data['id'])
 
     for workout in co_list:
-        print workout
-
         # Wade... it's elementry. Convert it to a date, then use the date formatting functions
         OUTPUT_FORMAT = "%B %d, %Y" # December 1, 2009
         workout_date = datetime.datetime.strptime(workout['date'], model.DATE_FORMAT)
