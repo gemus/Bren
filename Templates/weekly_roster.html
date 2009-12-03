@@ -1,0 +1,27 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>Crossfit DPL</title>
+
+	<script type="text/javascript" src="/site_media/js/collapsibleText.js"></script>
+</head>
+<body>
+	<h1>Weekly Roster page for week starting {{date}}</h1>
+		{% for day in week_data%}
+		<b>{{day.day}} :</b><br>
+				{% for classes in day.classes%}
+					{{classes.class_name}}
+					{% for user in classes.users %} 
+						{{user.user}} 
+					{%endfor%}
+					<br>
+				{%endfor%}
+				
+			<br>
+		{%endfor%}
+
+</body>
+</html>

@@ -222,24 +222,24 @@ def get_week_roster(date):      #Expecting string comming in as SUNDAY! as "YYYY
 
     year = int(date[:4])                    #Formating the incomming string
     month = int(date[5:7])
-    day = int(date[8:10])
-    date = datetime.date(year,month,day)
-
-    roster = []
+    dday = int(date[8:10])
+    date = datetime.date(year,month,dday)
+    days = []
     i = 0
-    while i < 6 :
-        roster.append({"Day": get_weekday(i)})
-        for workout_class in Workout_class.objects.filter(date__exact=date).distinct():
-            roster.append({"class": workout_class.class_info.title})
-            for completed_workout in Completed_workout.objects.filter(workout_class__id = workout_class.id):
-                roster.append({"user": completed_workout.user})
+    while i < 6:
+        days.append ({"day": get_weekday(i), "classes": []})
         i = i + 1
-        date = datetime.date(year,month,day+i)
-
-    return_dict = {
-            "roster": roster
-        }
-    return return_dict
+    for day in days:
+        classes = []
+        for workout_class in Workout_class.objects.filter(date = date):
+            users = []
+            for co in Completed_workout.objects.filter(workout_class__id = workout_class.id):
+                users.append({"user" : co.user.first_name})
+            classes.append({"class_name" : workout_class.class_info.title, "users" : users, "class_id" : workout_class.id})
+        dday = dday + 1
+        date = datetime.date(year,month,dday)
+        day['classes'] = classes
+    return days
 
 class Completed_workoutForm(forms.Form):
     secs = forms.IntegerField()
