@@ -185,12 +185,14 @@ def get_completed_workout(user_id, workout_id):
             'date': get_workout_date(workouts.id),
             }
 
-        if Workout.objects.get(id=workout_id).workout_type.name == "Timed":
-                workout.update({"info": {"type" : "timed", "time": workouts.secs}})
-        if Workout.objects.get(id=workout_id).workout_type.name == "AMRAP":
-                workout.update({"info": {"type" : "AMRAP", "rounds": workouts.rounds}})
-        if Workout.objects.get(id=workout_id).workout_type.name == "Done":
-                workout.update({"info": {"type" : "Done"}})
+        type_name = Workout.objects.get(id=workout_id).workout_type.name
+        if type_name == "Timed":
+            type_value = {"type" : "Timed", "time": workouts.secs}
+        elif type_name == "AMRAP":
+            type_value = {"type" : "AMRAP", "time": workouts.rounds}
+        else:
+            type_value = {"type" : "Done"}
+        workout.update({"info": type_value})
         
         variations = []    
         for completed_element in Completed_element.objects.filter(completed_workout__id__exact=workouts.id).order_by('element_used__order'):
