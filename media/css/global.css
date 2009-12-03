@@ -1,6 +1,7 @@
 * {
 	margin: 0pt;
 	padding: 0pt;
+	-moz-user-select:none;
 }
 body {
 	font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
