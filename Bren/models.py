@@ -176,6 +176,12 @@ def get_workout_element_history(user_id, workout_id):
     return workout_element_history
         
 
+def get_last_attended_class(user_id):
+    for cwo in Completed_workout.objects.filter(user__id__exact=user_id).order_by('-workout_class__date')[:1]:
+        last_class = cwo.workout_class.class_info
+        return {'id': last_class.id, 'title': last_class.title}
+    return None
+
 def get_completed_workout(user_id, workout_id):
     completed_workouts = []
     for workouts in Completed_workout.objects.filter(workout_class__workout__id__exact= workout_id, user__id__exact=user_id).order_by('workout_class__date'):
