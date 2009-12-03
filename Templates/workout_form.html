@@ -24,7 +24,7 @@
 	</script>
 	<style type="text/css" media="screen">
 		h1 {
-			font-size: 200%;
+			font-size: 250%;
 			color: #3C5F7F;
 			font-weight: bold;
 		}
@@ -38,21 +38,9 @@
 			font-weight: bold;
 		}
 
-		div#time_rep_container label {
-			font-size: 150%;
-			color: #3C5F7F;
-			font-weight: bold;
-		}
-
-		div#time_rep_container label strong {
-			font-size: 150%;
-			margin-right: 20px;
-		}
-
-
 		div#form_container {
 			float: left;
-			margin-right: 30px;
+			width: 500px;
 		}
 
 		div#form_container table tbody label, div#form_container table tbody select {
@@ -90,6 +78,18 @@
 			width:200px;
 		}
 
+		div.numpad_input_container {
+			position: relative;
+			top: -275px;
+			margin: 0pt;
+		}
+
+		div.numpad_input_container div {
+			position: absolute;
+			background-color: #FFF;
+			width: 240px;
+		}
+
 		div#sidebar { float: left; }
 
 			div#sidebar div.side_container {
@@ -119,16 +119,18 @@
 				div#sidebar div.side_container table.co_variations tr span {
 					margin-left: 15px;
 				}
-
+		th {
+			text-align: left;
+		}
 	</style>
 </head>
 <body>
 	<div id="form_container">
 		<form action="/save_workout/" method="POST">
-			<div id="time_rep_container">
+			<div style="position: relative; top: -8px; text-align: center;">
+				<h1>{{ name }} </h1>
+				<h2>{{ comments }} {% ifnotequal rounds 1 %} {{rounds}} rounds of:{% endifnotequal %}</h2>
 			</div>
-			<h1>{{ name }} </h1>
-			<h2>{{ comments }} {% ifnotequal rounds 1 %} {{rounds}} rounds of:{% endifnotequal %}</h2>
 
 			<table id="formTable">
 				{{ the_form }}
