@@ -80,7 +80,8 @@
 
 		div.numpad_input_container {
 			position: relative;
-			top: -275px;
+			top: -100px;
+			left: 217px;
 			margin: 0pt;
 		}
 
@@ -137,7 +138,7 @@
 				<tfoot>
 					<tr>
 						<td></td>
-						<td>{% ifequal workout_type 'AMRAP' %}
+						<td align="right">{% ifequal workout_type 'AMRAP' %}
 						<label for="workout_reps">Rounds:</strong>
 						<input type="text" name="workout_reps" value="" id="workout_reps" class="numbad_input">
 						{% endifequal %}
