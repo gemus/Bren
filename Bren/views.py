@@ -15,7 +15,9 @@ def index(request):
     last_class = model.get_last_attended_class(request.user.id)
 
     data = {'display_name': "%s %s" % (request.user.first_name, request.user.last_name),
-            'last_class_id' : last_class['id']}
+            'last_class_id' : last_class['id'],
+            'last_class_title' : last_class['title'],
+            'cur_date_str': datetime.datetime.now().strftime("%A %B %d %Y").replace(' 0', ' ')}
     return render_to_response('index.html', data)
 
 # =============================================================================
