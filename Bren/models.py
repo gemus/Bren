@@ -296,3 +296,61 @@ def create_completed_workout(create_dict):
         ce.variation = Variation.objects.get(id = variation['variation_id'])
         ce.element_used = Element_used.objects.filter(workout__id = workout.id).get(order = variation['order'])
         ce.save()
+
+def create_user(user_dict):
+    """expecting dictionary like
+    {
+        "user_name"     : <string>
+        "first_name"    : <string>
+        "last_name"     : <string>
+        "pin"           : <int>
+
+    *********** MAY CONTAIN ***************
+
+        "email"         : <string>
+        "phone"         : <string>
+    }
+    """
+
+    user = User()
+    user.username = user_dict['user_name']
+    user.first_name = user_dict['first_name']
+    user.last_name = user_dict['last_name']
+    user.set_password(user_dict['pin'])
+
+    if 'email' in user_dict:
+        user.email = user_dict['email']
+        
+    user.save()
+    """ if 'phone' in user_dict:
+        user.phone = user_dict['phone']"""
+
+    
+def test():
+    data = {
+        "user_name"     : "Eddie",
+        "first_name"    : "Eddie",
+        "last_name"     : "the Eagle",
+        "pin"           : "1111",
+        "email"         : "Eddie@theEagle.com",
+    }
+    create_user(data)
+    return "HAPPYNESS"    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

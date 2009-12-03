@@ -19,8 +19,11 @@ urlpatterns = patterns('',
     (r'^json_api/$', 'Crossfit.Bren.views.json_api'),
     (r'^admin/', include(admin.site.urls)),
 
-
+    # trainer stuff
     (r'^weekly_roster/(\d{4}-\d{2}-\d{2})/$', 'Crossfit.Bren.views.weekly_roster'),
+    (r'^create_user/', 'Crossfit.Bren.views.create_user'),
+    (r'^save_user/', 'Crossfit.Bren.views.save_user'),
+                           
 )
 
 if settings.DEBUG:
