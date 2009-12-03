@@ -36,7 +36,19 @@ class WorkoutForm(forms.Form):
 def workout_form(request, date_str, class_id):
     api_data = model.get_workout(date_str, class_id)
     the_form = WorkoutForm(api_data['elements'])
-    co_list = model.get_completed_workout(api_data['id'], request.user.id)["completed_workouts"]
+    ele_history = model.get_workout_element_history(request.user.id, api_data['id'])
+    co_list = model.get_completed_workout(request.user.id, api_data['id'])
+    if not 'error' in co_list:
+        for workout in co_list:
+            year = int(workout['date'][:4])
+            month = model.get_month(int(workout['date'][5:7]))
+            day = int(workout['date'][8:10])
+            workout['date'] = str(month) + " " + str(day) + " " + str(year)  
+            if workout['info']['type'] == "timed":
+                time = workout['info']['time']
+                mins = time / 60
+                secs = time % 60 
+                workout['info']['time'] = "%d:%02d" % (mins, secs)
     data = {
         'name':         api_data['name'],
         'comments':     api_data['comments'],
@@ -47,11 +59,32 @@ def workout_form(request, date_str, class_id):
         'class_id':     class_id,
         'the_form':     the_form,
         'co_list' :     co_list,
+        'ele_history':  ele_history,
     }
 
     return render_to_response('workout_form.html', data)
 
 @login_required
+
+def weekly_roster(request, date_str):
+
+    week_data = model.get_week_roster(date_str)
+    data = {
+        'date' : date_str,
+        'week_data' : week_data,
+    }
+    return render_to_response('weekly_roster.html', data)
+
+@login_required
+
+
+
+
+
+
+
+
+
 def save_workout(request):
     varient_list = []
     varient_keys = [x for x in request.POST.keys() if x[:8] == 'varient_']

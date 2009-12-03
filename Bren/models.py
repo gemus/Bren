@@ -76,7 +76,7 @@ class Completed_element(models.Model):
     element_used = models.ForeignKey(Element_used)
     variation= models.ForeignKey(Variation)
     def __unicode__(self):
-        return self.completed_workout.user.username+ ", "+self.completed_workout.workout_class.workout.name+  ", "+ self.variation.name
+        return self.completed_workout.user.username+ ", "+self.completed_workout.workout_class.workout.name+  ", "+ self.variation.name + ", " + self.element_used.element.name
 
 class UserProfile(models.Model):
     user = models.ForeignKey(User, unique=True)
@@ -146,32 +146,62 @@ def get_workout(workout_date_str, class_id):
         return return_dict
     return {"error": "No Class Found"}
 
-def get_completed_workout(workout_id, user_id):
+def get_element_history(user_id, element_id):
+    element_history = []
+    for completed_element in Completed_element.objects.filter(completed_workout__user__id = user_id, element_used__element__id = element_id).order_by('-completed_workout__workout_class__date')[:3]:
+        #year = int(completed_element.completed_workout.workout_class.date.isoformat()[:4])
+        month = get_month(int (completed_element.completed_workout.workout_class.date.isoformat()[5:7]))
+        day = int(completed_element.completed_workout.workout_class.date.isoformat()[8:10])
+        date = str(month) + " " + str(day)# + " " + str(year)
+        
+        element_history.append({
+                                "date"      : date,
+                                "workout"   : completed_element.completed_workout.workout_class.workout.name,
+                                "rounds"    : completed_element.completed_workout.workout_class.workout.rounds,
+                                "reps"      : completed_element.element_used.reps,
+                                "variation" : completed_element.variation.name,
+        })  
+
+    if len(element_history) > 0:
+        return element_history 
+    return {"error": "You has never recorded " + Element.objects.get(id = element_id).name + " Before"}
+
+def get_workout_element_history(user_id, workout_id):
+    workout_element_history = []
+    for element in Element_used.objects.filter(workout__id = workout_id):
+        workout_element_history.append({
+                                        "element" : element.element.name,
+                                        "history" : get_element_history(user_id, element.element.id),
+        })
+    return workout_element_history
+        
+
+def get_completed_workout(user_id, workout_id):
     completed_workouts = []
-    workout_type = []
-    for workouts in Completed_workout.objects.filter(workout_class__workout__id__exact= workout_id, user__id__exact=user_id):
-        completed_workouts.append({'workout' : get_workout_name(workouts.id),'date': get_workout_date(workouts.id)})
+    for workouts in Completed_workout.objects.filter(workout_class__workout__id__exact= workout_id, user__id__exact=user_id).order_by('workout_class__date'):
+        workout = {
+            'id' : workouts.id,
+            'workout' : get_workout_name(workouts.id),
+            'date': get_workout_date(workouts.id),
+            }
 
         if Workout.objects.get(id=workout_id).workout_type.name == "Timed":
-                completed_workouts.append({"Type": {"Timed": workouts.secs}})
-
+                workout.update({"info": {"type" : "timed", "time": workouts.secs}})
         if Workout.objects.get(id=workout_id).workout_type.name == "AMRAP":
-                completed_workouts.append({"Type": {"AMRAP": workouts.rounds}})
-            
+                workout.update({"info": {"type" : "AMRAP", "rounds": workouts.rounds}})
         if Workout.objects.get(id=workout_id).workout_type.name == "Done":
-                completed_workouts.append({"Type": "Done"})
+                workout.update({"info": {"type" : "Done"}})
         
-#        completed_workouts.update(workout_type)
-                
-        for completed_element in Completed_element.objects.filter(completed_workout__id__exact=workouts.id):
-            completed_workouts.append({"element": completed_element.variation.element.name , "Variation": completed_element.variation.name})
+        variations = []    
+        for completed_element in Completed_element.objects.filter(completed_workout__id__exact=workouts.id).order_by('element_used__order'):
+            variations.append({"element": completed_element.variation.element.name , "variation": completed_element.variation.name})
 
+        workout.update({"variations" : variations})
+        completed_workouts.append(workout)
     if len(completed_workouts) > 0:
-        return_dict = {
-                    "completed_workouts"       : completed_workouts,
-                  }
-        return return_dict
-    return {"error": User.objects.get(id=user_id).username + " has never done : " + Workout.objects.get(id=workout_id).name + " Before"}
+        return completed_workouts
+        
+    return {"error": "You has never done " + Workout.objects.get(id=workout_id).name + " Before"}
 
 def get_classes(date):      #Expecting string comming in as "YYYY-MM-DD"
     year = int(date[:4])                    #Formating the incomming string
@@ -192,24 +222,28 @@ def get_week_roster(date):      #Expecting string comming in as SUNDAY! as "YYYY
 
     year = int(date[:4])                    #Formating the incomming string
     month = int(date[5:7])
-    day = int(date[8:10])
-    date = datetime.date(year,month,day)
+    dday = int(date[8:10])
+    date = datetime.date(year,month,dday)
 
-    roster = []
+    while not date.weekday() == 6:
+        dday = dday - 1
+        date = datetime.date(year,month,dday)
+    days = []
     i = 0
-    while i < 6 :
-        roster.append({"Day": get_weekday(i)})
-        for workout_class in Workout_class.objects.filter(date__exact=date).distinct():
-            roster.append({"class": workout_class.class_info.title})
-            for completed_workout in Completed_workout.objects.filter(workout_class__id = workout_class.id):
-                roster.append({"user": completed_workout.user})
+    while i < 6:
+        days.append ({"day": get_weekday(i), "classes": []})
         i = i + 1
-        date = datetime.date(year,month,day+i)
-
-    return_dict = {
-            "roster": roster
-        }
-    return return_dict
+    for day in days:
+        classes = []
+        for workout_class in Workout_class.objects.filter(date = date):
+            users = []
+            for co in Completed_workout.objects.filter(workout_class__id = workout_class.id):
+                users.append({"user" : co.user.first_name})
+            classes.append({"class_name" : workout_class.class_info.title, "users" : users, "class_id" : workout_class.id})
+        dday = dday + 1
+        date = datetime.date(year,month,dday)
+        day['classes'] = classes
+    return days
 
 class Completed_workoutForm(forms.Form):
     secs = forms.IntegerField()
