@@ -95,15 +95,14 @@
 			<div class="content">
 				<span>{{co_list.error}}</span>
 				{% for workout in co_list%}
-					<div onClick="expand('texter', '{{workout.id}}')" class="mainExpand"><b>{{workout.workout}}
-						{% ifequal workout_type 'Timed' %} {{workout.info.time}} {% endifequal %}
-						{% ifequal workout_type 'AMRAP' %} {{workout.info.rounds}} rounds{% endifequal %}
-						{{workout.date}} </b><br></div>
-						<div id="{{workout.id}}" class="texter">
-							{% for variation in workout.variations%}
-								{{variation.variation}} {{variation.element}}<br>
-							{% endfor %}
-						</div>
+					{{workout.workout}}
+					{% ifequal workout_type 'Timed' %} {{workout.info.time}} {% endifequal %}
+					{% ifequal workout_type 'AMRAP' %} {{workout.info.rounds}} rounds{% endifequal %}
+
+					{{workout.date}}
+					{% for variation in workout.variations%}
+						{{variation.variation}} {{variation.element}}
+					{% endfor %}
 				{% endfor %}
 			</div>
 		</div>
