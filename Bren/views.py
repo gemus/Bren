@@ -65,7 +65,6 @@ def workout_form(request, date_str, class_id):
     return render_to_response('workout_form.html', data)
 
 @login_required
-
 def weekly_roster(request, date_str):
 
     week_data = model.get_week_roster(date_str)
@@ -76,15 +75,6 @@ def weekly_roster(request, date_str):
     return render_to_response('weekly_roster.html', data)
 
 @login_required
-
-
-
-
-
-
-
-
-
 def save_workout(request):
     varient_list = []
     varient_keys = [x for x in request.POST.keys() if x[:8] == 'varient_']
