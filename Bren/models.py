@@ -224,6 +224,10 @@ def get_week_roster(date):      #Expecting string comming in as SUNDAY! as "YYYY
     month = int(date[5:7])
     dday = int(date[8:10])
     date = datetime.date(year,month,dday)
+
+    while not date.weekday() == 6:
+        dday = dday - 1
+        date = datetime.date(year,month,dday)
     days = []
     i = 0
     while i < 6:
