@@ -81,15 +81,18 @@ def workout_form(request, date_str, class_id):
 @login_required
 
 def create_user(request):
-    data = {
-        'date' : "1",
-    }
-    return render_to_response('create_user.html', data)
+    return render_to_response('create_user.html')
 @login_required
 
 def save_user(request):
     if not request.POST['password'] == request.POST['password_again']:
-        return HttpResponse("You PINS did not match")   
+        error = { "error" : "Your PIN's did not match"}
+        return render_to_response('create_user.html',error)
+    if not model.User.objects.filter(username = str(request.POST['user_name'])).count() == 0:
+        error = { "error" : "User name is already taken"}
+        return render_to_response('create_user.html',error)
+
+    
     data = {
         "user_name"     : request.POST['user_name'],
         "first_name"    : request.POST['first_name'],
@@ -98,7 +101,7 @@ def save_user(request):
         "email"         : request.POST['email'],
     }
     model.create_user(data)
-    return HttpResponse("User Saved")
+    return render_to_response('save_user.html')
 @login_required
 
 def weekly_roster(request, date_str):
