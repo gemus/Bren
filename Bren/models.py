@@ -82,6 +82,21 @@ class UserProfile(models.Model):
     user = models.ForeignKey(User, unique=True)
 
 # -- API METHODS -------------- #
+def get_user_info(user_id):
+    user = User.objects.get(id =user_id)
+    user_dict = {
+        "username"      : user.username,
+        "first_name"    : user.first_name,
+        "last_name"     : user.last_name,
+        "email"         : user.email,
+        }
+    return user_dict
+
+def get_all_user_info():
+    user_info = []
+    for user in User.objects.all():
+        user_info.append (get_user_info(user.id))
+    return user_info
 
 def get_all_users():
     """
