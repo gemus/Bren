@@ -89,6 +89,8 @@ def get_user_info(user_id):
         "first_name"    : user.first_name,
         "last_name"     : user.last_name,
         "email"         : user.email,
+        "pin"           : 11111,
+        "pin_again"     : 11111,
         }
     return user_dict
 
@@ -156,7 +158,8 @@ def get_workout(workout_date_str, class_id):
                         "rounds"       : workout.rounds,
                         "workout_type" : workout.workout_type.name,
                         "elements"     : elements,
-                        "class_name"   : Class_info.objects.get(pk=int(class_id)).title
+                        "class_name"   : Class_info.objects.get(pk=int(class_id)).title,
+                        "workout_class": workouts[0].id,
                       }
         return return_dict
     return {"error": "No Class Found"}
@@ -315,7 +318,7 @@ def create_completed_workout(create_dict):
 def create_user(user_dict):
     """expecting dictionary like
     {
-        "user_name"     : <string>
+        "username"     : <string>
         "first_name"    : <string>
         "last_name"     : <string>
         "pin"           : <int>
@@ -326,9 +329,10 @@ def create_user(user_dict):
         "phone"         : <string>
     }
     """
+    print user_dict
 
     user = User()
-    user.username = user_dict['user_name']
+    user.username = user_dict['username']
     user.first_name = user_dict['first_name']
     user.last_name = user_dict['last_name']
     user.set_password(user_dict['pin'])
@@ -353,7 +357,15 @@ def test():
     return "HAPPYNESS"    
 
 
-
+def get_previous_variations(completed_workout_id):
+    return_dict = {}
+    completed_elements = Completed_element.objects.filter(completed_workout__id=completed_workout_id)
+    for variation in completed_elements:
+        element = "varient_" + str(variation.element_used.element.id)+ "_"+ str(variation.element_used.order)
+        variation_id = variation.variation.id
+        return_dict.update ({ element : variation_id })
+    return return_dict
+    
 
 
 

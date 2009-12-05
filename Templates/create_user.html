@@ -28,7 +28,11 @@
 			width:150px;
 		}
 
-
+			div#input_container {
+			width: 255px
+			
+		}
+			
 			div#page_container {
 			float: left;
 			width: 1000px;
@@ -43,7 +47,6 @@
 			margin-left:auto; 
 			margin-right:auto;
 			line-height:175%
-			cellspacing="10"
 		}
 	
 
@@ -57,11 +60,11 @@
 			<h1>Welcome to the create user page</h1><br>
 		</div>
 
-		<div style=" margin:0 auto; text-align:center;">
+		<div style=" margin:0 auto; text-align:right;">
 		<table class="center">
 			<td>
 				<form action= "/save_user/" method="post">
-				User name:<br>
+				User Name:<br>
 				First name:<br>
 				Last name:<br>
 				PIN:<br>
@@ -70,12 +73,12 @@
 			</td>		
 		
 			<td>
-					<input type="text" name="user_name" /><br>
-					<input type="text" name="first_name" /><br>
-					<input type="text" name="last_name" /><br>
-					<input type="text" name="password" /><br>
-					<input type="text" name="password_again" /><br>
-					<input type="text" name="email" /><br>		
+					{{create_form.username}}<br>
+					{{create_form.first_name}}<br>
+					{{create_form.last_name}}<br>
+					{{create_form.pin}}<br>
+					{{create_form.pin_again}}<br>
+					{{create_form.email}}<br>		
 			</td>
 		</table>
 		</div>
@@ -83,8 +86,8 @@
 	<div style="text-align: center; margin-top: 20px;">
 			<button type="submit" class="save_button">Create User</button>
 		</div>
-{{error}}
-
+{{pin_error}}<br>
+{{username_error}}
 </form> 
 </body>
 </html>

@@ -31,7 +31,6 @@ class WorkoutForm(forms.Form):
         for field_dict in elements:
             # In the style of 'varient_<element_id>_<order_num>'
             field_id = "varient_%d_%d" % (field_dict['element']['id'], field_dict['order'])
-
             field = forms.ChoiceField()
             field.choices = [ (varient['id'], varient['name']) for varient in field_dict['element']['variations']]
             field.label = "%d %s" % (field_dict['reps'], field_dict['element']['name'])
@@ -41,7 +40,19 @@ class WorkoutForm(forms.Form):
 @login_required
 def workout_form(request, date_str, class_id):
     api_data = model.get_workout(date_str, class_id)
-    the_form = WorkoutForm(api_data['elements'])
+
+    days_workout = model.Completed_workout.objects.filter(user__id = request.user.id, workout_class__id = api_data['workout_class'])
+    if not len(days_workout) == 0:
+        previous_data = model.get_previous_variations(days_workout[0].id)
+        the_form = WorkoutForm(api_data['elements'], previous_data)
+    else:
+        previous_workouts = model.Completed_workout.objects.filter(workout_class__workout__id = api_data['id'], user__id = request.user.id).order_by('-workout_class__date')
+        if not len(previous_workouts) == 0:
+            previous_data = model.get_previous_variations(previous_workouts[0].id)
+            the_form = WorkoutForm(api_data['elements'], previous_data)
+        else:
+            the_form = WorkoutForm(api_data['elements'])   
+         
     ele_history = model.get_workout_element_history(request.user.id, api_data['id'])
     co_list = model.get_completed_workout(request.user.id, api_data['id'])
 
@@ -77,27 +88,48 @@ def workout_form(request, date_str, class_id):
     }
 
     return render_to_response('workout_form.html', data)
+"""
+@login_required
+"""
+class create_user_form(forms.Form):
+    username = forms.CharField()
+    first_name = forms.CharField()
+    last_name = forms.CharField()
+    pin = forms.IntegerField()
+    pin_again = forms.IntegerField()
+    email = forms.EmailField()
 
 @login_required
 
 def create_user(request):
-    return render_to_response('create_user.html')
+    """test = {
+        'username' : "wade",
+        'first_name': "Wade",
+        'last_name' : "Hirschfield",
+        'pin' : 12345,
+        'pin_again' : 12345,
+        'email' : "try@email.com",
+        }"""
+    test = model.get_user_info(5)
+    form = create_user_form(test)
+    data = {
+        "create_form" : form,
+        }
+    return render_to_response('create_user.html', data)
 @login_required
 
 def save_user(request):
-    if not request.POST['password'] == request.POST['password_again']:
-        error = { "error" : "Your PIN's did not match"}
-        return render_to_response('create_user.html',error)
-    if not model.User.objects.filter(username = str(request.POST['user_name'])).count() == 0:
-        error = { "error" : "User name is already taken"}
-        return render_to_response('create_user.html',error)
-
-    
+    if not request.POST['pin'] == request.POST['pin_again']:
+        pin_error = { "pin_error" : "Your PIN's did not match"}
+        return render_to_response('create_user.html',pin_error)
+    if not model.User.objects.filter(username = str(request.POST['username'])).count() == 0:
+        username_error = { "username_error" : "User name is already taken"}
+        return render_to_response('create_user.html',username_error)    
     data = {
-        "user_name"     : request.POST['user_name'],
+        "username"     : request.POST['username'],
         "first_name"    : request.POST['first_name'],
         "last_name"     : request.POST['last_name'],
-        "pin"           : request.POST['password'],
+        "pin"           : request.POST['pin'],
         "email"         : request.POST['email'],
     }
     model.create_user(data)
