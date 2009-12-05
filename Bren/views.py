@@ -51,7 +51,8 @@ def workout_form(request, date_str, class_id):
             previous_data = model.get_previous_variations(previous_workouts[0].id)
             the_form = WorkoutForm(api_data['elements'], previous_data)
         else:
-            the_form = WorkoutForm(api_data['elements'])   
+            previous_data = model.get_workout_estimation(request.user.id, api_data['id'])
+            the_form = WorkoutForm(api_data['elements'], previous_data)   
          
     ele_history = model.get_workout_element_history(request.user.id, api_data['id'])
     co_list = model.get_completed_workout(request.user.id, api_data['id'])

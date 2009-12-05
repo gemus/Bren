@@ -173,11 +173,12 @@ def get_element_history(user_id, element_id):
         date = str(month) + " " + str(day)# + " " + str(year)
         
         element_history.append({
-                                "date"      : date,
-                                "workout"   : completed_element.completed_workout.workout_class.workout.name,
-                                "rounds"    : completed_element.completed_workout.workout_class.workout.rounds,
-                                "reps"      : completed_element.element_used.reps,
-                                "variation" : completed_element.variation.name,
+                                "date"          : date,
+                                "workout"       : completed_element.completed_workout.workout_class.workout.name,
+                                "rounds"        : completed_element.completed_workout.workout_class.workout.rounds,
+                                "reps"          : completed_element.element_used.reps,
+                                "variation"     : completed_element.variation.name,
+                                "variationn_id" : completed_element.variation.id,
         })  
 
     if len(element_history) > 0:
@@ -329,8 +330,6 @@ def create_user(user_dict):
         "phone"         : <string>
     }
     """
-    print user_dict
-
     user = User()
     user.username = user_dict['username']
     user.first_name = user_dict['first_name']
@@ -344,19 +343,6 @@ def create_user(user_dict):
     """ if 'phone' in user_dict:
         user.phone = user_dict['phone']"""
 
-    
-def test():
-    data = {
-        "user_name"     : "Eddie",
-        "first_name"    : "Eddie",
-        "last_name"     : "the Eagle",
-        "pin"           : "1111",
-        "email"         : "Eddie@theEagle.com",
-    }
-    create_user(data)
-    return "HAPPYNESS"    
-
-
 def get_previous_variations(completed_workout_id):
     return_dict = {}
     completed_elements = Completed_element.objects.filter(completed_workout__id=completed_workout_id)
@@ -366,7 +352,22 @@ def get_previous_variations(completed_workout_id):
         return_dict.update ({ element : variation_id })
     return return_dict
     
-
+def get_workout_estimation(user_id, workout_id):
+    return_dict = {}
+    elements_used = Element_used.objects.filter(workout__id = workout_id)
+    for elements in elements_used:
+        element_history = get_element_history(user_id, elements.element.id) 
+        if not 'error' in element_history:
+            element = "varient_" + str(elements.element.id)+ "_" + str(elements.order)
+            variation_id = element_history[0]['variationn_id']
+        else:
+            element = "varient_" + str(elements.element.id)+ "_" + str(elements.order)
+            variation_id = Variation.objects.filter(element__id = elements.element.id)[0].id
+        return_dict.update ({ element : variation_id })
+        
+    return return_dict
+    
+    
 
 
 
