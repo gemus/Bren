@@ -61,6 +61,17 @@
 		$("#defualt_date").addClass('invisible');
 		$("#date_class_picker").removeClass('invisible');
 
+		$("#topHeader").animate({
+			paddingTop: "10px"
+		}, 500 );
+
+		$("#date_class_picker").animate({
+			paddingTop: "8px",
+			paddingBottom: "8px",
+		}, 500 );
+
+
+
 	}
 	</script>
 
@@ -99,7 +110,10 @@
 		}
 
 		div#date_class_picker {
-			padding: 15px;
+			padding: 0pt 15px;
+			background-color: #ccc;
+			border-bottom: 2px solid #3C5F7F;
+			margin-bottom: 5px;
 		}
 
 		label {
@@ -130,12 +144,12 @@
 		{{ cur_date_str }} ~ {{ last_class_title }} Class <br>
 		<a href="javascript:void(0)" onclick="showDateClassPickers()">Change Date / Class </a>
 	</div>
-	<h1>Welcome {{ display_name }}</h1>
+	<h1 id="topHeader">Welcome {{ display_name }}</h1>
 	<div id="date_class_picker" class="invisible">
-		<label for="date_picker">Select Date:</label>
+		<label for="date_picker">Date:</label>
 		<input style="width: 200px" id="date_picker" type="text" />
 
-		<label style="margin-left: 45px;" for="class_picker">Select Class:</label>
+		<label style="margin-left: 45px;" for="class_picker">Class:</label>
 		<select name="class_picker" id="class_picker">
 			<option value="no_date">Please Select A Date</option>
 		</select>
