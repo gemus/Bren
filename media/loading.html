@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<link rel="stylesheet" type="text/css" href="css/global.css">
+	<script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
+	
+	<title>Loading</title>
+	
+	<style type="text/css" media="screen">
+		h1 {
+			text-align: center;
+			margin-top: 200px;
+			margin-bottom: 10px;
+			font-size: 250%;
+			color: #FFF;
+			font-weight: bold;
+		}
+		body {
+			background-color: #3C5F7F;
+		}
+		div {
+			border: 2px solid #FFF;
+			width: 50%;
+			margin: 0pt auto;
+		}
+		span {
+			background-color: #FFF;
+			display: block;
+			width: 1%;
+		}
+	</style>
+	<script type="text/javascript" charset="utf-8">
+		$(document).ready(function() {
+			var seconds = 5;
+			
+			var animationComplete = function() {
+				window.location = "http://localhost:8000/"
+			}
+			
+			$("#loadingBar").animate({
+				width: "100%",
+			}, seconds*1000, "swing", animationComplete );
+			
+			
+		});
+	
+		
+	</script>
+</head>
+<body>
+	<h1>Starting Up... Please Wait</h1>
+	<div><span id="loadingBar">&nbsp;</span></div>
+</body>
+</html>
