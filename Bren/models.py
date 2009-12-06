@@ -187,11 +187,18 @@ def get_element_history(user_id, element_id):
 
 def get_workout_element_history(user_id, workout_id):
     workout_element_history = []
+    i = 0
     for element in Element_used.objects.filter(workout__id = workout_id):
+        history = get_element_history(user_id, element.element.id)
+        if not 'error' in history:
+            last_variation = history[0]['variation']
+        else:
+            last_variation = "No record"
         workout_element_history.append({
                                         "element" : element.element.name,
-                                        "history" : get_element_history(user_id, element.element.id),
-        })
+                                        "history" : history,
+                                        "last_variation" : last_variation, 
+                                        })
     return workout_element_history
         
 
@@ -256,7 +263,7 @@ def get_week_roster(date):      #Expecting string comming in as SUNDAY! as "YYYY
         date = date - datedelta
     days = []
     i = 0
-    while i < 6:
+    while i <= 6:
         days.append ({"day": get_weekday(i), "classes": []})
         i = i + 1
     for day in days:
