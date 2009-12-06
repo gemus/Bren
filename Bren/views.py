@@ -58,23 +58,15 @@ def workout_form(request, date_str, class_id):
     co_list = model.get_completed_workout(request.user.id, api_data['id'])
 
     for workout in co_list:
-        # Wade... it's elementry. Convert it to a date, then use the date formatting functions
         OUTPUT_FORMAT = "%B %d, %Y" # December 1, 2009
         workout_date = datetime.datetime.strptime(workout['date'], model.DATE_FORMAT)
         workout['date'] = workout_date.strftime(OUTPUT_FORMAT).replace(' 0', ' ')
-
-        #print workout
-        #year = int(workout['date'][:4])
-        #month = model.get_month(int(workout['date'][5:7]))
-        #day = int(workout['date'][8:10])
-        #workout['date'] = str(month) + " " + str(day) + " " + str(year)
 
         if workout['info']['type'] == "Timed":
             time = workout['info']['time']
             mins = time / 60
             secs = time % 60
             workout['info']['time'] = "%d:%02d" % (mins, secs)
-
     data = {
         'name':         api_data['name'],
         'comments':     api_data['comments'],
@@ -103,16 +95,7 @@ class create_user_form(forms.Form):
 @login_required
 
 def create_user(request):
-    """test = {
-        'username' : "wade",
-        'first_name': "Wade",
-        'last_name' : "Hirschfield",
-        'pin' : 12345,
-        'pin_again' : 12345,
-        'email' : "try@email.com",
-        }"""
-    test = model.get_user_info(5)
-    form = create_user_form(test)
+    form = create_user_form()
     data = {
         "create_form" : form,
         }

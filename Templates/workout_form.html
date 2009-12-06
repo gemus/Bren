@@ -191,7 +191,7 @@
 			<h3>Element History:</h3>
 			<div class="content">
 				{% for element in ele_history %}
-				<div onClick="expand('texter', '{{element.element}}')" class="mainExpand"><b>{{element.element}}:</b></div>
+				<div onClick="expand('texter', '{{element.element}}')" class="mainExpand"><b>{{element.element}} : </b> {{element.last_variation}}</div>
 				<div id="{{element.element}}" class="texter">
 					{{element.history.error}}
 					{% for history in element.history %}
