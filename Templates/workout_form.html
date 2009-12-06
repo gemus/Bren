@@ -123,6 +123,18 @@
 		th {
 			text-align: left;
 		}
+
+		div.mainExpand { cursor: pointer; }
+
+		div.texter { margin-bottom: 10px; }
+
+		div.texter div {
+			border-bottom: 1px solid #ccc;
+			padding: 5px 0pt 2px;
+			margin-left: 15px;
+			font-size: 80%;
+		}
+
 	</style>
 </head>
 <body>
@@ -195,7 +207,7 @@
 				<div id="{{element.element}}" class="texter">
 					{{element.history.error}}
 					{% for history in element.history %}
-								{% if history.date %} {{history.variation}} {{element.element}} {{history.rounds}} rounds of {{history.reps}} <br> {% endif %}
+								{% if history.date %} <div> {{history.variation}} {{element.element}} {{history.rounds}} rounds of {{history.reps}} </div> {% endif %}
 					{% endfor %}
 				</div>
 				{% endfor %}
