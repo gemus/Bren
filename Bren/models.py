@@ -190,10 +190,14 @@ def get_workout_element_history(user_id, workout_id):
     i = 0
     for element in Element_used.objects.filter(workout__id = workout_id):
         history = get_element_history(user_id, element.element.id)
+        if not 'error' in history:
+            last_variation = history[0]['variation']
+        else:
+            last_variation = "No record"
         workout_element_history.append({
                                         "element" : element.element.name,
                                         "history" : history,
-                                        "last_variation" : history[0]['variation'], 
+                                        "last_variation" : last_variation, 
                                         })
     return workout_element_history
         
