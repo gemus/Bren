@@ -169,7 +169,10 @@ def save_workout(request):
 
 @login_required
 def no_workout_found(request, date, *args):
-    return render_to_response('no_workout_found.html', {"date": date})
+    OUTPUT_FORMAT = "%A %B %d, %Y" # December 1, 2009
+    the_date = datetime.datetime.strptime(date, model.DATE_FORMAT)
+    the_date = the_date.strftime(OUTPUT_FORMAT).replace(' 0', ' ')
+    return render_to_response('no_workout_found.html', {"date": the_date})
 
 # =============================================================================
 # = APU Endpoint ==============================================================

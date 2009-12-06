@@ -1,0 +1,155 @@
+from django.contrib.auth.models import User
+
+user=User.objects.create_user('storios','foo@bar.com', 'somepassword')
+user.first_name='Storios'; user.last_name='Inaeutia'
+user.save()
+user=User.objects.create_user('ackaos','foo@bar.com', 'somepassword')
+user.first_name='Ackaos'; user.last_name='Thilios'
+user.save()
+user=User.objects.create_user('sopeos','foo@bar.com', 'somepassword')
+user.first_name='Sopeos'; user.last_name='Lisios'
+user.save()
+user=User.objects.create_user('ruyios','foo@bar.com', 'somepassword')
+user.first_name='Ruyios'; user.last_name='Reykios'
+user.save()
+user=User.objects.create_user('slelaos','foo@bar.com', 'somepassword')
+user.first_name='Slelaos'; user.last_name='Traytios'
+user.save()
+user=User.objects.create_user('driajios','foo@bar.com', 'somepassword')
+user.first_name='Driajios'; user.last_name='Honoios'
+user.save()
+user=User.objects.create_user('davuos','foo@bar.com', 'somepassword')
+user.first_name='Davuos'; user.last_name='Hinoios'
+user.save()
+user=User.objects.create_user('cathyios','foo@bar.com', 'somepassword')
+user.first_name='Cathyios'; user.last_name='Veruos'
+user.save()
+user=User.objects.create_user('kalitia','foo@bar.com', 'somepassword')
+user.first_name='Kalitia'; user.last_name='Vesatia'
+user.save()
+user=User.objects.create_user('lyeetia','foo@bar.com', 'somepassword')
+user.first_name='Lyeetia'; user.last_name='Tanoos'
+user.save()
+user=User.objects.create_user('sayitia','foo@bar.com', 'somepassword')
+user.first_name='Sayitia'; user.last_name='Tinatia'
+user.save()
+user=User.objects.create_user('sametia','foo@bar.com', 'somepassword')
+user.first_name='Sametia'; user.last_name='Checios'
+user.save()
+user=User.objects.create_user('berios','foo@bar.com', 'somepassword')
+user.first_name='Berios'; user.last_name='Aldios'
+user.save()
+user=User.objects.create_user('seemios','foo@bar.com', 'somepassword')
+user.first_name='Seemios'; user.last_name='Saeyios'
+user.save()
+user=User.objects.create_user('poloeos','foo@bar.com', 'somepassword')
+user.first_name='Poloeos'; user.last_name='Maihios'
+user.save()
+user=User.objects.create_user('athoos','foo@bar.com', 'somepassword')
+user.first_name='Athoos'; user.last_name='Umaos'
+user.save()
+user=User.objects.create_user('reusios','foo@bar.com', 'somepassword')
+user.first_name='Reusios'; user.last_name='Zoinios'
+user.save()
+user=User.objects.create_user('salios','foo@bar.com', 'somepassword')
+user.first_name='Salios'; user.last_name='Cliadaios'
+user.save()
+user=User.objects.create_user('iaoos','foo@bar.com', 'somepassword')
+user.first_name='Iaoos'; user.last_name='Natoios'
+user.save()
+user=User.objects.create_user('phiheios','foo@bar.com', 'somepassword')
+user.first_name='Phiheios'; user.last_name='Laikaios'
+user.save()
+user=User.objects.create_user('kalyos','foo@bar.com', 'somepassword')
+user.first_name='Kalyos'; user.last_name='Thoutuios'
+user.save()
+user=User.objects.create_user('engautia','foo@bar.com', 'somepassword')
+user.first_name='Engautia'; user.last_name='Inaoos'
+user.save()
+user=User.objects.create_user('lereyos','foo@bar.com', 'somepassword')
+user.first_name='Lereyos'; user.last_name='Quaos'
+user.save()
+user=User.objects.create_user('kaletia','foo@bar.com', 'somepassword')
+user.first_name='Kaletia'; user.last_name='Stroofios'
+user.save()
+user=User.objects.create_user('tocios','foo@bar.com', 'somepassword')
+user.first_name='Tocios'; user.last_name='Esseos'
+user.save()
+user=User.objects.create_user('samios','foo@bar.com', 'somepassword')
+user.first_name='Samios'; user.last_name='Honieos'
+user.save()
+user=User.objects.create_user('kipios','foo@bar.com', 'somepassword')
+user.first_name='Kipios'; user.last_name='Ustoos'
+user.save()
+user=User.objects.create_user('ageaetia','foo@bar.com', 'somepassword')
+user.first_name='Ageaetia'; user.last_name='Vesetia'
+user.save()
+user=User.objects.create_user('skelios','foo@bar.com', 'somepassword')
+user.first_name='Skelios'; user.last_name='Choseios'
+user.save()
+user=User.objects.create_user('ardotia','foo@bar.com', 'somepassword')
+user.first_name='Ardotia'; user.last_name='Emaios'
+user.save()
+user=User.objects.create_user('oruios','foo@bar.com', 'somepassword')
+user.first_name='Oruios'; user.last_name='Maedoios'
+user.save()
+user=User.objects.create_user('perouos','foo@bar.com', 'somepassword')
+user.first_name='Perouos'; user.last_name='Anaos'
+user.save()
+user=User.objects.create_user('bliagios','foo@bar.com', 'somepassword')
+user.first_name='Bliagios'; user.last_name='Vesaios'
+user.save()
+user=User.objects.create_user('delaos','foo@bar.com', 'somepassword')
+user.first_name='Delaos'; user.last_name='Rothoitia'
+user.save()
+user=User.objects.create_user('asuios','foo@bar.com', 'somepassword')
+user.first_name='Asuios'; user.last_name='Waraos'
+user.save()
+user=User.objects.create_user('whajios','foo@bar.com', 'somepassword')
+user.first_name='Whajios'; user.last_name='Bukaos'
+user.save()
+user=User.objects.create_user('snemeios','foo@bar.com', 'somepassword')
+user.first_name='Snemeios'; user.last_name='Ackoeos'
+user.save()
+user=User.objects.create_user('tajios','foo@bar.com', 'somepassword')
+user.first_name='Tajios'; user.last_name='Sayaos'
+user.save()
+user=User.objects.create_user('radietia','foo@bar.com', 'somepassword')
+user.first_name='Radietia'; user.last_name='Vesuios'
+user.save()
+user=User.objects.create_user('kaloos','foo@bar.com', 'somepassword')
+user.first_name='Kaloos'; user.last_name='Isseytia'
+user.save()
+user=User.objects.create_user('whikios','foo@bar.com', 'somepassword')
+user.first_name='Whikios'; user.last_name='Kinatia'
+user.save()
+user=User.objects.create_user('quavios','foo@bar.com', 'somepassword')
+user.first_name='Quavios'; user.last_name='Tiatia'
+user.save()
+user=User.objects.create_user('doilios','foo@bar.com', 'somepassword')
+user.first_name='Doilios'; user.last_name='Fusuos'
+user.save()
+user=User.objects.create_user('citoios','foo@bar.com', 'somepassword')
+user.first_name='Citoios'; user.last_name='Esseos'
+user.save()
+user=User.objects.create_user('mumios','foo@bar.com', 'somepassword')
+user.first_name='Mumios'; user.last_name='Omutia'
+user.save()
+user=User.objects.create_user('chreegaios','foo@bar.com', 'somepassword')
+user.first_name='Chreegaios'; user.last_name='Rayaos'
+user.save()
+user=User.objects.create_user('tanieos','foo@bar.com', 'somepassword')
+user.first_name='Tanieos'; user.last_name='Neesios'
+user.save()
+user=User.objects.create_user('dayzios','foo@bar.com', 'somepassword')
+user.first_name='Dayzios'; user.last_name='Engetia'
+user.save()
+user=User.objects.create_user('uskeos','foo@bar.com', 'somepassword')
+user.first_name='Uskeos'; user.last_name='Vesotia'
+user.save()
+user=User.objects.create_user('eldeytia','foo@bar.com', 'somepassword')
+user.first_name='Eldeytia'; user.last_name='Ghaeeos'
+user.save()
+user=User.objects.create_user('whepyios','foo@bar.com', 'somepassword')
+user.first_name='Whepyios'; user.last_name='Dareutia'
+user.save()
