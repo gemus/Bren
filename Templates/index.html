@@ -55,6 +55,8 @@
 		var dateStr = year+"-"+month+"-"+day;
 		$("#date_picker").val(dateStr);
 		dateChangedFunc();
+
+		if ({{ last_class_id }} == -1) showDateClassPickers();
 	});
 
 	var showDateClassPickers = function() {

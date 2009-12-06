@@ -12,11 +12,11 @@ from django.contrib.auth.decorators import login_required
 
 @login_required
 def index(request):
-    last_class = model.get_last_attended_class(request.user.id)
+    last_class = model.get_last_attended_class(request.user.id) or {}
 
     data = {'display_name': "%s %s" % (request.user.first_name, request.user.last_name),
-            'last_class_id' : last_class['id'],
-            'last_class_title' : last_class['title'],
+            'last_class_id' : last_class.get('id', -1),
+            'last_class_title' : last_class.get('title', ""),
             'cur_date_str': datetime.datetime.now().strftime("%A %B %d %Y").replace(' 0', ' ')}
     return render_to_response('index.html', data)
 
