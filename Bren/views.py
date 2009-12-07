@@ -163,6 +163,9 @@ def save_workout(request):
         workout_rounds = 0
         time_parts = request.POST.get('workout_time').split(":")
         workout_time = int(time_parts[0]) * 60 + int(time_parts[1])
+    elif workout_type == "Done":
+        workout_rounds = 0
+        workout_time = 0
 
     # Basic Information
     date_str = request.POST.get('date_str')
