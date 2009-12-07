@@ -19,7 +19,7 @@
 		$(document).ready(function() {
 			{% if initial_time_reps %}
 				$("#workout_time").numPadInput(true, "0:00", false, true, "{{ initial_time_reps }}" );
-				$("#workout_reps").numPadInput();
+				$("#workout_reps").numPadInput(false, "0", false, true, "{{ initial_time_reps }}" );
 			{% else %}
 				$("#workout_time").numPadInput(true);
 				$("#workout_reps").numPadInput();
