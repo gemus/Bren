@@ -76,7 +76,6 @@
 		}
 
 		input.numbad_input {
-			width: 120px;
 			border: 1px solid #3C5F7F;
 			font-size: 150%;
 			color: #333;
@@ -165,12 +164,12 @@
 					<tr>
 						<td></td>
 						<td align="right">{% ifequal workout_type 'AMRAP' %}
-						<label for="workout_reps">Rounds:</strong>
-						<input type="text" name="workout_reps" value="" id="workout_reps" class="numbad_input">
+						<label for="workout_reps">Rounds:</label>
+						<input style="width: 80px;" type="text" name="workout_reps" value="" id="workout_reps" class="numbad_input">
 						{% endifequal %}
 						{% ifequal workout_type 'Timed' %}
 						<label for="workout_time">Time:</label>
-						<input type="text" name="workout_time" value="" id="workout_time" class="numbad_input">
+						<input style="width: 120px;" type="text" name="workout_time" value="" id="workout_time" class="numbad_input">
 						{% endifequal %}
 						</td>
 					</tr>
