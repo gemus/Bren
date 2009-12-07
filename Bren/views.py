@@ -64,8 +64,8 @@ def workout_form(request, date_str, class_id):
             the_form = WorkoutForm(api_data['elements'], previous_data)
         else:
             previous_data = model.get_workout_estimation(request.user.id, api_data['id'])
-            the_form = WorkoutForm(api_data['elements'], previous_data)   
-         
+            the_form = WorkoutForm(api_data['elements'], previous_data)
+
     ele_history = model.get_workout_element_history(request.user.id, api_data['id'])
     co_list = model.get_completed_workout(request.user.id, api_data['id'])
 
@@ -122,7 +122,7 @@ def save_user(request):
         return render_to_response('create_user.html',pin_error)
     if not model.User.objects.filter(username = str(request.POST['username'])).count() == 0:
         username_error = { "username_error" : "User name is already taken"}
-        return render_to_response('create_user.html',username_error)    
+        return render_to_response('create_user.html',username_error)
     data = {
         "username"     : request.POST['username'],
         "first_name"    : request.POST['first_name'],
@@ -182,7 +182,9 @@ def save_workout(request):
 
     model.create_completed_workout(save_dict);
 
-    return render_to_response('save_workout.html')
+    HTTP_REFERER = request.META['HTTP_REFERER']
+
+    return render_to_response('save_workout.html', {'HTTP_REFERER': HTTP_REFERER})
 
 @login_required
 def no_workout_found(request, date, *args):
