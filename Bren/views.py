@@ -40,11 +40,23 @@ class WorkoutForm(forms.Form):
 @login_required
 def workout_form(request, date_str, class_id):
     api_data = model.get_workout(date_str, class_id)
+    initial_time_reps = None
 
     days_workout = model.Completed_workout.objects.filter(user__id = request.user.id, workout_class__id = api_data['workout_class'])
     if not len(days_workout) == 0:
         previous_data = model.get_previous_variations(days_workout[0].id)
         the_form = WorkoutForm(api_data['elements'], previous_data)
+
+        the_workout = days_workout[0]
+        workout_type = the_workout.workout_class.workout.workout_type.name
+        if workout_type == "Timed":
+            time = the_workout.secs
+            mins = time / 60
+            secs = time % 60
+            initial_time_reps = "%d:%02d" % (mins, secs)
+        elif workout_type == "AMRAP":
+            initial_time_reps = the_workout.rounds
+
     else:
         previous_workouts = model.Completed_workout.objects.filter(workout_class__workout__id = api_data['id'], user__id = request.user.id).order_by('-workout_class__date')
         if not len(previous_workouts) == 0:
@@ -67,6 +79,7 @@ def workout_form(request, date_str, class_id):
             mins = time / 60
             secs = time % 60
             workout['info']['time'] = "%d:%02d" % (mins, secs)
+
     data = {
         'name':         api_data['name'],
         'comments':     api_data['comments'],
@@ -78,6 +91,7 @@ def workout_form(request, date_str, class_id):
         'the_form':     the_form,
         'co_list' :     co_list,
         'ele_history':  ele_history,
+        'initial_time_reps': initial_time_reps,
     }
 
     return render_to_response('workout_form.html', data)

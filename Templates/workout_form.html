@@ -17,9 +17,13 @@
 
 	<script type="text/javascript" charset="utf-8">
 		$(document).ready(function() {
-			$("#workout_time").numPadInput(true);
-			$("#workout_reps").numPadInput();
-
+			{% if initial_time_reps %}
+				$("#workout_time").numPadInput(true, "0:00", false, true, "{{ initial_time_reps }}" );
+				$("#workout_reps").numPadInput();
+			{% else %}
+				$("#workout_time").numPadInput(true);
+				$("#workout_reps").numPadInput();
+			{% endif %}
 		});
 	</script>
 	<style type="text/css" media="screen">

@@ -221,7 +221,7 @@ def get_completed_workout(user_id, workout_id):
         if type_name == "Timed":
             type_value = {"type" : "Timed", "time": workouts.secs}
         elif type_name == "AMRAP":
-            type_value = {"type" : "AMRAP", "time": workouts.rounds}
+            type_value = {"type" : "AMRAP", "rounds": workouts.rounds}
         else:
             type_value = {"type" : "Done"}
         workout.update({"info": type_value})

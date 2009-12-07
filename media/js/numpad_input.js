@@ -1,7 +1,6 @@
-jQuery.fn.numPadInput = function(isTime, clearValue, alwaysShow, showOK) {
+jQuery.fn.numPadInput = function(isTime, clearValue, alwaysShow, showOK, initialValue) {
     // Create a numpad for an input field.
     // isTime <bool> : Weather to display at time. Eg. 0:15
-
     if (clearValue == undefined) {
         if (isTime) {
             clearValue = "0:00";
@@ -32,8 +31,12 @@ jQuery.fn.numPadInput = function(isTime, clearValue, alwaysShow, showOK) {
             $("#"+num_pad_id).removeClass("invisible");
             is_open = true;
         }
-        var clearField = function() {
-            $("#"+input_field_id).val(clearValue);
+        var clearField = function(override_clearValue) {
+            if (override_clearValue != undefined ) {
+                $("#"+input_field_id).val(override_clearValue);
+            } else {
+                $("#"+input_field_id).val(clearValue);
+            }
         }
         var addNumber = function(number) {
             var theVal = $("#"+input_field_id).val();
@@ -54,7 +57,7 @@ jQuery.fn.numPadInput = function(isTime, clearValue, alwaysShow, showOK) {
         }
 
         $("#"+input_field_id).addClass("numpad_input_field");
-        clearField();
+        clearField(initialValue);
 
         // ====================================
         // = When the User Focus On The Input =
