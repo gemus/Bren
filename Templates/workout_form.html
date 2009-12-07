@@ -192,13 +192,13 @@
 			<div class="content">
 				{% for workout in co_list%}
 					<div>
-						<div style="float: left; margin-right: 5px;">
+						<div style="float: left; margin-right: 5px;" onClick="expand('previous_history_collapse', 'previous_history_collapse_{{workout.id}}')">
 							<strong style="margin-right: 5px;">{% ifequal workout_type 'Timed' %} {{workout.info.time}} {% endifequal %}
 							{% ifequal workout_type 'AMRAP' %} {{workout.info.rounds}} rounds{% endifequal %}</strong>
 						</div>
 						<div style="float: left;">
-							{{workout.date}}
-							<table class="co_variations">
+							<span onClick="expand('previous_history_collapse', 'previous_history_collapse_{{workout.id}}')">{{workout.date}}</span>
+							<table class="co_variations previous_history_collapse" id="previous_history_collapse_{{workout.id}}" style="display: none;">
 							{% for variation in workout.variations%}
 								<tr><td>{{variation.variation}}</td><td><span>{{variation.element}}<span></td></tr></div>
 							{% endfor %}
