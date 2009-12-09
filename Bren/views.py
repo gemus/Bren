@@ -79,13 +79,13 @@ def workout_form(request, date_str, class_id):
             mins = time / 60
             secs = time % 60
             workout['info']['time'] = "%d:%02d" % (mins, secs)
-
     data = {
         'name':         api_data['name'],
         'comments':     api_data['comments'],
         'workout_type': api_data['workout_type'],
         'class_name':   api_data['class_name'],
         'rounds':       api_data['rounds'],
+        'user_id' :     request.user.id,
         'date_str':     date_str,
         'class_id':     class_id,
         'the_form':     the_form,
@@ -192,6 +192,20 @@ def no_workout_found(request, date, *args):
     the_date = datetime.datetime.strptime(date, model.DATE_FORMAT)
     the_date = the_date.strftime(OUTPUT_FORMAT).replace(' 0', ' ')
     return render_to_response('no_workout_found.html', {"date": the_date})
+
+
+@login_required
+def full_element_history(request, user_id, element_id):
+    full_history = model.get_full_element_history(user_id, element_id)
+    
+    data = {
+        "full_history" : full_history,
+       }
+    
+    return render_to_response('full_element_history.html', data)
+
+
+
 
 # =============================================================================
 # = APU Endpoint ==============================================================

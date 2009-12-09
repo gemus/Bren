@@ -23,6 +23,9 @@ urlpatterns = patterns('',
     (r'^weekly_roster/(\d{4}-\d{2}-\d{2})/$', 'Crossfit.Bren.views.weekly_roster'),
     (r'^create_user/', 'Crossfit.Bren.views.create_user'),
     (r'^save_user/', 'Crossfit.Bren.views.save_user'),
+
+    # Development stuff
+    (r'^full_element_history/(?P<user_id>\d+)/(?P<element_id>\d+)/$', 'Crossfit.Bren.views.full_element_history'),
                            
 )
 

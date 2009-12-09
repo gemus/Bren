@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>Crossfit DPL</title>
+	<link rel="stylesheet" type="text/css" href="/site_media/css/reset-min.css">
+	<link rel="stylesheet" type="text/css" href="/site_media/css/global.css">
+
+	<link type="text/css" href="/site_media/css/redmond/jquery-ui-1.7.2.custom.css" rel="stylesheet" />
+	<script type="text/javascript" src="/site_media/js/jquery-1.3.2.min.js"></script>
+	<script type="text/javascript" src="/site_media/js/jquery-ui-1.7.2.custom.min.js"></script>
+	<style type="text/css" media="screen">
+		h1 {
+			font-size: 250%;
+			color: #3C5F7F;
+			font-weight: bold;
+		}
+
+	</style>
+</head>
+<body>
+{{back_url}}
+<h1>{{full_history.element_name}} History for {{full_history.user_name}}</h1><br>
+You have done {{full_history.total}} {{full_history.element_name}}<br><br>
+			{% for variation in full_history.element_history%}
+				<b>{{variation.variation_name}}</b> <br>
+				Total : {{variation.count}}<br>
+				First time: {{variation.first.date}} {{variation.first.rounds}} rounds of {{variation.first.reps}} ({{variation.first.workout}})<br><br>
+				Variation History:<br>
+					{% for history in variation.variation_history%}
+						{{history.date}} {{history.rounds}} rounds of {{history.reps}}<br>
+
+					{%endfor%}
+				<br><br>
+			{%endfor%}
+
+<a href="javascript:history.back()">Back</a>
+</body>
+</html>
+

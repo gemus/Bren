@@ -195,9 +195,10 @@ def get_workout_element_history(user_id, workout_id):
         else:
             last_variation = "No record"
         workout_element_history.append({
-                                        "element" : element.element.name,
-                                        "history" : history,
-                                        "last_variation" : last_variation, 
+                                        "element"           : element.element.name,
+                                        "element_id"        : element.element.id,
+                                        "history"           : history,
+                                        "last_variation"    : last_variation, 
                                         })
     return workout_element_history
         
@@ -373,7 +374,53 @@ def get_workout_estimation(user_id, workout_id):
         return_dict.update ({ element : variation_id })
         
     return return_dict
-    
+
+def get_full_element_history(user_id, element_id):
+    total = 0
+    OUTPUT_FORMAT = "%B %d, %Y"
+    element = Element.objects.get(id = element_id)
+    variations = Variation.objects.filter(element__id = element_id)
+    element_history = []
+    for variation in variations:
+        count = 0
+        variation_history = []
+        completed_elements = Completed_element.objects.filter(completed_workout__user__id = user_id, variation__id = variation.id).order_by('-completed_workout__workout_class__date')
+        if len(completed_elements) > 0:
+            first = len(completed_elements) - 1
+            first = completed_elements[first]
+            date = first.completed_workout.workout_class.date.isoformat()
+            date = datetime.datetime.strptime(date, DATE_FORMAT)
+            date = date.strftime(OUTPUT_FORMAT).replace(' 0', ' ')
+            first_time = {
+                "date"      : date,
+                "workout"   : first.completed_workout.workout_class.workout.name,
+                "reps"      : first.element_used.reps,
+                "rounds"    : first.completed_workout.workout_class.workout.rounds,
+                }    
+        for completed_element in completed_elements:
+            if not len(completed_elements) == 0:
+
+                date = completed_element.completed_workout.workout_class.date.isoformat()
+                date = datetime.datetime.strptime(date, DATE_FORMAT)
+                date = date.strftime(OUTPUT_FORMAT).replace(' 0', ' ')
+  
+                variation_history.append({
+                                            "reps" : completed_element.element_used.reps,
+                                            "rounds" : completed_element.completed_workout.workout_class.workout.rounds,
+                                            "date" : date
+                                        })
+                
+                count = count + completed_element.element_used.reps
+        if not variation_history == []:   
+            element_history.append({"variation_name" : variation.name, "variation_history" : variation_history, "count" : count, "first" : first_time})
+        total = total + count   
+    return_dict = {
+            'user_name'         : User.objects.get(id=user_id).first_name,
+            'element_name'      : element.name,
+            'total'             : total,
+            'element_history'    : element_history,
+        }
+    return return_dict
     
 
 
