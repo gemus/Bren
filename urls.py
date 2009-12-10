@@ -26,7 +26,7 @@ urlpatterns = patterns('',
 
     # Development stuff
     (r'^full_element_history/(?P<user_id>\d+)/(?P<element_id>\d+)/$', 'Crossfit.Bren.views.full_element_history'),
-                           
+    (r'^user_history/', 'Crossfit.Bren.views.user_history'),                           
 )
 
 if settings.DEBUG:

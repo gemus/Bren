@@ -204,6 +204,26 @@ def full_element_history(request, user_id, element_id):
     
     return render_to_response('full_element_history.html', data)
 
+@login_required
+def user_history(request):
+    OUTPUT_FORMAT = "%B %d, %Y" # December 1, 2009
+    user_id = request.user.id
+    user_history = model.user_history(user_id)
+    for workout in user_history['completed_workouts']:
+        workout_date = datetime.datetime.strptime(workout['date'], model.DATE_FORMAT)
+        workout['date'] = workout_date.strftime(OUTPUT_FORMAT).replace(' 0', ' ')
+
+        if workout['info']['type'] == "Timed":
+            time = workout['info']['time']
+            mins = time / 60
+            secs = time % 60
+            workout['info']['time'] = "%d:%02d" % (mins, secs)
+    
+    data = {
+        "user_history" : user_history,
+       }
+    
+    return render_to_response('user_history.html', data)
 
 
 

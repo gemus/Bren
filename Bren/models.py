@@ -421,7 +421,49 @@ def get_full_element_history(user_id, element_id):
             'element_history'    : element_history,
         }
     return return_dict
-    
+
+def user_history(user_id):
+    OUTPUT_FORMAT = "%B %d, %Y"
+    total_elements = 0
+    completed_workouts = Completed_workout.objects.filter(user__id = user_id).order_by('-workout_class__date')
+    completed_workout_list = []
+    for workouts in completed_workouts:
+        type_name = Workout.objects.get(id= workouts.workout_class.workout.id).workout_type.name
+        if type_name == "Timed":
+            type_value = {"type" : "Timed", "time": workouts.secs}
+        elif type_name == "AMRAP":
+            type_value = {"type" : "AMRAP", "rounds": workouts.rounds}
+        else:
+            type_value = {"type" : "Done"}    
+
+        completed_workout_list.append({
+            "id"            : workouts.id,
+            "date"          : workouts.workout_class.date.isoformat(),
+            "workout"       : workouts.workout_class.workout.name,
+            "info"          : type_value,
+        })
+            
+    workout_count = completed_workouts.count()
+    all_elements_count = []
+    element_list = Element.objects.all()
+    for element in element_list:
+        completed_elements_list = Completed_element.objects.filter(element_used__element = element.id)
+        element_count = 0
+        for completed_element in completed_elements_list:
+            element_count = element_count + (completed_element.element_used.reps * completed_element.completed_workout.workout_class.workout.rounds)
+        if not element_count == 0:
+            all_elements_count.append ({
+                        "name"  : element.name,
+                        "count" : element_count,
+                })
+        total_elements = total_elements + element_count
+    history = {
+            "completed_workouts"    : completed_workout_list,
+            "workout_count"         : workout_count,
+            "all_elements_count"    : all_elements_count,
+            "total_elements"        : total_elements,
+    }
+    return history   
 
 
 
