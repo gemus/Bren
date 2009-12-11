@@ -112,7 +112,9 @@ def get_element(element_id):
     Output:
             "id"        : The id of the element (INT)
             "name"      : The name of the element (STRING)
-            "variations : a list of variation dictionarys contaiting { "id" : The of the variation, "name" : The name of the variation}(LIST)
+            "variations : A list of variation dictionarys contaiting(LIST)
+                          "id" : The of the variation(INT)
+                          "name" : The name of the variation(STRING)
     """
     elm = Element.objects.get(id=element_id)
     variations = []
@@ -135,7 +137,12 @@ def get_workout(workout_date_str, class_id):
         "time"         : The time allowed for a AMRAP workout(INT)
         "rounds"       : The number of rounds for the workout(INT)
         "workout_type" : The type of workout AMRAP, TIMES, DONE ect.
-        "elements"     : All the elements in the workout with the variations attached in dict { id : element id, name : element name, variations : a list of variations { id : variation id, name : variation name}}(LIST)
+        "elements"     : A list of all the elements in a workout
+                         "id"           : element id,
+                         "name"         : element name,
+                         "variations"   : A list of variations
+                                          "id" : variation id
+                                          "name" : variation name}}(LIST)
         "class_name"   : The name of the workout class(STRING)
         "workout_class": The id of the workout class(INT)
     """
@@ -283,8 +290,7 @@ def get_classes(date):
     Input:
             date     : The date in YYYY-MM-DD format (STRING)
     Output:
-            A List of   : Classes that happend that day
-            
+            A list of   : Classes that happend that day
             "name"      : The name of the class(STRING)
             "id"        : The id of the class
     """  
@@ -303,7 +309,7 @@ def get_week_roster(date):
     Input:
             date     : The date in YYYY-MM-DD format (STRING)
     Output:
-            A List of   : Days of the week
+            A list of   : Days of the week
             "daye"      : Name of the day of the ect. "Sunday" (STRING)
             "classes"   : A list of the classes that happend that day
                         : {"class_name" : the name of the class(STRING), "class_id" : the class id of the class(INT),  "user" : a list of the users (LIST) as {"user" : The users first name}  
@@ -339,7 +345,10 @@ def create_completed_workout(create_dict):
         "rounds"    : The rounds of the workout the user did if its AMRAP(INT),
         "date"      : The date of the workout in YYYY-MM-DD format (STRING)
         "class_id"  : The workout class id (INT)
-        "variations": A list of the variations of the workout as {"order": what spot in order of the workout the element is in (INT), "variation_id": The id of the variation(INT), "element_id": the id of the element(INT)}
+        "variations": A list of the variations of the workout as
+                      "order"       : what spot in order of the workout the element is in (INT),
+                      "variation_id": The id of the variation(INT),
+                      "element_id"  : the id of the element(INT)}
 
     Output:
     """
@@ -488,14 +497,14 @@ def get_full_element_history(user_id, element_id):
         'element_history'   : A list of variations to that element(LIST)
                             : "variation name" : The name of the variation (STRING), "variation_history" : A list of times that variation was done(LIST)
                             : "variation_history": A list of times a variation was done
-                                                    date    : The date the variaition was done in YYYY-MM-DD format(STRING)}
-                                                    reps    : How many were done(INT)
-                                                    rounds  : How many rounds(INT)
+                                                   "date"    : The date the variaition was done in YYYY-MM-DD format(STRING)}
+                                                   "reps"    : How many were done(INT)
+                                                   "rounds"  : How many rounds(INT)
                             : "first"  : A dictionary about the first time a variation was done
-                                                    date        : The date it was first done im YYYY-MM-DD format
-                                                    workout     : The name of the workout it was first done in
-                                                    reps        : How many reps for the first time
-                                                    rounds      : How many rounds the first time                                                    
+                                         "date"     : The date it was first done im YYYY-MM-DD format
+                                         "workout"  : The name of the workout it was first done in
+                                         "reps"     : How many reps for the first time
+                                         "rounds"   : How many rounds the first time                                                    
     """
     total = 0
     element = Element.objects.get(id = element_id)
@@ -587,7 +596,7 @@ def user_history(user_id):
                         "name"  : element.name,
                         "count" : element_count,
                 })
-        total_elements = total_elements + element_count
+        total_all_elements_count = total_all_elements_count + element_count
     history = {
             "completed_workouts"            : completed_workout_list,
             "workout_count"                 : workout_count,
