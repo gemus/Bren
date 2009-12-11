@@ -33,8 +33,11 @@ class WorkoutForm(forms.Form):
             field_id = "varient_%d_%d" % (field_dict['element']['id'], field_dict['order'])
             field = forms.ChoiceField()
             field.choices = [ (varient['id'], varient['name']) for varient in field_dict['element']['variations']]
-            field.label = "%d %s" % (field_dict['reps'], field_dict['element']['name'])
-
+            if not field_dict['reps'] == 1:
+                field.label = "%d %s" % (field_dict['reps'], field_dict['element']['name'])
+            else:
+                field.label = field_dict['element']['name']
+                
             self.fields[field_id] = field
 
 @login_required
