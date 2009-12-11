@@ -4,7 +4,6 @@ import datetime
 from django.contrib.auth.models import User
 from Crossfit.Bren.calcs import*
 from django.utils import simplejson
-from django import forms
 
 DATE_FORMAT = "%Y-%m-%d"
 
@@ -94,12 +93,6 @@ def get_user_info(user_id):
         }
     return user_dict
 
-def get_all_user_info():
-    user_info = []
-    for user in User.objects.all():
-        user_info.append (get_user_info(user.id))
-    return user_info
-
 def get_all_users():
     """
     Returns:
@@ -113,43 +106,46 @@ def get_all_users():
     return [{"display_name": "%s %s" % (user.first_name, user.last_name), "user_name": user.username} for user in User.objects.all().order_by('first_name')]
 
 def get_element(element_id):
+    """
+    Purpose: Given a element id output element and all its variation
+    Input: element_id (INT)
+    Output:
+            "id"        : The id of the element (INT)
+            "name"      : The name of the element (STRING)
+            "variations : a list of variation dictionarys contaiting { "id" : The of the variation, "name" : The name of the variation}(LIST)
+    """
     elm = Element.objects.get(id=element_id)
     variations = []
     for variation in Variation.objects.filter(element__id = elm.id):
         variations.append({"id": variation.id, "name": variation.name})
     element = {"id": elm.id, "name": elm.name, "variations": variations}
-
     return element
-
-def get_workout_name(completed_workout_id): #Gets a workout name from a completed Workout
-    workout_name = Completed_workout.objects.get(id = completed_workout_id)
-    workout_name = workout_name.workout_class.workout.name
-    return workout_name
-
-def get_workout_date(completed_workout_id): #Gets a Date from a completed Workout
-    workout_date = Completed_workout.objects.get(id = completed_workout_id)
-    workout_date = workout_date.workout_class.date
-    return workout_date.isoformat()
-
-def _get_workout_time(completed_workout_id):
-    workout = Completed_workout.objects.get(id = completed_workout_id)
-    return workout.secs
-
 
 def get_workout(workout_date_str, class_id):
     """
-    This is where the comments would go
-    """
+    Purpose: Given a workout date and class return the workout data
+    Input: 
+        workout_date_str : The date of the workout in YYYY-MM-DD format (STRING)
+        class_id : the class id (INT)
 
+    Output:
+        "id"           : The workout id (INT)
+        "name"         : The workout name (STRING)
+        "comments"     : The workout comment (STRING)
+        "time"         : The time allowed for a AMRAP workout(INT)
+        "rounds"       : The number of rounds for the workout(INT)
+        "workout_type" : The type of workout AMRAP, TIMES, DONE ect.
+        "elements"     : All the elements in the workout with the variations attached in dict { id : element id, name : element name, variations : a list of variations { id : variation id, name : variation name}}(LIST)
+        "class_name"   : The name of the workout class(STRING)
+        "workout_class": The id of the workout class(INT)
+    """
     workout_date = datetime.datetime.strptime(workout_date_str, DATE_FORMAT).date()
     workouts = Workout_class.objects.filter(class_info__id=class_id).filter(date=workout_date)
-
     if len(workouts) > 0:
         workout = workouts[0].workout
         elements = []
         for elm_used in workout.element_used_set.all():
             elements.append({"reps": elm_used.reps, "element": get_element(elm_used.element.id), "order": elm_used.order})
-
         return_dict = {
                         "id"           : workout.id,
                         "name"         : workout.name,
@@ -165,15 +161,25 @@ def get_workout(workout_date_str, class_id):
     return {"error": "No Class Found"}
 
 def get_element_history(user_id, element_id):
+    """
+    Purpose: Given a user and element return the users history with the element in list form
+    Input:
+            user_id : user's id as (INT)
+    Output:
+            A List of       : Times the user has done the element
+            
+            "workout"       : The name of the workout the each element is coming from(STRING)
+            "rounds"        : How many round of reps for the element(INT)
+            "reps"          : How many reps per round of the element(INT)
+            "variation"     : The name of the variation on the element(STRING) 
+            "variationn_id" : The id of the variation (INT)
+    Or Output:
+            "Error"         : you have never done the element before(STRING)
+    """
+
     element_history = []
-    for completed_element in Completed_element.objects.filter(completed_workout__user__id = user_id, element_used__element__id = element_id).order_by('-completed_workout__workout_class__date')[:3]:
-        #year = int(completed_element.completed_workout.workout_class.date.isoformat()[:4])
-        month = get_month(int (completed_element.completed_workout.workout_class.date.isoformat()[5:7]))
-        day = int(completed_element.completed_workout.workout_class.date.isoformat()[8:10])
-        date = str(month) + " " + str(day)# + " " + str(year)
-        
+    for completed_element in Completed_element.objects.filter(completed_workout__user__id = user_id, element_used__element__id = element_id).order_by('-completed_workout__workout_class__date')[:3]:        
         element_history.append({
-                                "date"          : date,
                                 "workout"       : completed_element.completed_workout.workout_class.workout.name,
                                 "rounds"        : completed_element.completed_workout.workout_class.workout.rounds,
                                 "reps"          : completed_element.element_used.reps,
@@ -186,8 +192,21 @@ def get_element_history(user_id, element_id):
     return {"error": "You has never recorded " + Element.objects.get(id = element_id).name + " Before"}
 
 def get_workout_element_history(user_id, workout_id):
+    """
+    Purpose: Given a user and a workout output the element history of all the elements in the workout
+    Input:
+            user_id     : The users id (INT)
+            workout_id  : The workouts id (INT)
+    Output:
+            A List of           : The  elements that happend in the workout
+            
+            "element"           : The name of the element(STRING)
+            "element_id"        : The id of the element(INT)
+            "history"           : The history of that element (LIST) (See get_element_history for details)
+            "last_variation"    : What the user did the last he did the element (DICT) (See get_element_history for details)   
+    """
+
     workout_element_history = []
-    i = 0
     for element in Element_used.objects.filter(workout__id = workout_id):
         history = get_element_history(user_id, element.element.id)
         if not 'error' in history:
@@ -204,20 +223,45 @@ def get_workout_element_history(user_id, workout_id):
         
 
 def get_last_attended_class(user_id):
+    """
+    Purpose: Given a user return the last class the attended
+    Input: user_id     : The users id (INT)
+    Output:
+            "id"        : The id of the last class(INT)
+            "title"     : The title of the class(STRING)
+    """
     for cwo in Completed_workout.objects.filter(user__id__exact=user_id).order_by('-workout_class__date')[:1]:
         last_class = cwo.workout_class.class_info
         return {'id': last_class.id, 'title': last_class.title}
     return None
 
+
 def get_completed_workout(user_id, workout_id):
+    """
+    Purpose: Given a user and a workout return times the user has done the workout
+    Input:
+            user_id     : The users id (INT)
+            workout_id  : The workout id (INT)
+    Output:
+            A List of   : Times the user has done the workout
+            
+            "id"        : The id of the completed workout(INT)
+            "workout"   : The name of the workout(STRING)
+            "date"      : The date they did the workout in YYYY-MM-DD format(STRING)
+            "info"      : The information about type of workout and score based on that {"info": type_value} (DICT)
+                        : type_value if Timed equals {"type" : "Timed", "time": the amount of time it took in secs(INT)}
+                        : type_value if AMRAP equals {"type" : "AMRAP", "rounds": how many rounds the user did(INT)}
+                        : type_value if Done equals  {"type" : "Done"}
+         "variations"   : a list of the variations that the user inputed as ("element" : The name of the element(STRING), "variation" : the name of the variation used(STRING)}
+            
+    """                 
     completed_workouts = []
     for workouts in Completed_workout.objects.filter(workout_class__workout__id__exact= workout_id, user__id__exact=user_id).order_by('workout_class__date'):
         workout = {
             'id' : workouts.id,
-            'workout' : get_workout_name(workouts.id),
-            'date': get_workout_date(workouts.id),
+            'workout' : workouts.workout_class.workout.name,
+            'date': workouts.workout_class.date.isoformat(),
             }
-
         type_name = Workout.objects.get(id=workout_id).workout_type.name
         if type_name == "Timed":
             type_value = {"type" : "Timed", "time": workouts.secs}
@@ -226,40 +270,46 @@ def get_completed_workout(user_id, workout_id):
         else:
             type_value = {"type" : "Done"}
         workout.update({"info": type_value})
-        
         variations = []    
         for completed_element in Completed_element.objects.filter(completed_workout__id__exact=workouts.id).order_by('element_used__order'):
             variations.append({"element": completed_element.variation.element.name , "variation": completed_element.variation.name})
-
         workout.update({"variations" : variations})
         completed_workouts.append(workout)
-
     return completed_workouts
 
-def get_classes(date):      #Expecting string comming in as "YYYY-MM-DD"
-    year = int(date[:4])                    #Formating the incomming string
-    month = int(date[5:7])
-    day = int(date[8:10])
-    date = datetime.date(year, month, day)
+def get_classes(date):
+    """
+    Purpose: Given a date output what classes happend
+    Input:
+            date     : The date in YYYY-MM-DD format (STRING)
+    Output:
+            A List of   : Classes that happend that day
+            
+            "name"      : The name of the class(STRING)
+            "id"        : The id of the class
+    """  
+    date = datetime.datetime.strptime(date, DATE_FORMAT)
     workout_class_list = []
-
     for classes in Workout_class.objects.filter(date__exact=date):
         workout_class_list.append ({"name": classes.class_info.title , "id": classes.class_info.id})
-
     return_dict = {
             "workout_class_list": workout_class_list,
         }
     return return_dict
 
-def get_week_roster(date):      #Expecting string comming in as SUNDAY! as "YYYY-MM-DD"
-
-    year = int(date[:4])                    #Formating the incomming string
-    month = int(date[5:7])
-    dday = int(date[8:10])
-    date = datetime.date(year,month,dday)
-
+def get_week_roster(date):
+    """
+    Purpose: Given a date output the weeks classes each day and the people that did them.
+    Input:
+            date     : The date in YYYY-MM-DD format (STRING)
+    Output:
+            A List of   : Days of the week
+            "daye"      : Name of the day of the ect. "Sunday" (STRING)
+            "classes"   : A list of the classes that happend that day
+                        : {"class_name" : the name of the class(STRING), "class_id" : the class id of the class(INT),  "user" : a list of the users (LIST) as {"user" : The users first name}  
+    """ 
+    date = datetime.datetime.strptime(date, DATE_FORMAT)
     datedelta = datetime.timedelta(days=1)
-    
     while not date.weekday() == 6:
         date = date - datedelta
     days = []
@@ -275,40 +325,32 @@ def get_week_roster(date):      #Expecting string comming in as SUNDAY! as "YYYY
             for co in Completed_workout.objects.filter(workout_class__id = workout_class.id):
                 users.append({"user" : co.user.first_name})
                 user_number = user_number + 1
-                
             classes.append({"class_name" : workout_class.class_info.title, "users" : users, "class_id" : workout_class.id, "user_number" : user_number,})
         date = date + datedelta
         day['classes'] = classes
     return days
 
-class Completed_workoutForm(forms.Form):
-    secs = forms.IntegerField()
-    rounds = forms.IntegerField()
-
 def create_completed_workout(create_dict):
-    """expects dictionary like
-    {
-        "user_id":          <int>,
-        "time":             <int>,  (time in seconds)
-        "rounds":           <int>,
-
-        "date":             <str>,  (format: yyyy/mm/dd)
-        "class_id":         <int>,
-
-        "variations":       [{"order": <int>, "variation_id": <int>, "element_id": <int> }, ...]
-    }
     """
+    Purpose: Given a dictionary of a workout to be saved, save it
+    Input:
+        "user_id"   : The id of the user that did the workout(INT),
+        "time"      : The amount of time the workout took if its Timed in seconds(INT)
+        "rounds"    : The rounds of the workout the user did if its AMRAP(INT),
+        "date"      : The date of the workout in YYYY-MM-DD format (STRING)
+        "class_id"  : The workout class id (INT)
+        "variations": A list of the variations of the workout as {"order": what spot in order of the workout the element is in (INT), "variation_id": The id of the variation(INT), "element_id": the id of the element(INT)}
 
+    Output:
+    """
     date = datetime.datetime.strptime(create_dict['date'], DATE_FORMAT).date()
     workout_class_id = Workout_class.objects.filter(date=date).get(class_info__id = create_dict['class_id']).id
-
     if len( Completed_workout.objects.filter(user__id =create_dict['user_id'], workout_class__id = workout_class_id)) == 0:
         co = Completed_workout()
     else :
         co = Completed_workout.objects.filter(user__id =create_dict['user_id']).get(workout_class__id = workout_class_id)
         for completed_element in Completed_element.objects.filter(completed_workout__id = co.id):
             completed_element.delete()
-
     co.user = User.objects.get(id=create_dict['user_id'])
     co.date = date
     co.secs = create_dict['time']
@@ -325,33 +367,81 @@ def create_completed_workout(create_dict):
         ce.save()
 
 def create_user(user_dict):
-    """expecting dictionary like
-    {
-        "username"     : <string>
-        "first_name"    : <string>
-        "last_name"     : <string>
-        "pin"           : <int>
-
-    *********** MAY CONTAIN ***************
-
-        "email"         : <string>
-        "phone"         : <string>
-    }
     """
+    Purpose: Given a dictionary of a user add the user to the database
+    Input:
+        "username"      : The id of the user that did the workout(INT),
+        "first_name"    : The amount of time the workout took if its Timed in seconds(INT)
+        "rounds"        : The rounds of the workout the user did if its AMRAP(INT),
+        "last_name"     : The date of the workout in YYYY-MM-DD format (STRING)
+        "pin"           : The pin the user entered (INT)
+        "pin_again"     : The pin to confirm the entry (INT)
+        "email"         : The users e-mail address(EMAIL) (OPTIONAL)
+        
+    Output:
+    """
+
+    if not user_dict['pin'] == user_dict['pin_again']:
+        return {"pin_error": "PIN and PIN again did not match"}
+    if not User.objects.filter(username = user_dict['username']).count() == 0:
+        return { "username_error" : "User name is already taken"}
     user = User()
     user.username = user_dict['username']
     user.first_name = user_dict['first_name']
     user.last_name = user_dict['last_name']
     user.set_password(user_dict['pin'])
-
     if 'email' in user_dict:
         user.email = user_dict['email']
-        
     user.save()
-    """ if 'phone' in user_dict:
-        user.phone = user_dict['phone']"""
 
+def user_done_class(user_id, workout_class_id):
+    """
+    Purpose: Given a user and workout class return the completed workout if they have done it
+    Input:
+        "user_id"               : The id of the user(INT),
+        "workout_class_id"      : The id of the workout class(INT)        
+    Output: The completed workout or None if they haven't done it
+    """
+    done = Completed_workout.objects.filter(user__id = user_id, workout_class__id = workout_class_id)
+    if not len(done) == 0:
+        return done[0]
+    else:
+        return None
+
+def get_workout_variations(user_id, workout_class_id):
+    """
+    Purpose: Given a user id and workout class id create a dictionary that will set the variations
+    Input:
+        "user_id"               : The id of the user(INT),
+        "workout_class_id"      : The id of the workout class(INT)
+        
+    Output:
+        A dictionary of
+        elements of the workouts form style      The variation that they previously selected of saved
+        "varient_ element.id_elements.order"    : variation.id(INT)
+    """
+    days_workout = Completed_workout.objects.filter(user__id = user_id, workout_class__id = workout_class_id)
+    if not len(days_workout) == 0:
+        return get_previous_variations(days_workout[0].id)
+    else:
+        workout_id = Workout_class.objects.get(id = workout_class_id).workout.id
+        previous_workouts = Completed_workout.objects.filter(workout_class__workout__id = workout_id, user__id = user_id).order_by('-workout_class__date')
+        if not len(previous_workouts) == 0:
+            return get_previous_variations(previous_workouts[0].id)
+        else:
+            return get_workout_estimation(user_id, workout_id)
+
+    
 def get_previous_variations(completed_workout_id):
+    """
+    Purpose: Given a completed workout output the variations used
+    Input:
+        "completed_workout_id"  : The id of the completed workout(INT),
+    Output:
+        A dictionary of
+        elements of the workouts form style      The variation that they been saved
+        "varient_ element.id_elements.order"    : variation.id
+    """
     return_dict = {}
     completed_elements = Completed_element.objects.filter(completed_workout__id=completed_workout_id)
     for variation in completed_elements:
@@ -361,6 +451,16 @@ def get_previous_variations(completed_workout_id):
     return return_dict
     
 def get_workout_estimation(user_id, workout_id):
+    """
+    Purpose: Given a user and workout select the variation for the form to the last variations they used on each element
+    Input:
+        "user_id"       : The id of the user(INT),
+        "workout_id"    : The id of the workout(INT)
+    Output:
+        A dictionary of
+        elements of the workouts form style      The variation that they been saved
+        "varient_ element.id_elements.order"    : variation.id
+    """
     return_dict = {}
     elements_used = Element_used.objects.filter(workout__id = workout_id)
     for elements in elements_used:
@@ -372,12 +472,32 @@ def get_workout_estimation(user_id, workout_id):
             element = "varient_" + str(elements.element.id)+ "_" + str(elements.order)
             variation_id = Variation.objects.filter(element__id = elements.element.id)[0].id
         return_dict.update ({ element : variation_id })
-        
     return return_dict
 
 def get_full_element_history(user_id, element_id):
+    """
+    Purpose: Given a user and element return the full history that user has done on that element
+    Input:
+        "user_id"       : The id of the user(INT),
+        "element_id"    : The id of the element(INT)
+    Output:
+        A dictionary of:
+        'user_name'         : The first name of the user (STRING)
+        'element_name'      : The name of the element (STRING)
+        'total'             : The number of totaly times the user has done that element (INT)
+        'element_history'   : A list of variations to that element(LIST)
+                            : "variation name" : The name of the variation (STRING), "variation_history" : A list of times that variation was done(LIST)
+                            : "variation_history": A list of times a variation was done
+                                                    date    : The date the variaition was done in YYYY-MM-DD format(STRING)}
+                                                    reps    : How many were done(INT)
+                                                    rounds  : How many rounds(INT)
+                            : "first"  : A dictionary about the first time a variation was done
+                                                    date        : The date it was first done im YYYY-MM-DD format
+                                                    workout     : The name of the workout it was first done in
+                                                    reps        : How many reps for the first time
+                                                    rounds      : How many rounds the first time                                                    
+    """
     total = 0
-    OUTPUT_FORMAT = "%B %d, %Y"
     element = Element.objects.get(id = element_id)
     variations = Variation.objects.filter(element__id = element_id)
     element_history = []
@@ -389,8 +509,6 @@ def get_full_element_history(user_id, element_id):
             first = len(completed_elements) - 1
             first = completed_elements[first]
             date = first.completed_workout.workout_class.date.isoformat()
-            date = datetime.datetime.strptime(date, DATE_FORMAT)
-            date = date.strftime(OUTPUT_FORMAT).replace(' 0', ' ')
             first_time = {
                 "date"      : date,
                 "workout"   : first.completed_workout.workout_class.workout.name,
@@ -399,17 +517,12 @@ def get_full_element_history(user_id, element_id):
                 }    
         for completed_element in completed_elements:
             if not len(completed_elements) == 0:
-
                 date = completed_element.completed_workout.workout_class.date.isoformat()
-                date = datetime.datetime.strptime(date, DATE_FORMAT)
-                date = date.strftime(OUTPUT_FORMAT).replace(' 0', ' ')
-  
                 variation_history.append({
                                             "reps" : completed_element.element_used.reps,
                                             "rounds" : completed_element.completed_workout.workout_class.workout.rounds,
                                             "date" : date
                                         })
-                
                 count = count + completed_element.element_used.reps
         if not variation_history == []:   
             element_history.append({"variation_name" : variation.name, "variation_history" : variation_history, "count" : count, "first" : first_time})
@@ -423,8 +536,28 @@ def get_full_element_history(user_id, element_id):
     return return_dict
 
 def user_history(user_id):
-    OUTPUT_FORMAT = "%B %d, %Y"
-    total_elements = 0
+    """
+    Purpose: Given a user return they're histroy
+    Input:
+        "user_id"       : The id of the user(INT),
+    Output:
+        A dictionary of:
+        'computed_workouts'         : A list of competed workouts the user has done
+                                      "id"      : The completed workout id(INT),
+                                      "date"    : The date of the completed workout in YYYY-MM-DD format(STRING),
+                                      "workout" : The name the workout done (STRING),
+                                      "info"    : type_value
+                                                    : type_value if Timed equals {"type" : "Timed", "time": the amount of time it took in secs(INT)}
+                                                    : type_value if AMRAP equals {"type" : "AMRAP", "rounds": how many rounds the user did(INT)}
+                                                    : type_value if Done equals  {"type" : "Done"}
+        'workout_count'             : The number of crossfit workouts the user has loged(INT)
+        'total_all_elements_count'  : The number of total reps a user has done (INT)
+        'all_elements_count'        : A list of element the user has done(LIST)
+                                      "name"  : The name of the element
+                                      "count" : How many times the user has done the element 
+                                    
+    """
+    total_all_elements_count = 0
     completed_workouts = Completed_workout.objects.filter(user__id = user_id).order_by('-workout_class__date')
     completed_workout_list = []
     for workouts in completed_workouts:
@@ -435,14 +568,12 @@ def user_history(user_id):
             type_value = {"type" : "AMRAP", "rounds": workouts.rounds}
         else:
             type_value = {"type" : "Done"}    
-
         completed_workout_list.append({
             "id"            : workouts.id,
             "date"          : workouts.workout_class.date.isoformat(),
             "workout"       : workouts.workout_class.workout.name,
             "info"          : type_value,
-        })
-            
+        })           
     workout_count = completed_workouts.count()
     all_elements_count = []
     element_list = Element.objects.all()
@@ -458,10 +589,10 @@ def user_history(user_id):
                 })
         total_elements = total_elements + element_count
     history = {
-            "completed_workouts"    : completed_workout_list,
-            "workout_count"         : workout_count,
-            "all_elements_count"    : all_elements_count,
-            "total_elements"        : total_elements,
+            "completed_workouts"            : completed_workout_list,
+            "workout_count"                 : workout_count,
+            "all_elements_count"            : all_elements_count,
+            "total_all_elements_count"      : total_all_elements_count,
     }
     return history   
 

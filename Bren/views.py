@@ -41,30 +41,18 @@ class WorkoutForm(forms.Form):
 def workout_form(request, date_str, class_id):
     api_data = model.get_workout(date_str, class_id)
     initial_time_reps = None
-
-    days_workout = model.Completed_workout.objects.filter(user__id = request.user.id, workout_class__id = api_data['workout_class'])
-    if not len(days_workout) == 0:
-        previous_data = model.get_previous_variations(days_workout[0].id)
-        the_form = WorkoutForm(api_data['elements'], previous_data)
-
-        the_workout = days_workout[0]
-        workout_type = the_workout.workout_class.workout.workout_type.name
+    previous_data = model.get_workout_variations(request.user.id, api_data['workout_class'])
+    the_form = WorkoutForm(api_data['elements'], previous_data)
+    workout = model.user_done_class(request.user.id, api_data['workout_class'])
+    if not workout == None:
+        workout_type = workout.workout_class.workout.workout_type.name
         if workout_type == "Timed":
-            time = the_workout.secs
+            time = workout.secs
             mins = time / 60
             secs = time % 60
             initial_time_reps = "%d:%02d" % (mins, secs)
         elif workout_type == "AMRAP":
-            initial_time_reps = the_workout.rounds
-
-    else:
-        previous_workouts = model.Completed_workout.objects.filter(workout_class__workout__id = api_data['id'], user__id = request.user.id).order_by('-workout_class__date')
-        if not len(previous_workouts) == 0:
-            previous_data = model.get_previous_variations(previous_workouts[0].id)
-            the_form = WorkoutForm(api_data['elements'], previous_data)
-        else:
-            previous_data = model.get_workout_estimation(request.user.id, api_data['id'])
-            the_form = WorkoutForm(api_data['elements'], previous_data)
+            initial_time_reps = workout.rounds
 
     ele_history = model.get_workout_element_history(request.user.id, api_data['id'])
     co_list = model.get_completed_workout(request.user.id, api_data['id'])
@@ -117,20 +105,21 @@ def create_user(request):
 @login_required
 
 def save_user(request):
-    if not request.POST['pin'] == request.POST['pin_again']:
-        pin_error = { "pin_error" : "Your PIN's did not match"}
-        return render_to_response('create_user.html',pin_error)
-    if not model.User.objects.filter(username = str(request.POST['username'])).count() == 0:
-        username_error = { "username_error" : "User name is already taken"}
-        return render_to_response('create_user.html',username_error)
     data = {
-        "username"     : request.POST['username'],
+        "username"      : request.POST['username'],
         "first_name"    : request.POST['first_name'],
         "last_name"     : request.POST['last_name'],
         "pin"           : request.POST['pin'],
+        "pin_again"     : request.POST['pin_again'],
         "email"         : request.POST['email'],
     }
-    model.create_user(data)
+    create_user = model.create_user(data)
+    if not create_user == None:
+        if 'pin_error' in create_user:
+            return render_to_response('create_user.html',create_user)
+        if 'username_error' in create_user:
+            return render_to_response('create_user.html',create_user)
+    
     return render_to_response('save_user.html')
 @login_required
 
@@ -196,8 +185,17 @@ def no_workout_found(request, date, *args):
 
 @login_required
 def full_element_history(request, user_id, element_id):
+    OUTPUT_FORMAT = "%B %d, %Y"
     full_history = model.get_full_element_history(user_id, element_id)
-    
+
+    for variation in full_history['element_history']:
+        for times in variation['variation_history']:
+            the_date = the_date = datetime.datetime.strptime(times['date'], model.DATE_FORMAT)
+            the_date = the_date.strftime(OUTPUT_FORMAT).replace(' 0', ' ')
+            times['date'] = the_date
+        the_date = the_date = datetime.datetime.strptime(variation['first']['date'], model.DATE_FORMAT)
+        the_date = the_date.strftime(OUTPUT_FORMAT).replace(' 0', ' ')
+        variation['first']['date'] = the_date
     data = {
         "full_history" : full_history,
        }
