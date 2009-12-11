@@ -32,29 +32,19 @@
 </head>
 <body>
 <h1>Complete History</h1>
-<table>
-<tr><td>
 <b> Completed workouts: </b><br>
 Total: {{user_history.workout_count}}<br>
 	{% for completed_workout in user_history.completed_workouts %}
 		{{completed_workout.date}} {{completed_workout.workout}} {% ifequal completed_workout.info.type "Timed" %} {{completed_workout.info.time}} {% endifequal %} {% ifequal completed_workout.info.type "AMRAP" %} {{completed_workout.info.rounds}} rounds{% endifequal %}<br>
 	{%endfor%}
 <br><br>
-</td><td>
-<b> Element History:</b><br>
-
-	<table>
-		<th></th> <th><u>Totals</u></th>
+<div style="position: relative; top: -8px; text-align: left;">
+<b> Element History: </b>{{user_history.total_all_elements_count}} <br>
 		{% for element in user_history.all_elements_count %}
-			<tr><td>{{element.name}}</td> <td>{{element.count}}</td></tr>
+			{{element.name}} {{element.count}} <br>
 		{%endfor%}
-		<tr><td></td><td>{{user_history.total_all_elements_count}}</td></tr>
-	</table> 
-</td></tr>
-</table>
-
-
-
+	
+</div>
 
 
 
