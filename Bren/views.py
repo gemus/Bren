@@ -76,6 +76,7 @@ def workout_form(request, date_str, class_id):
         'workout_type': api_data['workout_type'],
         'class_name':   api_data['class_name'],
         'rounds':       api_data['rounds'],
+        'time':         api_data['time'],
         'user_id' :     request.user.id,
         'date_str':     date_str,
         'class_id':     class_id,
@@ -137,6 +138,10 @@ def weekly_roster(request, date_str):
 @login_required
 
 def save_workout(request):
+    # Basic Information   
+    date_str = request.POST.get('date_str')
+    class_id = request.POST.get('class_id')
+
     varient_list = []
     varient_keys = [x for x in request.POST.keys() if x[:8] == 'varient_']
     for key in varient_keys:
@@ -150,7 +155,7 @@ def save_workout(request):
     workout_type = request.POST.get('workout_type')
     if workout_type == "AMRAP":
         workout_rounds = request.POST.get('workout_reps')
-        workout_time = 0
+        workout_time = model.get_workout_with_date_class(date_str, class_id)['time']
     elif workout_type == "Timed":
         workout_rounds = 0
         time_parts = request.POST.get('workout_time').split(":")
@@ -159,9 +164,8 @@ def save_workout(request):
         workout_rounds = 0
         workout_time = 0
 
-    # Basic Information
-    date_str = request.POST.get('date_str')
-    class_id = request.POST.get('class_id')
+    
+    
 
     save_dict = {
         "time":       workout_time,
@@ -213,13 +217,18 @@ def user_history(request):
     for workout in user_history['completed_workouts']:
         workout_date = datetime.datetime.strptime(workout['date'], model.DATE_FORMAT)
         workout['date'] = workout_date.strftime(OUTPUT_FORMAT).replace(' 0', ' ')
-
         if workout['info']['type'] == "Timed":
             time = workout['info']['time']
             mins = time / 60
             secs = time % 60
-            workout['info']['time'] = "%d:%02d" % (mins, secs)
-    
+            workout['info']['time'] = "%d:%02d" % (mins, secs) 
+    time = user_history['total_time']
+    hours = time / 3600
+    time = time - (hours * 3600)
+    mins = time / 60
+    secs = time % 60
+    user_history['total_time'] = "%02d:%02d:%02d" % (hours, mins, secs)
+            
     data = {
         "user_history" : user_history,
        }

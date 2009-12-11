@@ -343,7 +343,7 @@ def get_week_roster(date):
 
 def create_completed_workout(create_dict):
     """
-    Purpose: Given a dictionary of a workout to be saved, save it
+    Purpose: Given a dictionary of a completed workout to be saved, save it
     Input:
         "user_id"   : The id of the user that did the workout(INT),
         "time"      : The amount of time the workout took if its Timed in seconds(INT)
@@ -565,12 +565,14 @@ def user_history(user_id):
                                                     : type_value if AMRAP equals {"type" : "AMRAP", "rounds": how many rounds the user did(INT)}
                                                     : type_value if Done equals  {"type" : "Done"}
         'workout_count'             : The number of crossfit workouts the user has loged(INT)
+        'total_time'               : The total amount of time of working out loged in Sec (INT)
         'total_all_elements_count'  : The number of total reps a user has done (INT)
         'all_elements_count'        : A list of element the user has done(LIST)
                                       "name"  : The name of the element
                                       "count" : How many times the user has done the element 
                                     
     """
+    total_time = 0
     total_all_elements_count = 0
     completed_workouts = Completed_workout.objects.filter(user__id = user_id).order_by('-workout_class__date')
     completed_workout_list = []
@@ -587,7 +589,8 @@ def user_history(user_id):
             "date"          : workouts.workout_class.date.isoformat(),
             "workout"       : workouts.workout_class.workout.name,
             "info"          : type_value,
-        })           
+        })
+        total_time = total_time + workouts.secs
     workout_count = completed_workouts.count()
     all_elements_count = []
     element_list = Element.objects.all()
@@ -605,11 +608,43 @@ def user_history(user_id):
     history = {
             "completed_workouts"            : completed_workout_list,
             "workout_count"                 : workout_count,
+            "total_time"                    : total_time,
             "all_elements_count"            : all_elements_count,
             "total_all_elements_count"      : total_all_elements_count,
     }
     return history   
 
+def get_workout_with_date_class(date, class_id):
+    """
+    Purpose: Given a class id return the workout information of that class
+    Input:
+        "date"      : The date of the class YYYY-MM-DD    
+        "class_id"  : The id of the class(INT),
+        
+    Output:
+            "name"              : The name of the workout(STRING)
+            "comments"          : The comments about the workout(STRING)
+            "workout_type"      : "Timed" "AMRAP" ect.
+            "time"              : The workout time in secs(INT)
+            "rounds"            : The amount of rounds(INT)
+    """
+    date = datetime.datetime.strptime(date, DATE_FORMAT).date()
+    
+    workout = Workout_class.objects.get(date = date, class_info__id = class_id).workout
+    name = workout.name
+    comments = workout.comments
+    workout_type = workout.workout_type.name
+    time = workout.time * 60
+    rounds = workout.rounds
+    return_dict = {
+        "name"              : name,
+        "comments"          : comments,
+        "workout_type"      : workout_type,
+        "time"              : time,
+        "rounds"            : rounds,
+        }
+    return return_dict
+        
 
 
 

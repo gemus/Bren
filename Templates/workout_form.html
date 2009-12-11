@@ -155,7 +155,15 @@
 		<form action="/save_workout/" method="POST">
 			<div style="position: relative; top: -8px; text-align: center;">
 				<h1>{{ name }} </h1>
-				<h2>{{ comments }} {% ifnotequal rounds 1 %} {{rounds}} rounds of:{% endifnotequal %}</h2>
+				<h2>{{ comments }} 
+						{% ifnotequal rounds 1 %} 
+							{{rounds}} rounds of:
+						{% endifnotequal %} 
+						{% ifequal workout_type 'AMRAP' %}
+							AMRAP in {{time}} mins of
+						{% endifequal %}
+
+				</h2>
 			</div>
 
 			<table boarder = "1"; id="formTable">

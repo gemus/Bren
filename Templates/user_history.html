@@ -34,6 +34,7 @@
 <h1>Complete History</h1>
 <b> Completed workouts: </b><br>
 Total: {{user_history.workout_count}}<br>
+Total Time: {{user_history.total_time}}<br><br>
 	{% for completed_workout in user_history.completed_workouts %}
 		{{completed_workout.date}} {{completed_workout.workout}} {% ifequal completed_workout.info.type "Timed" %} {{completed_workout.info.time}} {% endifequal %} {% ifequal completed_workout.info.type "AMRAP" %} {{completed_workout.info.rounds}} rounds{% endifequal %}<br>
 	{%endfor%}
