@@ -46,7 +46,8 @@ def workout_form(request, date_str, class_id):
     initial_time_reps = None
     previous_data = model.get_workout_variations(request.user.id, api_data['workout_class'])
     the_form = WorkoutForm(api_data['elements'], previous_data)
-    workout = model.user_done_class(request.user.id, api_data['workout_class'])
+    print date_str
+    workout = model.user_done_class(request.user.id, api_data['id'], date_str)
     if not workout == None:
         workout_type = workout.workout_class.workout.workout_type.name
         if workout_type == "Timed":
@@ -157,11 +158,11 @@ def save_workout(request):
         workout_rounds = request.POST.get('workout_reps')
         workout_time = model.get_workout_with_date_class(date_str, class_id)['time']
     elif workout_type == "Timed":
-        workout_rounds = 0
+        workout_rounds = model.get_workout_with_date_class(date_str, class_id)['rounds']
         time_parts = request.POST.get('workout_time').split(":")
         workout_time = int(time_parts[0]) * 60 + int(time_parts[1])
     elif workout_type == "Done":
-        workout_rounds = 0
+        workout_rounds = 1
         workout_time = 0
 
     

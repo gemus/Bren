@@ -359,10 +359,12 @@ def create_completed_workout(create_dict):
     """
     date = datetime.datetime.strptime(create_dict['date'], DATE_FORMAT).date()
     workout_class_id = Workout_class.objects.filter(date=date).get(class_info__id = create_dict['class_id']).id
-    if len( Completed_workout.objects.filter(user__id =create_dict['user_id'], workout_class__id = workout_class_id)) == 0:
+    workout = Workout_class.objects.get(id=workout_class_id).workout
+    if len(Completed_workout.objects.filter(user__id =create_dict['user_id'], workout_class__date = create_dict['date'], workout_class__workout__id = workout.id)) == 0:
         co = Completed_workout()
     else :
-        co = Completed_workout.objects.filter(user__id =create_dict['user_id']).get(workout_class__id = workout_class_id)
+        co = Completed_workout.objects.filter(user__id =create_dict['user_id'], workout_class__date = create_dict['date'], workout_class__workout__id = workout.id)
+        co = co[0]
         for completed_element in Completed_element.objects.filter(completed_workout__id = co.id):
             completed_element.delete()
     co.user = User.objects.get(id=create_dict['user_id'])
@@ -408,15 +410,17 @@ def create_user(user_dict):
         user.email = user_dict['email']
     user.save()
 
-def user_done_class(user_id, workout_class_id):
+def user_done_class(user_id, workout_id, date):
     """
-    Purpose: Given a user and workout class return the completed workout if they have done it
+    Purpose: Given a user and date and a workout
     Input:
         "user_id"               : The id of the user(INT),
-        "workout_class_id"      : The id of the workout class(INT)        
+        "workout_id"            : The id of the workout(INT),
+        "date"                  : The date of the workout as YYYY-MM-DD        
     Output: The completed workout or None if they haven't done it
     """
-    done = Completed_workout.objects.filter(user__id = user_id, workout_class__id = workout_class_id)
+    date = datetime.datetime.strptime(date, DATE_FORMAT).date()
+    done = Completed_workout.objects.filter(user__id = user_id, workout_class__date = date, workout_class__workout__id = workout_id)
     if not len(done) == 0:
         return done[0]
     else:
@@ -434,11 +438,15 @@ def get_workout_variations(user_id, workout_class_id):
         elements of the workouts form style      The variation that they previously selected of saved
         "varient_ element.id_elements.order"    : variation.id(INT)
     """
-    days_workout = Completed_workout.objects.filter(user__id = user_id, workout_class__id = workout_class_id)
+    workout_class = Workout_class.objects.get(id = workout_class_id)
+    date = workout_class.date
+    workout = workout_class.workout
+    
+    days_workout = Completed_workout.objects.filter(user__id = user_id, workout_class__date = date, workout_class__workout__id = workout.id)
     if not len(days_workout) == 0:
         return get_previous_variations(days_workout[0].id)
     else:
-        workout_id = Workout_class.objects.get(id = workout_class_id).workout.id
+        workout_id = workout.id
         previous_workouts = Completed_workout.objects.filter(workout_class__workout__id = workout_id, user__id = user_id).order_by('-workout_class__date')
         if not len(previous_workouts) == 0:
             return get_previous_variations(previous_workouts[0].id)
