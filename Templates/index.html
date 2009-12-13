@@ -9,9 +9,11 @@
 	<link rel="stylesheet" type="text/css" href="/site_media/css/reset-min.css">
 	<link rel="stylesheet" type="text/css" href="/site_media/css/global.css">
 	<link rel="stylesheet" type="text/css" href="/site_media/css/numpad_input.css" />
+	<link rel="stylesheet" type="text/css" href="/site_media/css/jquery.simplemodal.css" />
 
 	<script type="text/javascript" src="/site_media/js/jquery-1.3.2.min.js"></script>
 	<script type="text/javascript" src="/site_media/js/jquery-ui-1.7.2.custom.min.js"></script>
+	<script type="text/javascript" src="/site_media/js/jquery.simplemodal.js"></script>
 
 	<script type="text/javascript" charset="utf-8">
 	$(document).ready(function() {
@@ -56,7 +58,17 @@
 		$("#date_picker").val(dateStr);
 		dateChangedFunc();
 
-		if ({{ last_class_id }} == -1) showDateClassPickers();
+		//if ({{ last_class_id }} == -1) showDateClassPickers();
+
+		var options = {'opacity': 70}
+		$.modal($('#basic-modal-content'), options);
+
+		/*
+		$('#do_modal').click(function (e) {
+			e.preventDefault();
+			$('#basic-modal-content').modal();
+		});
+		*/
 	});
 
 	var showDateClassPickers = function() {
@@ -161,6 +173,22 @@
 			<option value="no_date">Please Select A Date</option>
 		</select>
 	</div>
+
+	<a id="do_modal">Modal Dialog</a>
+
+
+	<div id="basic-modal-content">
+		<h3>Basic Modal Dialog</h3>
+		<p>For this demo, SimpleModal is using this "hidden" data for its content. You can also populate the modal dialog with standard HTML or with DOM element(s).</p>
+		<p>Examples:</p>
+
+		<p><code>$('#basicModalContent').modal(); // jQuery object; this demo</code></p>
+		<p><code>$.modal(document.getElementById('basicModalContent')); // DOM</code></p>
+		<p><code>$.modal('&lt;p&gt;&lt;b&gt;HTML&lt;/b&gt; elements&lt;/p&gt;'); // HTML</code></p>
+
+		<p><a href='http://www.ericmmartin.com/projects/simplemodal/'>More details...</a></p>
+	</div>
+
 
 	<iframe id="formViewer"></iframe>
 </body>
