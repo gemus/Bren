@@ -60,7 +60,9 @@
 
 		//if ({{ last_class_id }} == -1) showDateClassPickers();
 
-		var options = {'opacity': 70}
+		var options = {	'opacity': 70,
+						'close'  : false
+					  }
 		$.modal($('#basic-modal-content'), options);
 
 		/*
@@ -174,19 +176,14 @@
 		</select>
 	</div>
 
-	<a id="do_modal">Modal Dialog</a>
-
-
 	<div id="basic-modal-content">
-		<h3>Basic Modal Dialog</h3>
-		<p>For this demo, SimpleModal is using this "hidden" data for its content. You can also populate the modal dialog with standard HTML or with DOM element(s).</p>
-		<p>Examples:</p>
-
-		<p><code>$('#basicModalContent').modal(); // jQuery object; this demo</code></p>
-		<p><code>$.modal(document.getElementById('basicModalContent')); // DOM</code></p>
-		<p><code>$.modal('&lt;p&gt;&lt;b&gt;HTML&lt;/b&gt; elements&lt;/p&gt;'); // HTML</code></p>
-
-		<p><a href='http://www.ericmmartin.com/projects/simplemodal/'>More details...</a></p>
+		<h1>Select A Class Please</h1>
+		<a class="simplemodal-close" href="javascript:none()">5:00 pm</a>
+		<a class="simplemodal-close" href="javascript:none()">5:30 pm I am Crossfit</a>
+		<a class="simplemodal-close" href="javascript:none()">6:30 pm</a>
+		<a class="simplemodal-close" href="javascript:none()">7:30 pm</a>
+		<a class="simplemodal-close" href="javascript:none()">8:30 pm</a>
+		<a class="simplemodal-close" href="javascript:none()">9:30 pm</a>
 	</div>
 
 
