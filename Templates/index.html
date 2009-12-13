@@ -27,20 +27,28 @@
 			$("#formViewer")[0].src = "/workout_form/"+theDate+"/"+theClass+"/";
 		}
 
+		modal_class_pick_func = function(class_id) {
+			var theDate = $("#date_picker")[0].value;
+			$("#formViewer")[0].src = "/workout_form/"+theDate+"/"+class_id+"/";
+		}
+
 		var dateChangedFunc = function() {
 			var theDate = $("#date_picker")[0].value;
 			$.getJSON("/json_api/", {"id": 1, "method": "get_classes", "params" : [theDate]}, function(result, status) {
 				var class_drop_value = '';
+				var class_modal_value = '';
 				for (i in result.result) {
 					var class_row = result.result[i];
 					var selected = {{ last_class_id }} == class_row.id ? "selected" : "";
 					class_drop_value += '<option value="'+class_row.id+'" '+ selected +'>'+class_row.name+'</option>';
+					class_modal_value += '<a href="#" onclick="modal_class_pick_func('+class_row.id+')">'+class_row.name+'</a>'
 				}
 				if (class_drop_value == '') {
 					class_drop_value = '<option value="None">No Classes For Selected Date</option>';
+					class_modal_value = '<p>No Classes For Today</p>';
 				}
 				$("#class_picker").html(class_drop_value);
-				classChnagedFunc();
+				$("#modal_class_selection").html(class_modal_value);
 			})
 		}
 
@@ -64,13 +72,6 @@
 						'close'  : false
 					  }
 		$.modal($('#basic-modal-content'), options);
-
-		/*
-		$('#do_modal').click(function (e) {
-			e.preventDefault();
-			$('#basic-modal-content').modal();
-		});
-		*/
 	});
 
 	var showDateClassPickers = function() {
@@ -178,12 +179,14 @@
 
 	<div id="basic-modal-content">
 		<h1>Select A Class Please</h1>
-		<a class="simplemodal-close" href="javascript:none()">5:00 pm</a>
-		<a class="simplemodal-close" href="javascript:none()">5:30 pm I am Crossfit</a>
-		<a class="simplemodal-close" href="javascript:none()">6:30 pm</a>
-		<a class="simplemodal-close" href="javascript:none()">7:30 pm</a>
-		<a class="simplemodal-close" href="javascript:none()">8:30 pm</a>
-		<a class="simplemodal-close" href="javascript:none()">9:30 pm</a>
+		<div id="modal_class_selection" class="simplemodal-close">
+			<a class="simplemodal-close" href="javascript:none()">5:00 pm</a>
+			<a class="simplemodal-close" href="javascript:none()">5:30 pm I am Crossfit</a>
+			<a class="simplemodal-close" href="javascript:none()">6:30 pm</a>
+			<a class="simplemodal-close" href="javascript:none()">7:30 pm</a>
+			<a class="simplemodal-close" href="javascript:none()">8:30 pm</a>
+			<a class="simplemodal-close" href="javascript:none()">9:30 pm</a>
+		</div>
 	</div>
 
 
