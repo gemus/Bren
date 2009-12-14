@@ -58,7 +58,6 @@ class UserAdmin(UserAdmin):
 
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
-admin.site.register(Workout_type)
 admin.site.register(Class_info)
 admin.site.register(Workout_class, Workout_classAdmin)
 admin.site.register(Completed_workout, Completed_workoutAdmin)

@@ -6,71 +6,115 @@ from Crossfit.Bren.calcs import*
 from django.utils import simplejson
 
 DATE_FORMAT = "%Y-%m-%d"
-
-class Workout_type(models.Model):
-    name = models.CharField(max_length=20)
-    def __unicode__(self):
-        return self.name
-
+workout_choices = (
+    ('Timed', 'Timed'),
+    ('AMRAP', 'AMRAP'),
+    ('Done', 'Done'),
+    )
+    
 class Workout(models.Model):
+    """
+    Purpose:            The actual workout information
+    Fields:
+            name        : The name of the workout (STRING)
+            comments    : Any comments the trainer wants to add about the workout(STRING)
+            workout_type: What style of workout is it(Choice field)
+            time        : The amount of time allowed for a AMRAP workout(INT number of mins)
+            rounds      : How many rounds of the workout is required(INT)
+    """
     name = models.CharField(max_length=20)
     comments = models.CharField(max_length=200, blank = True)
-    workout_type = models.ForeignKey(Workout_type)
-    # TODO : Change this to a 'choices' field
-    #        http://docs.djangoproject.com/en/dev/ref/models/fields/#ref-models-fields
-
+    workout_type = models.CharField(max_length=200, choices = workout_choices)
     time = models.IntegerField()
     rounds = models.IntegerField()
     def __unicode__(self):
         return self.name
 
 class Class_info(models.Model):
+    """
+    Purpose : A actualy class in the day. i.e.  "6:00 Crosfit"
+    Fields:
+            title        : The name of the class(STRING)
+    """
     title = models.CharField(max_length=30)
     def __unicode__(self):
         return self.title
 
 class Workout_class(models.Model):
+    """
+    Purpose : Sets workout to a date and class
+    Fields:
+            date        : The date of the workout is happening(DATE)
+            workout     : A pointer to the workout is happpening(POINTER)
+            class_info  : A pointer to which class is doing it(POINTER)
+    """
     date = models.DateField('Date Completed')
     workout = models.ForeignKey(Workout)
     class_info = models.ForeignKey(Class_info)
     def __unicode__(self):
         return self.workout.name+ " "+self.class_info.title + " " +self.date.isoformat()
-
+    
 class Completed_workout(models.Model):
+    """
+    Purpose : The basic information about a completed workout
+    Fields:
+            secs            : How many secs it took(INT)
+            user            : A pointer to which user did the workout(POINTER)
+            workout_class   : A pointer the workout class that was done(POINTER)
+            rounds          : How many rounds waas done(INT)
+    """
     secs = models.IntegerField()
     user = models.ForeignKey(User)
     workout_class = models.ForeignKey(Workout_class)
     rounds = models.IntegerField()
 
-    def __unicode__(self):
-        return self.user.username+ ", "+ self.workout_class.workout.name
-
-    def get_month(self):
-        return get_month(self.workout_class.date.month)
-
-    def get_weekday(self):
-        return get_weekday(self.workout_class.date.weekday())
-
 class Element(models.Model):
+    """
+    Purpose : The element info
+    Fields:
+            name            : The name of the element(STRING)
+    """
     name = models.CharField(max_length=20)
     def __unicode__(self):
         return self.name
 
 class Element_used(models.Model):
+    """
+    Purpose : A element of a workout
+    Fields:
+            workout         : A pointer to which workout is using it(POINTER)
+            element         : A pointer to which element is being used(POINTER)
+            reps            : The number of reps that is requird (INT)
+            order           : Which posision it is in the workout (INT)
+    """
     workout = models.ForeignKey(Workout)
     element = models.ForeignKey(Element)
     reps = models.IntegerField()
-    order = models.IntegerField(null=True)
+    order = models.IntegerField()
     def __unicode__(self):
         return self.workout.name+ ", "+ self.element.name
 
 class Variation(models.Model):
+    """
+    Purpose : A Variation to a workout
+    Fields:
+            name            : What the variation is called
+            element         : A pointer to which element for the variation (POINTER)
+
+    """
     name = models.CharField(max_length=20)
     element = models.ForeignKey(Element)
     def __unicode__(self):
         return self.element.name+ ", "+ self.name
 
 class Completed_element(models.Model):
+    """
+    Purpose : The information about somone doing a element
+    Fields:
+            completed_workout   : What the variation is called
+            element             : A pointer to which element for the variation (POINTER)
+            variation           : A pointer to which variation is being used (POINTER)
+    """
     completed_workout = models.ForeignKey(Completed_workout)
     element_used = models.ForeignKey(Element_used)
     variation= models.ForeignKey(Variation)
@@ -78,10 +122,17 @@ class Completed_element(models.Model):
         return self.completed_workout.user.username+ ", "+self.completed_workout.workout_class.workout.name+  ", "+ self.variation.name + ", " + self.element_used.element.name
 
 class UserProfile(models.Model):
+    """
+    Purpose : Additional information about the user that should be saved
+    Fields:
+    """
     user = models.ForeignKey(User, unique=True)
 
 # -- API METHODS -------------- #
 def get_user_info(user_id):
+    """
+    CURRENTLY UNUSED
+    """
     user = User.objects.get(id =user_id)
     user_dict = {
         "username"      : user.username,
@@ -153,13 +204,14 @@ def get_workout(workout_date_str, class_id):
         elements = []
         for elm_used in workout.element_used_set.all():
             elements.append({"reps": elm_used.reps, "element": get_element(elm_used.element.id), "order": elm_used.order})
+        print workout.workout_type
         return_dict = {
                         "id"           : workout.id,
                         "name"         : workout.name,
                         "comments"     : workout.comments,
                         "time"         : workout.time,
                         "rounds"       : workout.rounds,
-                        "workout_type" : workout.workout_type.name,
+                        "workout_type" : workout.workout_type,
                         "elements"     : elements,
                         "class_name"   : Class_info.objects.get(pk=int(class_id)).title,
                         "workout_class": workouts[0].id,
@@ -274,7 +326,7 @@ def get_completed_workout(user_id, workout_id):
             'workout' : workouts.workout_class.workout.name,
             'date': workouts.workout_class.date.isoformat(),
             }
-        type_name = Workout.objects.get(id=workout_id).workout_type.name
+        type_name = Workout.objects.get(id=workout_id).workout_type
         if type_name == "Timed":
             type_value = {"type" : "Timed", "time": workouts.secs}
         elif type_name == "AMRAP":
@@ -585,7 +637,7 @@ def user_history(user_id):
     completed_workouts = Completed_workout.objects.filter(user__id = user_id).order_by('-workout_class__date')
     completed_workout_list = []
     for workouts in completed_workouts:
-        type_name = Workout.objects.get(id= workouts.workout_class.workout.id).workout_type.name
+        type_name = Workout.objects.get(id= workouts.workout_class.workout.id).workout_type
         if type_name == "Timed":
             type_value = {"type" : "Timed", "time": workouts.secs}
         elif type_name == "AMRAP":
@@ -641,7 +693,7 @@ def get_workout_with_date_class(date, class_id):
     workout = Workout_class.objects.get(date = date, class_info__id = class_id).workout
     name = workout.name
     comments = workout.comments
-    workout_type = workout.workout_type.name
+    workout_type = workout.workout_type
     time = workout.time * 60
     rounds = workout.rounds
     return_dict = {
