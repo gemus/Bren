@@ -36,6 +36,10 @@
 		}
 
 		var dateChangedFunc = function() {
+			load_class_data(classChnagedFunc);
+		}
+
+		var load_class_data = function(callBack) {
 			var theDate = $("#date_picker")[0].value;
 			$.getJSON("/json_api/", {"id": 1, "method": "get_classes", "params" : [theDate]}, function(result, status) {
 				var class_drop_value = '';
@@ -48,11 +52,13 @@
 				}
 				if (class_drop_value == '') {
 					class_drop_value = '<option value="None">No Classes For Selected Date</option>';
-					class_modal_value = '<h2>No Classes For Today</h2><p>[ Close ]</p>';
+					class_modal_value = '<div onclick="showDateClassPickers(); $(\'#date_picker\').focus();"><h2>No Classes For Today</h2><p>[ Close ]</p></div>';
 				}
 				$("#class_picker").html(class_drop_value);
 				$("#modal_class_selection").html(class_modal_value);
-
+				if (callBack != undefined) {
+					callBack();
+				}
 			})
 		}
 
@@ -68,14 +74,9 @@
 		if (day < 10) day = "0" + day;
 		var dateStr = year+"-"+month+"-"+day;
 		$("#date_picker").val(dateStr);
-		dateChangedFunc();
+		load_class_data();
 
-		//if ({{ last_class_id }} == -1) showDateClassPickers();
-
-		var options = {	'opacity': 70,
-						'close'  : false
-					  }
-		$.modal($('#basic-modal-content'), options);
+		$.modal($('#basic-modal-content'), {'opacity':70,'close':false});
 	});
 
 	var showDateClassPickers = function() {
