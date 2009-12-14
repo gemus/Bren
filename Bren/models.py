@@ -204,7 +204,6 @@ def get_workout(workout_date_str, class_id):
         elements = []
         for elm_used in workout.element_used_set.all():
             elements.append({"reps": elm_used.reps, "element": get_element(elm_used.element.id), "order": elm_used.order})
-        print workout.workout_type
         return_dict = {
                         "id"           : workout.id,
                         "name"         : workout.name,
@@ -547,6 +546,42 @@ def get_workout_estimation(user_id, workout_id):
             variation_id = Variation.objects.filter(element__id = elements.element.id)[0].id
         return_dict.update ({ element : variation_id })
     return return_dict
+
+def weight_element(element_id, weight):
+    """
+    Purpose: Given a weight and an element find the right variations or create it than return it
+    Input:
+        "element_id"    : The id of the element that is weighted(INT)
+        "weight"        : The amount of weight in lbs(INT)
+    Output:
+        "variation_id"  : The id of the element that was created or selected
+    """
+    elemenet = Element.objects.get(id=1)
+    variations = Variation.objects.filter(element__id = element_id)
+    for variation in variations:
+        try: 
+            round_weight = int(round(weight, -1))
+            if round_weight > weight:
+                if round_weight - weight > 3:
+                    weight = round_weight - 5
+                else: 
+                    weight = round_weight
+            else:
+                if  weight - round_weight > 2:
+                    weight = round_weight + 5
+                else: 
+                    weight = round_weight
+            if weight == int(variation.name[:3]):
+                return variation.id
+        except:
+            continue
+    v = Variation()
+    v.name = str(weight)
+    v.element = Element.objects.get(id=element_id)
+    v.save()
+    return v.id   
+    
+
 
 def get_full_element_history(user_id, element_id):
     """

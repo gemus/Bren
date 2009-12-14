@@ -48,7 +48,7 @@ def workout_form(request, date_str, class_id):
     the_form = WorkoutForm(api_data['elements'], previous_data)
     workout = model.user_done_class(request.user.id, api_data['id'], date_str)
     if not workout == None:
-        workout_type = workout.workout_class.workout.workout_type.name
+        workout_type = workout.workout_class.workout.workout_type
         if workout_type == "Timed":
             time = workout.secs
             mins = time / 60
