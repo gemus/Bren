@@ -48,10 +48,11 @@
 				}
 				if (class_drop_value == '') {
 					class_drop_value = '<option value="None">No Classes For Selected Date</option>';
-					class_modal_value = '<p>No Classes For Today</p>';
+					class_modal_value = '<h2>No Classes For Today</h2><p>[ Close ]</p>';
 				}
 				$("#class_picker").html(class_drop_value);
 				$("#modal_class_selection").html(class_modal_value);
+
 			})
 		}
 
@@ -89,9 +90,6 @@
 			paddingTop: "8px",
 			paddingBottom: "8px",
 		}, 500 );
-
-
-
 	}
 	</script>
 
@@ -101,6 +99,23 @@
 			font-size: 175%;
 			background-color: #3C5F7F;
 			color: #FFF;
+		}
+		h2 {
+			font-size: 150%;
+			color: #3C5F7F;
+			font-weight: bold;
+		}
+		div#modal_class_selection h1 {
+			text-align: center;
+		}
+		div#modal_class_selection h2 {
+			display: block;
+			text-align: center;
+			margin: 60px 0pt 10px;
+		}
+		div#modal_class_selection p {
+			display: block;
+			text-align: center;
 		}
 
 		div#defualt_date {
@@ -182,14 +197,7 @@
 
 	<div id="basic-modal-content">
 		<h1>Select A Class Please</h1>
-		<div id="modal_class_selection" class="simplemodal-close">
-			<a class="simplemodal-close" href="javascript:none()">5:00 pm</a>
-			<a class="simplemodal-close" href="javascript:none()">5:30 pm I am Crossfit</a>
-			<a class="simplemodal-close" href="javascript:none()">6:30 pm</a>
-			<a class="simplemodal-close" href="javascript:none()">7:30 pm</a>
-			<a class="simplemodal-close" href="javascript:none()">8:30 pm</a>
-			<a class="simplemodal-close" href="javascript:none()">9:30 pm</a>
-		</div>
+		<div id="modal_class_selection" class="simplemodal-close"></div>
 	</div>
 
 
