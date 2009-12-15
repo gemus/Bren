@@ -75,6 +75,7 @@ class Element(models.Model):
             name            : The name of the element(STRING)
     """
     name = models.CharField(max_length=20)
+    weighted = models.BooleanField()
     def __unicode__(self):
         return self.name
 
@@ -580,9 +581,6 @@ def weight_element(element_id, weight):
     v.element = Element.objects.get(id=element_id)
     v.save()
     return v.id   
-    
-
-
 def get_full_element_history(user_id, element_id):
     """
     Purpose: Given a user and element return the full history that user has done on that element
