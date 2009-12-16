@@ -164,6 +164,7 @@ def get_element(element_id):
     Output:
             "id"        : The id of the element (INT)
             "name"      : The name of the element (STRING)
+            "type"      : one of "variation" | "weight" | "regular" (STRING)
             "variations : A list of variation dictionarys contaiting(LIST)
                           "id" : The of the variation(INT)
                           "name" : The name of the variation(STRING)
@@ -172,7 +173,15 @@ def get_element(element_id):
     variations = []
     for variation in Variation.objects.filter(element__id = elm.id):
         variations.append({"id": variation.id, "name": variation.name})
-    element = {"id": elm.id, "name": elm.name, "variations": variations}
+
+    if elm.weighted:
+        elem_type = "weight"
+    elif len(variations) > 0:
+        elem_type = "variation"
+    else:
+        elem_type = "regular"
+
+    element = {"id": elm.id, "name": elm.name, "type": elem_type, "variations": variations}
     return element
 
 def get_workout(workout_date_str, class_id):
@@ -190,11 +199,15 @@ def get_workout(workout_date_str, class_id):
         "rounds"       : The number of rounds for the workout(INT)
         "workout_type" : The type of workout AMRAP, TIMES, DONE ect.
         "elements"     : A list of all the elements in a workout
-                         "id"           : element id,
-                         "name"         : element name,
-                         "variations"   : A list of variations
-                                          "id" : variation id
-                                          "name" : variation name}}(LIST)
+                         "reps"         : Number of reps for the element (INT)
+                         "order"        : Order to be done (INT)
+                         "element"      : An element structure that follows:
+                             "id"           : element id,
+                             "name"         : element name,
+                             "type"         : one of "variation" | "weight" | "regular"
+                             "variations"   : A list of variations
+                                              "id" : variation id
+                                              "name" : variation name}}(LIST)
         "class_name"   : The name of the workout class(STRING)
         "workout_class": The id of the workout class(INT)
     """
@@ -204,7 +217,9 @@ def get_workout(workout_date_str, class_id):
         workout = workouts[0].workout
         elements = []
         for elm_used in workout.element_used_set.all():
-            elements.append({"reps": elm_used.reps, "element": get_element(elm_used.element.id), "order": elm_used.order})
+            elements.append({"reps": elm_used.reps,
+                             "order": elm_used.order,
+                             "element": get_element(elm_used.element.id)})
         return_dict = {
                         "id"           : workout.id,
                         "name"         : workout.name,

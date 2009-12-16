@@ -24,6 +24,13 @@
 				$("#workout_time").numPadInput(true);
 				$("#workout_reps").numPadInput();
 			{% endif %}
+
+			// Hook up weight numpads
+			var inputFields = $("#formTable").find("input:not(#workout_time)");
+			for (var i=0; i<inputFields.length; i++) {
+				$(inputFields[i]).numPadInput(false, "0", false, true, inputFields[i].value );
+				$(inputFields[i]).after("<span class='lbs_marker'>Lbs</span>");
+			}
 		});
 	</script>
 	<style type="text/css" media="screen">
@@ -75,10 +82,24 @@
 			margin: 3px 0pt 3px 5px;
 		}
 
+		div#form_container form table input {
+			width: 100px;
+			border: 1px solid #3C5F7F;
+			margin-left: 5px;
+			margin: 3px 0pt 3px 5px;
+			font-size: 120%;
+		}
+
 		input.numbad_input {
 			border: 1px solid #3C5F7F;
 			font-size: 150%;
 			color: #333;
+		}
+		span.lbs_marker {
+			font-size: 125%;
+			margin-left: 5px;
+			font-weight: bold;
+			color: #3C5F7F;
 		}
 
 		button.save_button {
@@ -155,10 +176,10 @@
 		<form action="/save_workout/" method="POST">
 			<div style="position: relative; top: -8px; text-align: center;">
 				<h1>{{ name }} </h1>
-				<h2>{{ comments }} 
-						{% ifnotequal rounds 1 %} 
+				<h2>{{ comments }}
+						{% ifnotequal rounds 1 %}
 							{{rounds}} rounds of:
-						{% endifnotequal %} 
+						{% endifnotequal %}
 						{% ifequal workout_type 'AMRAP' %}
 							AMRAP in {{time}} mins of
 						{% endifequal %}

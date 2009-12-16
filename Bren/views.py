@@ -31,13 +31,17 @@ class WorkoutForm(forms.Form):
         for field_dict in elements:
             # In the style of 'varient_<element_id>_<order_num>'
             field_id = "varient_%d_%d" % (field_dict['element']['id'], field_dict['order'])
-            field = forms.ChoiceField()
-            field.choices = [ (varient['id'], varient['name']) for varient in field_dict['element']['variations']]
+
+            if field_dict['element']['type'] == "weight":
+                field = forms.CharField()
+            else:
+                field = forms.ChoiceField()
+                field.choices = [ (varient['id'], varient['name']) for varient in field_dict['element']['variations']]
             if not field_dict['reps'] == 1:
                 field.label = "%d %s" % (field_dict['reps'], field_dict['element']['name'])
             else:
                 field.label = field_dict['element']['name']
-                
+
             self.fields[field_id] = field
 
 @login_required
@@ -123,7 +127,7 @@ def save_user(request):
             return render_to_response('create_user.html',create_user)
         if 'username_error' in create_user:
             return render_to_response('create_user.html',create_user)
-    
+
     return render_to_response('save_user.html')
 @login_required
 
@@ -138,7 +142,7 @@ def weekly_roster(request, date_str):
 @login_required
 
 def save_workout(request):
-    # Basic Information   
+    # Basic Information
     date_str = request.POST.get('date_str')
     class_id = request.POST.get('class_id')
 
@@ -164,8 +168,8 @@ def save_workout(request):
         workout_rounds = 1
         workout_time = 0
 
-    
-    
+
+
 
     save_dict = {
         "time":       workout_time,
@@ -206,7 +210,7 @@ def full_element_history(request, user_id, element_id):
     data = {
         "full_history" : full_history,
        }
-    
+
     return render_to_response('full_element_history.html', data)
 
 @login_required
@@ -221,18 +225,18 @@ def user_history(request):
             time = workout['info']['time']
             mins = time / 60
             secs = time % 60
-            workout['info']['time'] = "%d:%02d" % (mins, secs) 
+            workout['info']['time'] = "%d:%02d" % (mins, secs)
     time = user_history['total_time']
     hours = time / 3600
     time = time - (hours * 3600)
     mins = time / 60
     secs = time % 60
     user_history['total_time'] = "%02d:%02d:%02d" % (hours, mins, secs)
-            
+
     data = {
         "user_history" : user_history,
        }
-    
+
     return render_to_response('user_history.html', data)
 
 
