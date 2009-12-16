@@ -445,7 +445,12 @@ def create_completed_workout(create_dict):
     for variation in create_dict['variations']:
         ce = Completed_element()
         ce.completed_workout = co
-        ce.variation = Variation.objects.get(id = variation['variation_id'])
+        
+        element = Element_used.objects.filter(workout__id = workout.id).get(order = variation['order']).element
+        if element.weighted == True:
+            ce.variation = Variation.objects.get(id = weight_element(element.id, variation['variation_id']))
+        else:
+            ce.variation = Variation.objects.get(id = variation['variation_id'])
         ce.element_used = Element_used.objects.filter(workout__id = workout.id).get(order = variation['order'])
         ce.save()
 
@@ -540,7 +545,6 @@ def get_previous_variations(completed_workout_id):
         else:
             variation_id = variation.variation.id
         return_dict.update ({ element : variation_id })
-        print variation_id
     return return_dict
     
 def get_workout_estimation(user_id, workout_id):
@@ -560,10 +564,19 @@ def get_workout_estimation(user_id, workout_id):
         element_history = get_element_history(user_id, elements.element.id) 
         if not 'error' in element_history:
             element = "varient_" + str(elements.element.id)+ "_" + str(elements.order)
-            variation_id = element_history[0]['variationn_id']
+            
+            if elements.element.weighted == True:
+                variation_id = int(Variation.objects.get(id = element_history[0]['variationn_id']).name)
+            else:
+                variation_id = element_history[0]['variationn_id']            
         else:
             element = "varient_" + str(elements.element.id)+ "_" + str(elements.order)
-            variation_id = Variation.objects.filter(element__id = elements.element.id)[0].id
+            
+            if elements.element.weighted == True:
+                variation_id = 0 
+            else:
+                variation_id = Variation.objects.filter(element__id = elements.element.id)[0].id
+            
         return_dict.update ({ element : variation_id })
     return return_dict
 
