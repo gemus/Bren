@@ -535,8 +535,12 @@ def get_previous_variations(completed_workout_id):
     completed_elements = Completed_element.objects.filter(completed_workout__id=completed_workout_id)
     for variation in completed_elements:
         element = "varient_" + str(variation.element_used.element.id)+ "_"+ str(variation.element_used.order)
-        variation_id = variation.variation.id
+        if variation.element_used.element.weighted == True:
+            variation_id = int(variation.variation.name)
+        else:
+            variation_id = variation.variation.id
         return_dict.update ({ element : variation_id })
+        print variation_id
     return return_dict
     
 def get_workout_estimation(user_id, workout_id):
