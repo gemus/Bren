@@ -24,6 +24,12 @@
 				$("#workout_time").numPadInput(true);
 				$("#workout_reps").numPadInput();
 			{% endif %}
+
+			// Hook up weight numpads
+			var inputFields = $("#formTable").find("input:not(#workout_time)");
+			for (var i=0; i<inputFields.length; i++) {
+				$(inputFields[i]).numPadInput(false, "0", false, true, inputFields[i].value );
+			}
 		});
 	</script>
 	<style type="text/css" media="screen">
@@ -51,6 +57,10 @@
 			text-align: right;
 		}
 
+		div#form_container table tbody tr td {
+			text-align: right;
+		}
+
 		div#form_container table tbody label {
 			font-size: 120%;
 			font-weight: bold;
@@ -73,6 +83,14 @@
 			border: 1px solid #3C5F7F;
 			margin-left: 5px;
 			margin: 3px 0pt 3px 5px;
+		}
+
+		div#form_container form table input {
+			width: 100px;
+			border: 1px solid #3C5F7F;
+			margin-left: 5px;
+			margin: 3px 0pt 3px 5px;
+			font-size: 120%;
 		}
 
 		input.numbad_input {

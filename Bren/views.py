@@ -49,7 +49,6 @@ def workout_form(request, date_str, class_id):
     api_data = model.get_workout(date_str, class_id)
     initial_time_reps = None
     previous_data = model.get_workout_variations(request.user.id, api_data['workout_class'])
-    print previous_data
     the_form = WorkoutForm(api_data['elements'], previous_data)
     workout = model.user_done_class(request.user.id, api_data['id'], date_str)
     if not workout == None:
