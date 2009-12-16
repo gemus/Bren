@@ -250,15 +250,10 @@
 						{% for history in element.history %}
 									{% if history.variation %} <div> {{history.variation}} {{element.element}} {{history.rounds}} rounds of {{history.reps}} </div> <br>{% endif %}
 						{% endfor %}
-						{% if not element.history.error%}
-							<a href="/full_element_history/{{user_id}}/{{element.element_id}}">full history</a>
-						{% endif %}
 					</div>
-
 				{% endfor %}
 			</div>
 		</div>
 	</div>
-<a href="/user_history/">User History</a>
 </body>
 </html>
