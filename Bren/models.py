@@ -362,7 +362,7 @@ def get_classes(date):
 
 def get_week_roster(date):
     """
-    Purpose: Given a date output the weeks classes each day and the people that did them.
+    Purpose: Given a date return the weeks classes and the people that did them.
     Input:
             date     : The date in YYYY-MM-DD format (STRING)
     Output:
@@ -580,7 +580,7 @@ def weight_element(element_id, weight):
     v.name = str(weight)
     v.element = Element.objects.get(id=element_id)
     v.save()
-    return v.id   
+    return v.id
 def get_full_element_history(user_id, element_id):
     """
     Purpose: Given a user and element return the full history that user has done on that element
@@ -737,17 +737,4 @@ def get_workout_with_date_class(date, class_id):
         "rounds"            : rounds,
         }
     return return_dict
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
+    
