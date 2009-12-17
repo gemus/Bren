@@ -12,6 +12,7 @@
 	<script type="text/javascript" src="/site_media/js/jquery-1.3.2.min.js"></script>
 	<script type="text/javascript" src="/site_media/js/jquery-ui-1.7.2.custom.min.js"></script>
 	<script type="text/javascript" src="/site_media/js/numpad_input.js"></script>
+	<script type="text/javascript" src="/site_media/js/user_picker.js"></script>
 
 	<style type="text/css" media="screen">
 		h1 {
@@ -88,16 +89,13 @@
 			$("#id_username").val(data['id']);
 		    $("#id_password").val("");
 		    $("#name_plate").html(data['display_name']);
-
-			var myAnim = new YAHOO.util.Anim('userPickerCanvas', {
-				width: { to: 250 }
-			}, .5, YAHOO.util.Easing.easeOut);
-			myAnim.animate();
 		}
 
 		$(document).ready(function() {
 			var default_picked = $("#id_username").val();
 			$("#id_password").numPadInput(false, "", true, false);
+			
+			$("#userPickerCanvas").userPicker();
 		});
 	</script>
 
@@ -105,24 +103,21 @@
 <body>
 	<h1> Welcome To CrossFit DPL</h1>
 	<div id="pageContainer">
-	<div id="userPickerCanvas" class="canvas">
-		<dl id="userPickerToScroll"></dl>
-	</div>
+		<div id="userPickerCanvas"></div>
+		<div id="login_content">
+			<form method="post" action="{% url django.contrib.auth.views.login %}">
+				<div style="display:none">
+					{{ form.username.label_tag }} <br />
+					{{ form.username }}
+				</div>
+				<h2 id="name_plate">&nbsp;</h2>
+				{{ form.password }}
 
-	<div id="login_content">
-		<form method="post" action="{% url django.contrib.auth.views.login %}">
-			<div style="display:none">
-				{{ form.username.label_tag }} <br />
-				{{ form.username }}
-			</div>
-			<h2 id="name_plate">&nbsp;</h2>
-			{{ form.password }}
-
-			<button type="submit" class="big_button">Login</button>
-			<input type="hidden" name="next" value="{{ next }}" />
-		</form>
-		{% if form.errors %}<p id="errorBox">Wrong PIN. Please try again.</p>{% endif %}
-	</div>
+				<button type="submit" class="big_button">Login</button>
+				<input type="hidden" name="next" value="{{ next }}" />
+			</form>
+			{% if form.errors %}<p id="errorBox">Wrong PIN. Please try again.</p>{% endif %}
+		</div>
 	</div>
 </body>
 </html>
