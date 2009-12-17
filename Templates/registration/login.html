@@ -82,6 +82,19 @@
 			margin: 5px 1px;
 		}
 
+		a {
+			display: block;
+			width: 125px;
+			padding: 7px;
+			font-size: 200%;
+			letter-spacing: 5px;
+			text-align: center;
+			border: 1px solid #3C5F7F;
+			text-decoration: none;
+			margin: 5px;
+			color: #3C5F7F;
+		}
+
 	</style>
 
 	<script type="text/javascript" charset="utf-8">
@@ -94,7 +107,7 @@
 		$(document).ready(function() {
 			var default_picked = $("#id_username").val();
 			$("#id_password").numPadInput(false, "", true, false);
-			
+
 			$("#userPickerCanvas").userPicker();
 		});
 	</script>
