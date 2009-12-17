@@ -266,8 +266,8 @@ def json_api(request):
             "result" : result,
             "error"  : None
         }
-    elif method == 'get_all_users':
-        result = model.get_all_users()
+    elif method == 'get_users':
+        result = model.get_users(request.GET['params'][0])
         to_return = {
             "id"     : request.GET['id'],
             "result" : result,

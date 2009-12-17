@@ -145,7 +145,7 @@ def get_user_info(user_id):
         }
     return user_dict
 
-def get_all_users():
+def get_users(search_str):
     """
     Returns:
     {

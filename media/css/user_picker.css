@@ -1,0 +1,19 @@
+a.user_picker {
+	float: left;
+	clear: left;
+	display: block;
+	width: 125px;
+	padding: 7px;
+	font-size: 200%;
+	letter-spacing: 5px;
+	text-align: center;
+	border: 1px solid #3C5F7F;
+	text-decoration: none;
+	margin: 5px;
+	color: #3C5F7F;
+}
+
+a.selected {
+	background-color: #3C5F7F;
+	color: #FFF;
+}
