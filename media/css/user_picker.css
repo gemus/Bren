@@ -1,4 +1,4 @@
-a.user_picker {
+a.user_picker_letters {
 	float: left;
 	clear: left;
 	display: block;
@@ -13,7 +13,35 @@ a.user_picker {
 	color: #3C5F7F;
 }
 
+a.user_picker_names {
+	float: left;
+	clear: left;
+	display: block;
+	width: 100%;
+
+	padding: 5px;
+	font-size: 150%;
+	border: 1px solid #3C5F7F;
+	text-decoration: none;
+	margin: 5px;
+	color: #3C5F7F;
+
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+
 a.selected {
 	background-color: #3C5F7F;
 	color: #FFF;
+}
+
+div#letter_select_canvas {
+	float: left;
+	width: 165px;
+}
+
+div#user_select_canvas {
+	float: left;
+	width: 250px;
 }
