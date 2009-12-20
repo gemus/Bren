@@ -13,7 +13,15 @@ jQuery.fn.userPicker = function() {
         $(this).html(main_buttons_html +
                      user_select_canvas );
 
+        var select_button = function(target) {
+            $(target).parent().children().each(function() {
+                $(this).removeClass("selected");
+            });
+            $(target).addClass("selected");
+        }
+
         var namesClick = function(evnt) {
+            select_button(this);
             $("#name_plate").html($(this).html());
             $("#id_username").val($(this).attr('username'));
         }
@@ -34,10 +42,7 @@ jQuery.fn.userPicker = function() {
         }
 
         var lettersClick = function(evnt) {
-            $(this).parent().children().each(function() {
-                $(this).removeClass("selected");
-            });
-            $(this).addClass("selected");
+            select_button(this);
 
             // Create the JSON array of letters. Eg: '["J","K","L"]'
             var letters = $(this).html();
