@@ -54,9 +54,14 @@
 
 		div#login_content {
 			position: absolute;
-			z-index: -1;
 			left: 575px;
+			{% if form.errors %}
+			z-index: 10;
+			opacity: 1.0;
+			{% else %}
+			z-index: -1;
 			opacity: 0.0;
+			{% endif %}
 		}
 
 		button.big_button {
