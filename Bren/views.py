@@ -254,7 +254,6 @@ def json_api(request):
     # TODO : Ensure all are using proper JSON
 
     method = request.GET['method']
-    json_params = simplejson.loads(request.GET['params'])
 
     to_return = {
         "id"     : request.GET['id'],
@@ -270,6 +269,7 @@ def json_api(request):
             "error"  : None
         }
     elif method == 'get_users':
+        json_params = simplejson.loads(request.GET['params'])
         result = model.get_users(json_params)
         to_return = {
             "id"     : request.GET['id'],
@@ -277,6 +277,7 @@ def json_api(request):
             "error"  : None
         }
     elif method == 'check_user_login':
+        json_params = simplejson.loads(request.GET['params'])
         username, password = json_params
         result = model.check_user_login(username, password)
         to_return = {
