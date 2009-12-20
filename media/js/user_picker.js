@@ -20,12 +20,33 @@ jQuery.fn.userPicker = function() {
             $(target).addClass("selected");
         }
 
+        var show_pin_pad = function() {
+            if (!($("#userPickerCanvas").attr('is_shown') == 'true')) {
+                $("#userPickerCanvas").animate({
+                        width: "800px",
+                      }, 500 , "swing", function() {
+                          $("#login_content").css({'z-index': 10 });
+                          $("#login_content").animate({ opacity: "1.0" }, 500);
+                      });
+                $("#userPickerCanvas").attr({'is_shown': 'true'});
+
+            }
+        }
+
+        var show_name_picker = function() {
+            if (!($("#user_select_canvas").attr('is_shown') == 'true')) {
+                $("#user_select_canvas").css({'opacity': 0.0});
+                $("#user_select_canvas").animate({'opacity': 1.0});
+                $("#user_select_canvas").attr({'is_shown': 'true'});
+            }
+        }
+
         var namesClick = function(evnt) {
             select_button(this);
             $("#name_plate").html($(this).html());
             $("#id_username").val($(this).attr('username'));
+            show_pin_pad();
         }
-
 
         var button_callback = function(result, status) {
             result = result.result
@@ -39,6 +60,7 @@ jQuery.fn.userPicker = function() {
             $("#user_select_canvas").children().each(function() {
                 $(this).click(namesClick);
             })
+            show_name_picker();
         }
 
         var lettersClick = function(evnt) {

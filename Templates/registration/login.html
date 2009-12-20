@@ -44,15 +44,19 @@
 		}
 
 		div#userPickerCanvas {
+			margin: 0pt auto;
 			{% if form.errors %}
-			width: 250px;
-			{% else %}
 			width: 800px;
+			{% else %}
+			width: 430px;
 			{% endif %}
 		}
 
 		div#login_content {
-			margin-left: 270px;
+			position: absolute;
+			z-index: -1;
+			left: 575px;
+			opacity: 0.0;
 		}
 
 		button.big_button {
@@ -62,7 +66,7 @@
 			padding-top: 10px; padding-bottom: 10px;
 			cursor: pointer;
 			font-size: 200%;
-			width:305px;
+			width: 305px;
 		}
 
 		p#errorBox {
