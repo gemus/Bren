@@ -13,16 +13,27 @@ jQuery.fn.userPicker = function() {
         $(this).html(main_buttons_html +
                      user_select_canvas );
 
+        var namesClick = function(evnt) {
+            console.log($(this).attr('username'));
+            console.log($(this).html());
+        }
+
+
         var button_callback = function(result, status) {
             result = result.result
             var people = "";
             for (i in result) {
-                people += "<a class='user_picker_names' href='javascript:void(0);'>" + result[i]['display_name'] + "</a>";
+                people += "<a class='user_picker_names' href='javascript:void(0);' username='"+result[i]['user_name']+"'>" + result[i]['display_name'] + "</a>";
             }
             $("#user_select_canvas").html(people);
+
+            // Hook in the event handling
+            $("#user_select_canvas").children().each(function() {
+                $(this).click(namesClick);
+            })
         }
 
-        var buttonClick = function(evnt) {
+        var lettersClick = function(evnt) {
             $(this).parent().children().each(function() {
                 $(this).removeClass("selected");
             });
@@ -45,7 +56,7 @@ jQuery.fn.userPicker = function() {
 
         // Hook in the event handling
         $("#letter_select_canvas").children().each(function() {
-            $(this).click(buttonClick);
+            $(this).click(lettersClick);
         })
     });
 }
