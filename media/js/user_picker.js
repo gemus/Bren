@@ -20,7 +20,6 @@ jQuery.fn.userPicker = function() {
                 people += "<a class='user_picker_names' href='javascript:void(0);'>" + result[i]['display_name'] + "</a>";
             }
             $("#user_select_canvas").html(people);
-            //console.log(result);
         }
 
         var buttonClick = function(evnt) {
@@ -29,14 +28,23 @@ jQuery.fn.userPicker = function() {
             });
             $(this).addClass("selected");
 
+            // Create the JSON array of letters. Eg: '["J","K","L"]'
+            var letters = $(this).html();
+            var letters_json = "[";
+            for (i in letters) {
+                letters_json += '"' + letters.charAt(i) + '",';
+            }
+            letters_json = letters_json.substring(0, letters_json.length-1) + "]";
+
             $.getJSON("/json_api/", {"id": 1,
                                      "method": "get_users",
-                                     "params" : [$(this).html()]},
+                                     "params" : letters_json
+                                     },
                                      button_callback)
         }
 
         // Hook in the event handling
-        $(this).children().each(function() {
+        $("#letter_select_canvas").children().each(function() {
             $(this).click(buttonClick);
         })
     });

@@ -251,7 +251,10 @@ def json_api(request):
     Response : { id: <int>, result: <object>, error: <object> }
     """
 
+    # TODO : Ensure all are using proper JSON
+
     method = request.GET['method']
+    json_params = simplejson.loads(request.GET['params'])
 
     to_return = {
         "id"     : request.GET['id'],
@@ -267,7 +270,7 @@ def json_api(request):
             "error"  : None
         }
     elif method == 'get_users':
-        result = model.get_users(request.GET['params'][0])
+        result = model.get_users(json_params)
         to_return = {
             "id"     : request.GET['id'],
             "result" : result,
