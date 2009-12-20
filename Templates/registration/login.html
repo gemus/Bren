@@ -109,9 +109,10 @@
 		var check_user_callback = function(result, status) {
 			var result = result.result;
 			if (result) {
-				$("form").submit()
+				$("form").submit();
 			} else {
-				console.log("Failure");
+				$("#id_password").val("");
+				$("#errorBox").animate({ opacity: "1.0" }, 500);
 			}
 		}
 
@@ -146,7 +147,7 @@
 				<button type="submit" class="big_button">Login</button>
 				<input type="hidden" name="next" value="{{ next }}" />
 			</form>
-			{% if form.errors %}<p id="errorBox">Wrong PIN. Please try again.</p>{% endif %}
+			<p id="errorBox" style="{% if form.errors %}{% else %}opacity: 0.0;{% endif %}">Wrong PIN. Please try again.</p>
 		</div>
 	</div>
 </body>
