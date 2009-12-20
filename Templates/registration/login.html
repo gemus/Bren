@@ -44,7 +44,6 @@
 		}
 
 		div#userPickerCanvas {
-			position: absolute;
 			{% if form.errors %}
 			width: 250px;
 			{% else %}
@@ -104,7 +103,6 @@
 	<h1> Welcome To CrossFit DPL</h1>
 	<div id="pageContainer">
 		<div id="userPickerCanvas"></div>
-		<!--
 		<div id="login_content">
 			<form method="post" action="{% url django.contrib.auth.views.login %}">
 				<div style="display:none">
@@ -119,7 +117,6 @@
 			</form>
 			{% if form.errors %}<p id="errorBox">Wrong PIN. Please try again.</p>{% endif %}
 		</div>
-		-->
 	</div>
 </body>
 </html>

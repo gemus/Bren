@@ -14,8 +14,8 @@ jQuery.fn.userPicker = function() {
                      user_select_canvas );
 
         var namesClick = function(evnt) {
-            console.log($(this).attr('username'));
-            console.log($(this).html());
+            $("#name_plate").html($(this).html());
+            $("#id_username").val($(this).attr('username'));
         }
 
 
