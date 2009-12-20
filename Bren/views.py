@@ -276,5 +276,13 @@ def json_api(request):
             "result" : result,
             "error"  : None
         }
+    elif method == 'check_user_login':
+        username, password = json_params
+        result = model.check_user_login(username, password)
+        to_return = {
+            "id"     : request.GET['id'],
+            "result" : result,
+            "error"  : None
+        }
 
     return HttpResponse(simplejson.dumps(to_return))

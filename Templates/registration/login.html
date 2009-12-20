@@ -105,6 +105,23 @@
 
 			$("#userPickerCanvas").userPicker();
 		});
+
+		var check_user_callback = function(result, status) {
+			var result = result.result;
+			console.log(result);
+		}
+
+		var checklogin = function() {
+			$.getJSON("/json_api/", {"id": 1,
+                                     "method": "check_user_login",
+                                     "params" : '["owen","123456"]'
+                                     },
+                                     check_user_callback)
+
+
+			console.log("Check User");
+			return false;
+		}
 	</script>
 
 </head>
@@ -113,7 +130,7 @@
 	<div id="pageContainer">
 		<div id="userPickerCanvas"></div>
 		<div id="login_content">
-			<form method="post" action="{% url django.contrib.auth.views.login %}">
+			<form method="post" onsubmit="return checklogin();" action="{% url django.contrib.auth.views.login %}">
 				<div style="display:none">
 					{{ form.username.label_tag }} <br />
 					{{ form.username }}

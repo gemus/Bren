@@ -177,6 +177,17 @@ def get_users(search_str):
 
     return [{"display_name": "%s %s" % (user.first_name, user.last_name), "user_name": user.username} for user in user_query]
 
+def check_user_login(username, password):
+    """
+    Purpose: Verify that a user and password combination will result in a
+             successful login if used
+    Input:   username : username of a user (STRING)
+             password : a raw password (STRING)
+    Output:  success (boolean)
+    """
+    user = User.objects.get(username=username)
+    return user.check_password(password)
+
 def get_element(element_id):
     """
     Purpose: Given a element id output element and all its variation
