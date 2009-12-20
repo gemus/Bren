@@ -108,18 +108,23 @@
 
 		var check_user_callback = function(result, status) {
 			var result = result.result;
-			console.log(result);
+			if (result) {
+				$("form").submit()
+			} else {
+				console.log("Failure");
+			}
 		}
 
 		var checklogin = function() {
+			var username = $("#id_username").val()
+			var password = $("#id_password").val()
 			$.getJSON("/json_api/", {"id": 1,
                                      "method": "check_user_login",
-                                     "params" : '["owen","123456"]'
+                                     "params" : '["'+username+'","'+password+'"]'
                                      },
                                      check_user_callback)
 
-
-			console.log("Check User");
+			// Never submit the form, callback will do it
 			return false;
 		}
 	</script>
