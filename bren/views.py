@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from django.utils import simplejson
 from django.contrib.auth.decorators import login_required
 
-import crossfit.Bren.models as model
+import crossfit.bren.models as model
 
 # =============================================================================
 # = Index Page ================================================================

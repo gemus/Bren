@@ -4,7 +4,7 @@ from django.db.models import Q
 from django.contrib import admin
 from django.contrib.auth.models import User
 from django.utils import simplejson
-from crossfit.Bren.calcs import*
+from crossfit.bren.calcs import*
 
 
 DATE_FORMAT = "%Y-%m-%d"
