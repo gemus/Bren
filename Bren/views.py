@@ -1,10 +1,11 @@
 import datetime
 from django.shortcuts import render_to_response
 from django import forms
-import Crossfit.Bren.models as model
 from django.http import HttpResponse
 from django.utils import simplejson
 from django.contrib.auth.decorators import login_required
+
+import crossfit.Bren.models as model
 
 # =============================================================================
 # = Index Page ================================================================

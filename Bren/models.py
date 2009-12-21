@@ -1,10 +1,10 @@
+import datetime
 from django.db import models
 from django.db.models import Q
 from django.contrib import admin
-import datetime
 from django.contrib.auth.models import User
-from Crossfit.Bren.calcs import*
 from django.utils import simplejson
+from crossfit.Bren.calcs import*
 
 
 DATE_FORMAT = "%Y-%m-%d"

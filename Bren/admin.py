@@ -1,7 +1,8 @@
-from Crossfit.Bren.models import *
 from django.contrib import admin
 from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin
+
+from crossfit.Bren.models import *
  
 class Completed_elementInline(admin.StackedInline):
     model = Completed_element

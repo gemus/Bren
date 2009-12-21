@@ -1,4 +1,4 @@
-# Django settings for Crossfit project.
+# Django settings for crossfit project.
 import os
 ROOT_PATH = os.path.dirname(__file__)
 
@@ -71,9 +71,9 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
 )
 
-ROOT_URLCONF = 'Crossfit.urls'
+ROOT_URLCONF = 'crossfit.urls'
 
-TEMPLATE_DIRS = ('C:/Crossfit/Templates'
+TEMPLATE_DIRS = ('C:/crossfit/Templates'
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -86,6 +86,6 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.admindocs',
     'django.contrib.admin',
-    'Crossfit.Bren',
+    'crossfit.Bren',
 )
 AUTH_PROFILE_MODULE = 'Bren.UserProfile'
