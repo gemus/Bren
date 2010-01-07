@@ -161,12 +161,21 @@ def get_users(search_str):
     #        should really be fixed in the future
 
     char_a = search_str[0]
-    char_b = search_str[1]
-    char_c = search_str[2]
-    if len(search_str) > 3:
-        char_d = search_str[3]
+
+    if len(search_str) < 2:
+        char_b = '+'
     else:
+        char_b = search_str[1]
+
+    if len(search_str) < 3:
+        char_c = '+'
+    else:
+        char_c = search_str[2]
+
+    if len(search_str) < 4:
         char_d = '+'
+    else:
+        char_d = search_str[3]
 
     user_query = User.objects.filter(
                     Q(first_name__startswith=char_a) |
