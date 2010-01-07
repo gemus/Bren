@@ -2,7 +2,7 @@ jQuery.fn.userPicker = function() {
     // Create a user picker
     return this.each(function() {
         // Create the base buttons
-        var letter_buttons = ["ABC","DEF","GHI","JKL","MNO","PQRS","TUV","WXYZ"];
+        var letter_buttons = ["ABC","DE","FGH","IJK","LMN","OPQR","STUV","WXYZ"];
         var main_buttons_html = "<div id='letter_select_canvas'>";
         for (i in letter_buttons) {
             main_buttons_html += "<a class='user_picker_letters' href='javascript:void(0);'>"+letter_buttons[i]+"</a>";
