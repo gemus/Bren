@@ -38,11 +38,31 @@ jQuery.fn.userPicker = function() {
                      "<input type='text' id='keyboard_line'>" +
                      "<div id='user_select_canvas'></div>");
 
-        var button_f = function(letter) {
-            $("#keyboard_line").val($("#keyboard_line").val() + letter);
+        var search_callback = function(result, status) {
+            var result = result.result;
+            
+            var collect = "";
+            for (i in result) {
+                collect += result[i]['display_name'];
+                collect += "<br>";
+            }
+            $("#user_select_canvas").html(collect);
         }
 
-        $("#keyboard_keys_canvas").keyboard_creator(button_f);
+        var keyboard_pressed_func = function(letter) {
+            $("#keyboard_line").val($("#keyboard_line").val() + letter);
+            
+            var params = '["' + $("#keyboard_line").val() + '"]';
+            $.getJSON("/json_api/", {"id": 1,
+                                     "method": "get_users",
+                                     "params" : params
+                                     },
+                                     search_callback)
+        }
+
+        $("#keyboard_keys_canvas").keyboard_creator(keyboard_pressed_func);
+
+
 
     });
 }

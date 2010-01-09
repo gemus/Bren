@@ -33,13 +33,3 @@ a.selected {
 	background-color: #3C5F7F;
 	color: #FFF;
 }
-
-div#letter_select_canvas {
-	float: left;
-	width: 165px;
-}
-
-div#user_select_canvas {
-	float: left;
-	width: 250px;
-}
