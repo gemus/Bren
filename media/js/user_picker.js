@@ -1,26 +1,31 @@
 jQuery.fn.keyboard_creator = function(callback_func) {
     var generate_key_link = function(key_letter) {
-        return '<a href="javascript:void(0);" class="keyboard_letters">' + key_letter + '</a>';
+        if (key_letter == "Clear") {
+            return '<a href="javascript:void(0);" id="clear_button">' + key_letter + '</a>';
+        } else {
+            return '<a href="javascript:void(0);" class="keyboard_letters">' + key_letter + '</a>';
+        }
     }
     
     // Create a keyboard users can use to enter text
     return this.each(function() {
         var keys = [["Q","W","E","R","T","Y","U","I","O","P"],
                    ["A","S","D","F","G","H","J","K","L",],
-                   ["Z","X","C","V","B","N","M"]]
+                   ["Z","X","C","V","B","N","M", "Clear"]]
         
         // Write out the keys
         var collect = "";
         for (row in keys) {
+            collect += "<div id='keyboard_row_"+row+"'>";
             for (col in keys[row]) {
                 collect += generate_key_link(keys[row][col]);
             }
-            collect += "<br style='clear: left;'>";
+            collect += "</div>";
         }
         $(this).html(collect);
 
         // Call the callback_func pass it the text of the key pressed
-        $(this).children().each(function() {
+        $(this).find("a.keyboard_letters").each(function() {
             $(this).click(function() {
                 callback_func($(this).html());
             });
@@ -52,8 +57,7 @@ jQuery.fn.userPicker = function() {
         
         // Create places for things to go
         $(this).html("<div id='keyboard_keys_canvas'></div>"+
-                     "<input type='text' id='keyboard_line'>" +
-                     "<a href='javascript:void(0)' id='clearFieldButton'>Clear</a>" +
+                     "<div id='keyboard_line_container'><input type='text' id='keyboard_line'></div>" +
                      "<div id='user_select_canvas'></div>");
 
         var search_callback = function(result, status) {
@@ -87,7 +91,8 @@ jQuery.fn.userPicker = function() {
         $("#keyboard_keys_canvas").keyboard_creator(keyboard_pressed_func);
         
         // When the user clears the field
-        $("#clearFieldButton").click(function() {
+        $("#clear_button").click(function() {
+            console.log("foo")
             $("#keyboard_line").val("");
             $("#user_select_canvas").html("");
         });

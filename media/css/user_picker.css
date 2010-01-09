@@ -11,6 +11,20 @@ a.keyboard_letters {
 	text-align: center;
 }
 
+a#clear_button {
+	float: left;
+	display: block;
+	width: 134px;
+	padding: 7px;
+	font-size: 200%;
+	border: 1px solid #3C5F7F;
+	text-decoration: none;
+	margin: 5px;
+	color: #3C5F7F;
+	text-align: center;
+}
+
+
 a.user_picker_names {
 	float: left;
 	clear: left;
@@ -31,4 +45,30 @@ a.user_picker_names {
 a.selected {
 	background-color: #3C5F7F;
 	color: #FFF;
+}
+
+div#keyboard_line_container {
+	clear: left;	
+}
+
+input#keyboard_line {
+	font-size: 200%;
+	border: 1px solid #3C5F7F;
+	text-decoration: none;
+	margin: 5px;
+	color: #3C5F7F;
+	text-align: center;
+	width: 400px;
+}
+
+div#keyboard_row_0 {
+	clear: left;
+}
+div#keyboard_row_1 {
+	margin-left: 32px;
+	clear: left;
+}
+div#keyboard_row_2 {
+	margin-left: 16px;
+	clear: left;	
 }
