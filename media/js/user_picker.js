@@ -1,6 +1,16 @@
 jQuery.fn.userPicker = function() {
     // Create a user picker
     return this.each(function() {
+        $(this).html("<h1>LOGIN!</h1>");
+
+    });
+}
+
+
+/*
+jQuery.fn.userPicker = function() {
+    // Create a user picker
+    return this.each(function() {
         // Create the base buttons
         var letter_buttons = ["ABC","DE","FGH","IJ","KL","MNO","PQR","STUV","WXYZ"];
         var main_buttons_html = "<div id='letter_select_canvas'>";
@@ -87,3 +97,4 @@ jQuery.fn.userPicker = function() {
         })
     });
 }
+*/

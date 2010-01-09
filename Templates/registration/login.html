@@ -45,24 +45,19 @@
 
 		div#userPickerCanvas {
 			margin: 0pt auto;
-			{% if form.errors %}
-			width: 800px;
-			{% else %}
-			width: 430px;
-			{% endif %}
+			border: 1px solid #F00;
+
 		}
 
 		div#login_content {
-			position: absolute;
-			left: 575px;
-			{% if form.errors %}
-			z-index: 10;
-			opacity: 1.0;
-			{% else %}
-			z-index: -1;
-			opacity: 0.0;
-			{% endif %}
+			display: none;
 		}
+
+		/*
+		{% if form.errors %}
+		{% endif %}
+		*/
+
 
 		button.big_button {
 			border: 2px solid #3C5F7F;
@@ -93,12 +88,6 @@
 	</style>
 
 	<script type="text/javascript" charset="utf-8">
-		var listItemClickFunction = function(data) {
-			$("#id_username").val(data['id']);
-		    $("#id_password").val("");
-		    $("#name_plate").html(data['display_name']);
-		}
-
 		$(document).ready(function() {
 			var default_picked = $("#id_username").val();
 			$("#id_password").numPadInput(false, "", true, false);
