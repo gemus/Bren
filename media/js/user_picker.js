@@ -30,6 +30,23 @@ jQuery.fn.keyboard_creator = function(callback_func) {
 }
 
 jQuery.fn.userPicker = function() {
+    var generate_user_select_link = function(user_name, display_name) {
+        return '<a username="'+user_name+'" href="javascript:void(0);" class="user_picker_names">'+display_name+'</a>';
+    }
+
+    var select_button = function(target) {
+        $(target).parent().children().each(function() {
+            $(this).removeClass("selected");
+        });
+        $(target).addClass("selected");
+    }
+    
+    var namesClick = function(evnt) {
+        select_button(this);
+        $("#name_plate").html($(this).html());
+        $("#id_username").val($(this).attr('username'));
+    }
+    
     // Create a user picker
     return this.each(function() {
         
@@ -44,10 +61,16 @@ jQuery.fn.userPicker = function() {
             
             var collect = "";
             for (i in result) {
-                collect += result[i]['display_name'];
-                collect += "<br>";
+                collect += generate_user_select_link(
+                                        result[i]['user_name'],
+                                        result[i]['display_name']);
             }
             $("#user_select_canvas").html(collect);
+            
+            // Hook in the event handling
+            $("#user_select_canvas").children().each(function() {
+                $(this).click(namesClick);
+            })
         }
 
         var keyboard_pressed_func = function(letter) {
@@ -66,6 +89,7 @@ jQuery.fn.userPicker = function() {
         // When the user clears the field
         $("#clearFieldButton").click(function() {
             $("#keyboard_line").val("");
+            $("#user_select_canvas").html("");
         });
 
     });
