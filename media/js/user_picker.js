@@ -36,6 +36,7 @@ jQuery.fn.userPicker = function() {
         // Create places for things to go
         $(this).html("<div id='keyboard_keys_canvas'></div>"+
                      "<input type='text' id='keyboard_line'>" +
+                     "<a href='javascript:void(0)' id='clearFieldButton'>Clear</a>" +
                      "<div id='user_select_canvas'></div>");
 
         var search_callback = function(result, status) {
@@ -59,10 +60,13 @@ jQuery.fn.userPicker = function() {
                                      },
                                      search_callback)
         }
-
+        
         $("#keyboard_keys_canvas").keyboard_creator(keyboard_pressed_func);
-
-
+        
+        // When the user clears the field
+        $("#clearFieldButton").click(function() {
+            $("#keyboard_line").val("");
+        });
 
     });
 }
