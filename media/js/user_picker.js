@@ -1,6 +1,6 @@
-jQuery.fn.keyboard_creator = function() {
+jQuery.fn.keyboard_creator = function(callback_func) {
     var generate_key_link = function(key_letter) {
-        return '<a href="#" class="keyboard_letters">' + key_letter + '</a>';
+        return '<a href="javascript:void(0);" class="keyboard_letters">' + key_letter + '</a>';
     }
     
     // Create a keyboard users can use to enter text
@@ -17,9 +17,15 @@ jQuery.fn.keyboard_creator = function() {
             }
             collect += "<br style='clear: left;'>";
         }
-        
-        
         $(this).html(collect);
+
+        // Call the callback_func pass it the text of the key pressed
+        $(this).children().each(function() {
+            $(this).click(function() {
+                callback_func($(this).html());
+            });
+        })
+        
     });
 }
 
@@ -32,7 +38,11 @@ jQuery.fn.userPicker = function() {
                      "<input type='text' id='keyboard_line'>" +
                      "<div id='user_select_canvas'></div>");
 
-        $("#keyboard_keys_canvas").keyboard_creator()
+        var button_f = function(letter) {
+            $("#keyboard_line").val($("#keyboard_line").val() + letter);
+        }
+
+        $("#keyboard_keys_canvas").keyboard_creator(button_f);
 
     });
 }
