@@ -1,8 +1,25 @@
 jQuery.fn.keyboard_creator = function() {
+    var generate_key_link = function(key_letter) {
+        return '<a href="#" class="keyboard_letters">' + key_letter + '</a>';
+    }
+    
     // Create a keyboard users can use to enter text
     return this.each(function() {
+        var keys = [["Q","W","E","R","T","Y","U","I","O","P"],
+                   ["A","S","D","F","G","H","J","K","L",],
+                   ["Z","X","C","V","B","N","M"]]
+        
         // Write out the keys
-        $(this).html("KEYBOARD GOES HERE");
+        var collect = "";
+        for (row in keys) {
+            for (col in keys[row]) {
+                collect += generate_key_link(keys[row][col]);
+            }
+            collect += "<br style='clear: left;'>";
+        }
+        
+        
+        $(this).html(collect);
     });
 }
 
