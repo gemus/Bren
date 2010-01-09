@@ -256,7 +256,7 @@ def get_workout(workout_date_str, class_id):
     if len(workouts) > 0:
         workout = workouts[0].workout
         elements = []
-        for elm_used in workout.element_used_set.all():
+        for elm_used in workout.element_used_set.all().order_by('order'):
             elements.append({"reps": elm_used.reps,
                              "order": elm_used.order,
                              "element": get_element(elm_used.element.id)})
