@@ -1,11 +1,24 @@
-jQuery.fn.userPicker = function() {
-    // Create a user picker
+jQuery.fn.keyboard_creator = function() {
+    // Create a keyboard users can use to enter text
     return this.each(function() {
-        $(this).html("<h1>LOGIN!</h1>");
-
+        // Write out the keys
+        $(this).html("KEYBOARD GOES HERE");
     });
 }
 
+jQuery.fn.userPicker = function() {
+    // Create a user picker
+    return this.each(function() {
+        
+        // Create places for things to go
+        $(this).html("<div id='keyboard_keys_canvas'></div>"+
+                     "<input type='text' id='keyboard_line'>" +
+                     "<div id='user_select_canvas'></div>");
+
+        $("#keyboard_keys_canvas").keyboard_creator()
+
+    });
+}
 
 /*
 jQuery.fn.userPicker = function() {
