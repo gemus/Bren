@@ -115,7 +115,7 @@ class Completed_element(models.Model):
     Purpose : The information about somone doing a element
     Fields:
             completed_workout   : What the variation is called
-            element             : A pointer to which element for the variation (POINTER)
+            element_used             : A pointer to which element for the variation (POINTER)
             variation           : A pointer to which variation is being used (POINTER)
     """
     completed_workout = models.ForeignKey(Completed_workout)
@@ -794,3 +794,53 @@ def get_workout_with_date_class(date, class_id):
         "rounds"            : rounds,
         }
     return return_dict
+# -- Reports --------------------- #
+def user_week(user_id, date):
+    date = datetime.datetime.strptime(date, DATE_FORMAT).date()
+    days = []
+    datedelta = datetime.timedelta(days=1)
+    while not date.weekday() == 6:
+        date = date - datedelta
+        i = 0
+    while i <= 6:
+        days.append ({"day": get_weekday(i), "day_workouts": []})
+        i = i + 1
+    for day in days:
+        workouts = []
+        variations = []
+        for completed_workout in Completed_workout.objects.filter(user__id = user_id, workout_class__date = date):
+            print completed_workout.workout_class.workout.name
+            for completed_element in Completed_element.objects.filter(completed_workout__id = completed_workout.id).order_by('element_used__order'):
+                variations.append ({ "element" : completed_element.element_used.element.name, "variation" : completed_element.variation.name})
+            type_name = completed_workout.workout_class.workout.workout_type
+            if type_name == "Timed":
+                type_value = {"type" : "Timed", "time": completed_workout.secs}
+            elif type_name == "AMRAP":
+                type_value = {"type" : "AMRAP", "rounds": completed_workout.rounds}
+            else:
+                type_value = {"type" : "Done"}
+            workouts.append({
+                "name" : completed_workout.workout_class.workout.name,
+                "variations" : variations,
+                "type_value" : type_value,  
+            })
+        day['day_workouts'] = workouts
+        date = date + datedelta
+    return days
+
+#-- Tools ----------------------#
+def create_db_variations(element_name):
+    weight = 5
+    try:
+        element = Element.objects.get(name = element_name)
+    except:
+        return "No Element named " + element_name
+    while (weight < 50):
+        variation = Variation ()
+        variation.name = str(weight) + " lbs"
+        variation.element = element
+        variation.save ()
+        print variation
+        weight = weight + 5
+
+    
