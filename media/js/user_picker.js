@@ -39,6 +39,18 @@ jQuery.fn.userPicker = function() {
         return '<a username="'+user_name+'" href="javascript:void(0);" class="user_picker_names">'+display_name+'</a>';
     }
 
+    var show_pin_pad = function() {
+        if (!($("#userPickerCanvas").attr('is_shown') == 'true')) {
+            $("#userPickerCanvas").animate({
+                    marginLeft: "0px",
+                  }, 500 , "swing", function() {
+                      $("#login_content").animate({ opacity: "1.0" }, 500);
+                  });
+            $("#userPickerCanvas").attr({'is_shown': 'true'});
+
+        }
+    }
+
     var select_button = function(target) {
         $(target).parent().children().each(function() {
             $(this).removeClass("selected");
@@ -50,6 +62,7 @@ jQuery.fn.userPicker = function() {
         select_button(this);
         $("#name_plate").html($(this).html());
         $("#id_username").val($(this).attr('username'));
+        show_pin_pad();
     }
 
     // Create a user picker
