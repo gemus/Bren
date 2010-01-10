@@ -44,6 +44,7 @@ jQuery.fn.userPicker = function() {
             $("#userPickerCanvas").animate({
                     marginLeft: "0px",
                   }, 500 , "swing", function() {
+                      $("#login_content").css({'display': 'block'});
                       $("#login_content").animate({ opacity: "1.0" }, 500);
                   });
             $("#userPickerCanvas").attr({'is_shown': 'true'});
