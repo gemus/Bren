@@ -133,7 +133,6 @@ def save_user(request):
 @login_required
 
 def weekly_roster(request, date_str):
-
     week_data = model.get_week_roster(date_str)
     data = {
         'date' : date_str,
@@ -239,7 +238,8 @@ def user_history(request):
        }
 
     return render_to_response('user_history.html', data)
-
+def week_reveiw(request, date_str):
+    week_data = model.user_week(1, date_str)
 
 
 # =============================================================================
