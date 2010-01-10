@@ -92,7 +92,6 @@ jQuery.fn.userPicker = function() {
         
         // When the user clears the field
         $("#clear_button").click(function() {
-            console.log("foo")
             $("#keyboard_line").val("");
             $("#user_select_canvas").html("");
         });
