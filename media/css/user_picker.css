@@ -48,12 +48,13 @@ a.selected {
 }
 
 div#keyboard_line_container {
-	clear: left;	
+	clear: left;
+	text-align: center;
 }
 
 input#keyboard_line {
 	font-size: 200%;
-	border: 1px solid #3C5F7F;
+	border: 0px;
 	text-decoration: none;
 	margin: 5px;
 	color: #3C5F7F;
@@ -70,5 +71,10 @@ div#keyboard_row_1 {
 }
 div#keyboard_row_2 {
 	margin-left: 16px;
-	clear: left;	
+	clear: left;
+}
+
+div#user_select_canvas {
+	clear: both;
+	border: 1px solid #F00;
 }
