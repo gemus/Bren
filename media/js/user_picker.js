@@ -57,7 +57,7 @@ jQuery.fn.userPicker = function() {
 
         // Create places for things to go
         $(this).html("<div id='keyboard_keys_canvas'></div>"+
-                     "<div id='keyboard_line_container'><input type='text' id='keyboard_line'></div>" +
+                     "<div id='keyboard_line_container'><input type='text' id='keyboard_line' disabled='disabled'></div>" +
                      "<div id='user_select_canvas'></div>");
 
         var search_callback = function(result, status) {

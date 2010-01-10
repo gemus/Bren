@@ -58,6 +58,7 @@ input#keyboard_line {
 	text-decoration: none;
 	margin: 5px;
 	color: #3C5F7F;
+	background-color: #FFF;
 	text-align: center;
 	width: 400px;
 }
