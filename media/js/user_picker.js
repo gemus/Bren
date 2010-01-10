@@ -107,6 +107,10 @@ jQuery.fn.userPicker = function() {
         $("#clear_button").click(function() {
             $("#keyboard_line").val("");
             $("#user_select_canvas").html("");
+            $("#name_plate").html("");
+            $("#id_username").val("");
+
+            $("#errorBox").css({'opacity': 0.0});
         });
 
     });
