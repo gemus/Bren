@@ -38,16 +38,20 @@
 		div#userPickerCanvas {
 			float: left;
 			border: 1px solid #F00;
+			width: 640px;
 		}
 
 		div#login_content {
 			float: left;
 			border: 1px solid #F00;
+			{% if form.errors %}
+			opacity: 1.0;
+			{% else %}
+			opacity: 0;
+			{% endif %}
 		}
 
 		/*
-		{% if form.errors %}
-		{% endif %}
 		*/
 		button.big_button {
 			border: 2px solid #3C5F7F;
