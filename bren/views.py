@@ -238,8 +238,13 @@ def user_history(request):
        }
 
     return render_to_response('user_history.html', data)
-def week_reveiw(request, date_str):
-    week_data = model.user_week(1, date_str)
+def user_data(request, date_str):
+    user_data = model.user_week(1, date_str)
+    data = {
+        'user_data' : user_data,
+        }
+    return render_to_response('user_data.html', data)
+    
 
 
 # =============================================================================

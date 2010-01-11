@@ -805,6 +805,7 @@ def user_week(user_id, date):
     while i <= 6:
         days.append ({"day": get_weekday(i), "day_workouts": []})
         i = i + 1
+    startweek = date
     for day in days:
         workouts = []
         variations = []
@@ -824,9 +825,20 @@ def user_week(user_id, date):
                 "variations" : variations,
                 "type_value" : type_value,  
             })
-        day['day_workouts'] = workouts
+        if workouts == []:
+            day['day_workouts'] = 0
+        else:    
+            day['day_workouts'] = workouts
+        print day['day_workouts']
         date = date + datedelta
-    return days
+     
+    week = startweek.isoformat () + " to " + date.isoformat()
+    data = {
+        "week" : week,
+        "user" : User.objects.get(id=user_id).first_name,
+        "days" : days,
+        }
+    return data
 
 #-- Tools ----------------------#
 def create_db_variations(element_name):
