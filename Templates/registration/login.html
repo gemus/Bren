@@ -36,13 +36,23 @@
 		}
 
 		div#userPickerCanvas {
-			margin: 0pt auto;
-			border: 1px solid #F00;
+			float: left;
+			width: 640px;
+			margin-left: 170px;
+		}
+
+		div#login_content {
+			float: left;
+			margin-left: 5px;
+			{% if form.errors %}
+			opacity: 1.0;
+			{% else %}
+			opacity: 0;
+			display: none;
+			{% endif %}
 		}
 
 		/*
-		{% if form.errors %}
-		{% endif %}
 		*/
 		button.big_button {
 			border: 2px solid #3C5F7F;

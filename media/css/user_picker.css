@@ -27,9 +27,8 @@ a#clear_button {
 
 a.user_picker_names {
 	float: left;
-	clear: left;
 	display: block;
-	width: 100%;
+	width: 96%;
 
 	padding: 5px;
 	font-size: 150%;
@@ -48,15 +47,17 @@ a.selected {
 }
 
 div#keyboard_line_container {
-	clear: left;	
+	clear: left;
+	text-align: center;
 }
 
 input#keyboard_line {
 	font-size: 200%;
-	border: 1px solid #3C5F7F;
+	border: 0px;
 	text-decoration: none;
 	margin: 5px;
 	color: #3C5F7F;
+	background-color: #FFF;
 	text-align: center;
 	width: 400px;
 }
@@ -70,5 +71,9 @@ div#keyboard_row_1 {
 }
 div#keyboard_row_2 {
 	margin-left: 16px;
-	clear: left;	
+	clear: left;
+}
+
+div#user_select_canvas {
+	clear: both;
 }
