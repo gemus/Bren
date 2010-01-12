@@ -31,11 +31,11 @@
 	</style>
 </head>
 <body>
-<h1>{{user_data.user}}'s week of {{user_data.week}} </h1>
+<h1>{{user_data.user}}'s week of {{week}} </h1>
 {%for day in user_data.days%}
     {%ifnotequal day.day_workouts 0 %}
         {% for workout in day.day_workouts%}
-            {{day.day}} {{workout.name}} {%ifequal workout.type_value.type "Timed"%} {{workout.type_value.time}} {%endifequal%}<br>
+            <b>{{day.day}} : </b> {{workout.name}} {%ifequal workout.type_value.type "Timed"%} {{workout.type_value.time}} {%endifequal%}<br>
             {%for variation in workout.variations%}
                 {{variation.element}} {{variation.variation}}<br>
             {%endfor%}
