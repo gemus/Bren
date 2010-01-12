@@ -396,6 +396,8 @@ def get_completed_workout_info(completed_workout_id):
     
     data = {
         "id" : completed_workout_id,
+        "user_id" : completed_workout.user.id,
+        "user_name": User.objects.get(id=completed_workout.user.id).first_name,
         "workout" : completed_workout.workout_class.workout.name,
         "date" : completed_workout.workout_class.date.isoformat(),
         "info" : type_value,
@@ -859,6 +861,21 @@ def user_week(user_id, date):
         }
     return data
 
+def workout_date(workout_id, date):
+    date = datetime.datetime.strptime(date, DATE_FORMAT).date()
+    completed_workouts = Completed_workout.objects.filter(workout_class__workout__id = workout_id, workout_class__date = date)
+    workouts = []
+    for co in completed_workouts:
+        workouts.append(get_completed_workout_info(co.id))
+    data = {
+    "id" : workout_id,
+    "workout" : Workout.objects.get(id=workout_id).name,
+    "date" : date.isoformat(),
+    "workouts" : workouts,
+    }
+    return data
+
+
 #-- Tools ----------------------#
 def create_db_variations(element_name):
     weight = 5
@@ -872,8 +889,3 @@ def create_db_variations(element_name):
         variation.element = element
         variation.save ()
         weight = weight + 5
-
-def times(time):
-    mins = time / 60
-    sec = time % 60
-    print str(mins) + ":" + str(sec)
