@@ -253,8 +253,28 @@ def user_data(request, date_str):
         }
     return render_to_response('user_data.html', data)
 
-def display_completed_workout(request, completed_workout_id):
-    completed_workout = model.get_completed_workout(completed_workout_id)
+def display_workout_rank(request):
+#def display_workout_rank(request, workout_id, date):
+    OUTPUT_FORMAT = "%B %d, %Y" # December 1, 2009
+#    data = model.workout_date(workout_id, date)
+    data = model.workout_date(14, "2009-12-09")
+    workout_date = datetime.datetime.strptime(data['date'], model.DATE_FORMAT)
+    data['date'] = workout_date.strftime(OUTPUT_FORMAT).replace(' 0', ' ')
+    
+    for co in data['workouts']:
+        try:
+            time = co['info']['time']
+            mins = time / 60
+            secs = time % 60
+            co['info']['time'] = "%d:%02d" % (mins, secs)
+        except:
+            break
+    output = {
+        'output' : data,
+        }
+    return render_to_response('workout_rank.html', output)
+    
+        
 
 
 # =============================================================================

@@ -371,6 +371,9 @@ def get_completed_workout_info(completed_workout_id):
         completed_workout_id : the id number for the completed workout to look up.
     Output:
         id              : The id of the completed workout
+        user_id         : The id of the user who did the workout,
+        user_name       : The first name of the user who did the workout,
+    user_last_initial   : The First letter of the Last name of the user who did the workout,
         workout         : The name of the workout
         date            : The date of the workout
         info            : The information about type of workout and score based on that {"info": type_value} (DICT)
@@ -398,6 +401,7 @@ def get_completed_workout_info(completed_workout_id):
         "id" : completed_workout_id,
         "user_id" : completed_workout.user.id,
         "user_name": User.objects.get(id=completed_workout.user.id).first_name,
+        "user_last_initial" : User.objects.get(id=completed_workout.user.id).last_name[0],
         "workout" : completed_workout.workout_class.workout.name,
         "date" : completed_workout.workout_class.date.isoformat(),
         "info" : type_value,
@@ -863,12 +867,17 @@ def user_week(user_id, date):
 
 def workout_date(workout_id, date):
     date = datetime.datetime.strptime(date, DATE_FORMAT).date()
-    completed_workouts = Completed_workout.objects.filter(workout_class__workout__id = workout_id, workout_class__date = date)
+    workout_type = Workout.objects.get(id=workout_id).workout_type
+    if workout_type == "Timed":
+        completed_workouts = Completed_workout.objects.filter(workout_class__workout__id = workout_id, workout_class__date = date).order_by('secs')
+    if workout_type == "AMRAP":
+        completed_workouts = Completed_workout.objects.filter(workout_class__workout__id = workout_id, workout_class__date = date).order_by('-rounds')    
     workouts = []
     for co in completed_workouts:
         workouts.append(get_completed_workout_info(co.id))
     data = {
     "id" : workout_id,
+    "type" : Workout.objects.get(id=workout_id).workout_type,
     "workout" : Workout.objects.get(id=workout_id).name,
     "date" : date.isoformat(),
     "workouts" : workouts,

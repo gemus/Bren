@@ -28,6 +28,10 @@ urlpatterns = patterns('',
     # Development stuff
     (r'^full_element_history/(?P<user_id>\d+)/(?P<element_id>\d+)/$', 'crossfit.bren.views.full_element_history'),
     (r'^user_history/', 'crossfit.bren.views.user_history'),
+    
+    # Reports
+    (r'^report/', 'crossfit.bren.views.display_workout_rank'),
+    
 )
 
 if settings.DEBUG:
