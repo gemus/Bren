@@ -875,12 +875,18 @@ def workout_date(workout_id, date):
     workouts = []
     for co in completed_workouts:
         workouts.append(get_completed_workout_info(co.id))
+        
+    elements = []
+    for element in Element_used.objects.filter(workout__id = workout_id).order_by('order'):
+        elements.append(element.element.name)
+        
     data = {
     "id" : workout_id,
     "type" : Workout.objects.get(id=workout_id).workout_type,
     "workout" : Workout.objects.get(id=workout_id).name,
     "date" : date.isoformat(),
     "workouts" : workouts,
+    "elements" : elements,
     }
     return data
 

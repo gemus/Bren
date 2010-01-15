@@ -34,7 +34,14 @@
 <h1>{{output.workout}} done on {{output.date}}</h1>
     <table>
         <th>First Name </th><th> Last Initial </th><th> {%ifequal output.type "Timed"%} Time {%endifequal%} {%ifequal output.type "AMRAP"%} Rounds {%endifequal%}</th>
+        {%for element in output.elements%}
+            <th>{{element}}</th>
+        {%endfor%}
         {%for workout in output.workouts%}
-            <tr> <td>{{workout.user_name}}</td> <td>{{workout.user_last_initial}}</td><td>{%ifequal output.type "Timed"%} {{workout.info.time}} {%endifequal%} {%ifequal output.type "AMRAP"%} {{workout.info.rounds}} {%endifequal%}</td></tr>
+            <tr> <td>{{workout.user_name}}</td> <td>{{workout.user_last_initial}}</td><td>{%ifequal output.type "Timed"%} {{workout.info.time}} {%endifequal%} {%ifequal output.type "AMRAP"%} {{workout.info.rounds}} {%endifequal%}</td>
+            {%for variation in workout.variations%}
+            <td>{{variation.variation}}</td>
+            {%endfor%}
+        </tr>
         {%endfor%}
     </table>
