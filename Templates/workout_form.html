@@ -26,7 +26,7 @@
 			{% endif %}
 
 			// Hook up weight numpads
-			var inputFields = $("#formTable").find("input:not(#workout_time)");
+			var inputFields = $("#formTable").find("input:not(#workout_reps)|| input:not(#workout_reps)(#workout_time)");
 			for (var i=0; i<inputFields.length; i++) {
 				$(inputFields[i]).numPadInput(false, "0", false, true, inputFields[i].value );
 				$(inputFields[i]).after("<span class='lbs_marker'>Lbs</span>");
