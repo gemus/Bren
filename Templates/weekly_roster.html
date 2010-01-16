@@ -57,21 +57,29 @@
 	<h1>Weekly Roster page for week starting {{date}}</h1>
 
 		<table class="center">
-		{% for day in week_data%}
+		<tr valign = "top">
+		{% for day in week_data.days%}
+		
 		<td>
-		<b>{{day.day}} :</b><br>
+		<b>{{day.day}}:</b><br>
 				{% for classes in day.classes%}
-					{{classes.class_name}} {% ifnotequal classes.user_number 0 %} ({{classes.user_number}}) {% endifnotequal %} <b>:</b>
-					{% for user in classes.users %} 
-						{{user.user}} 
-					{%endfor%}
+					{{classes.class_name}}:{% ifnotequal classes.user_number 0 %} ({{classes.user_number}}) {% endifnotequal %}
 					<br>
 				{%endfor%}
 				
 			<br>
 		</td> 
 		{%endfor%}
+                </tr>
 		</table>
 
+<table>
+<th>Name</th><th># of workouts</th>
+{%for user in week_data.user_count%}
+    <tr>
+        <td>{{user.name}}</td><td>{{user.count}}</td><br>
+    </tr>
+{%endfor%}
+</table>
 </body>
 </html>

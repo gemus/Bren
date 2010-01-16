@@ -5,6 +5,7 @@ from django.contrib import admin
 from django.contrib.auth.models import User
 from django.utils import simplejson
 from crossfit.bren.calcs import*
+from django.db.models import Count
 
 
 DATE_FORMAT = "%Y-%m-%d"
@@ -464,6 +465,7 @@ def get_week_roster(date):
     while not date.weekday() == 6:
         date = date - datedelta
     days = []
+    start_date = date
     i = 0
     while i <= 6:
         days.append ({"day": get_weekday(i), "classes": []})
@@ -471,15 +473,22 @@ def get_week_roster(date):
     for day in days:
         classes = []
         for workout_class in Workout_class.objects.filter(date = date):
-            users = []
             user_number = 0
             for co in Completed_workout.objects.filter(workout_class__id = workout_class.id):
-                users.append({"user" : co.user.first_name})
                 user_number = user_number + 1
-            classes.append({"class_name" : workout_class.class_info.title, "users" : users, "class_id" : workout_class.id, "user_number" : user_number,})
+            classes.append({"class_name" : workout_class.class_info.title, "class_id" : workout_class.id, "user_number" : user_number,})
         date = date + datedelta
         day['classes'] = classes
-    return days
+    user_count = []
+    for user in User.objects.all():
+        count = Completed_workout.objects.filter(workout_class__date__range=(start_date, date), user__id = user.id).count()
+        user_count.append({"name" : user.first_name, "count" : count})
+    
+    data = {
+    "days" : days,
+    "user_count" : user_count,
+    }
+    return data
 
 def create_completed_workout(create_dict):
     """
