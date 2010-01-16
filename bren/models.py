@@ -391,7 +391,6 @@ def get_completed_workout_info(completed_workout_id):
         type_value = {"type" : "AMRAP", "rounds": completed_workout.rounds}
     else:
         type_value = {"type" : "Done"}
-        workout.update({"info": type_value})
         
     variations = []    
     for completed_element in Completed_element.objects.filter(completed_workout__id = completed_workout_id).order_by('element_used__order'):
@@ -845,6 +844,27 @@ def get_workout_with_date_class(date, class_id):
     return return_dict
 # -- Reports --------------------- #
 def user_week(user_id, date):
+    """
+    Purpose: Given a user and date give back all the workout information about that week
+    Input:
+        user_id : The id of the user the look up <INT>
+        date    : A day of the week you want to know about <STRING AS YYYY-MM-DD>
+        
+    Output:
+    
+        week_end        : The last day of the week in YYYY-MM-DD format <STRING>
+        week_start      : The first day of the week in YYYY-MM-DD format <STRING>
+        user            : The first name of the user <STRING>
+        days            : A list of the workouts done on the day <LIST>
+                          name : The name of the workout <STRING>
+                          variations    : A list of the variations for that workout <LIST>
+                                          element : The name of the element <STRING>
+                                          variation : What variation was used with that element <STRING>
+                          "type_value"  : The information about type of workout and score based on that {"info": type_value} (DICT)
+                                          type_value if Timed equals {"type" : "Timed", "time": the amount of time it took in secs(INT)}
+                                          type_value if AMRAP equals {"type" : "AMRAP", "rounds": how many rounds the user did(INT)}
+                                          type_value if Done equals  {"type" : "Done"}
+    """
     date = datetime.datetime.strptime(date, DATE_FORMAT).date()
     days = []
     datedelta = datetime.timedelta(days=1)
@@ -887,12 +907,40 @@ def user_week(user_id, date):
     return data
 
 def workout_date(workout_id, date):
+    """
+    Purpose: Given a workout id and date give back all the completed workouts
+    Input:
+        workout_id : The id of the workout <INT>
+        date       : The date you want to know about <STRING AS YYYY-MM-DD>
+        
+    Output:
+        A Dictionary of
+        id              : The id of the workout <INT>
+        type            : What type of workout it is i.e. "Timed" "AMRAP" <STRING>
+        workout         : The name of the workout <STRING>
+        date            : The date of the workout in YYYY-MM-DD <STRING>,
+        workouts        : A list of completed workouts durring that day and of id of workout_id,
+                                id              : The id of the completed workout
+                                user_id         : The id of the user who did the workout,
+                                user_name       : The first name of the user who did the workout,
+                            user_last_initial   : The First letter of the Last name of the user who did the workout,
+                                workout         : The name of the workout
+                                date            : The date of the workout
+                                info            : The information about type of workout and score based on that {"info": type_value} (DICT)
+                                                : type_value if Timed equals {"type" : "Timed", "time": the amount of time it took in secs(INT)}
+                                                : type_value if AMRAP equals {"type" : "AMRAP", "rounds": how many rounds the user did(INT)}
+                                                : type_value if Done equals  {"type" : "Done"}
+        variations      : a list of the variations that the user inputed as ("element" : The name of the element(STRING), "variation" : the name of the variation used(STRING)}
+        elements        : A list of elements for the workout
+    """
     date = datetime.datetime.strptime(date, DATE_FORMAT).date()
     workout_type = Workout.objects.get(id=workout_id).workout_type
     if workout_type == "Timed":
         completed_workouts = Completed_workout.objects.filter(workout_class__workout__id = workout_id, workout_class__date = date).order_by('secs')
     if workout_type == "AMRAP":
         completed_workouts = Completed_workout.objects.filter(workout_class__workout__id = workout_id, workout_class__date = date).order_by('-rounds')    
+    if workout_type == "Done":
+        completed_workouts = Completed_workout.objects.filter(workout_class__workout__id = workout_id, workout_class__date = date).order_by('user__first_name')
     workouts = []
     for co in completed_workouts:
         workouts.append(get_completed_workout_info(co.id))

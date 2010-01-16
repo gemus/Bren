@@ -256,8 +256,8 @@ def user_data(request, date_str):
 def display_workout_rank(request):
 #def display_workout_rank(request, workout_id, date):
     OUTPUT_FORMAT = "%B %d, %Y" # December 1, 2009
-#    data = model.workout_date(workout_id, date)
-    data = model.workout_date(14, "2009-12-09")
+#    data = model.workout_date(workout_id, dateel)
+    data = model.workout_date(16, "2009-12-11")
     workout_date = datetime.datetime.strptime(data['date'], model.DATE_FORMAT)
     data['date'] = workout_date.strftime(OUTPUT_FORMAT).replace(' 0', ' ')
     
