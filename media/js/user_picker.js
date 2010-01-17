@@ -70,7 +70,8 @@ jQuery.fn.userPicker = function() {
     return this.each(function() {
 
         // Create places for things to go
-        $(this).html("<div id='keyboard_keys_canvas'></div>"+
+        $(this).html("<h2>Enter Your First Name Please</h2>"+
+                     "<div id='keyboard_keys_canvas'></div>"+
                      "<div id='keyboard_line_container'><input type='text' id='keyboard_line' disabled='disabled'></div>" +
                      "<div id='user_select_canvas'></div>");
 

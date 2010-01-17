@@ -166,7 +166,7 @@ def get_users(search_str):
 
     user_query = User.objects.filter(
                     first_name__istartswith=search_str
-                ).order_by("first_name")[:7]
+                ).order_by("first_name")[:6]
 
 
     return [{"display_name": "%s %s" % (user.first_name, user.last_name), "user_name": user.username} for user in user_query]
