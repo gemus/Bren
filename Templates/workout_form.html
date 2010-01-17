@@ -33,6 +33,24 @@
 				$(inputFields[i]).after("<span class='lbs_marker'>Lbs</span>");
 			}
 		});
+
+		function show_error(message) {
+			$("#error_box").css({ opacity: "0.0" });
+			$("#error_box").html(message);
+			$("#error_box").animate({ opacity: "1.0" }, 1000 , "swing");
+		}
+
+		function do_form_validation() {
+			var mainInput = $($("#formTable tfoot input")[0]);
+
+			console.log(mainInput.val());
+
+			if (mainInput.val() == 0 || mainInput.val() == "0:00") {
+				show_error("Error: Can't Enter Zero");
+				return false;
+			}
+		}
+
 	</script>
 	<style type="text/css" media="screen">
 		h1 {
@@ -174,7 +192,7 @@
 </head>
 <body>
 	<div id="form_container">
-		<form action="/save_workout/" method="POST">
+		<form action="/save_workout/" method="POST" onSubmit="return do_form_validation()">
 			<div style="position: relative; top: -8px; text-align: center;">
 				<h1>{{ name }} </h1>
 				<h2>{{ comments }}
@@ -205,9 +223,12 @@
 					</tr>
 					<tr>
 						<td></td>
-						<td><div style="text-align: center; margin-top: 15px">
-						<button type="submit" class="save_button">Save Workout</button>
-						</div></td>
+						<td>
+							<div id="error_box" style="text-align: right"></div>
+							<div style="text-align: center; margin-top: 15px">
+								<button type="submit" class="save_button">Save Workout</button>
+							</div>
+						</td>
 					</tr>
 				</tfoot>
 			</table>
