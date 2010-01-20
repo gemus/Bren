@@ -41,7 +41,12 @@
 		}
 
 		function do_form_validation() {
-			var mainInput = $($("#formTable tfoot input")[0]);
+			var inputFields = $("#formTable tfoot input")
+			// No input field to check
+			if (inputFields.length == 0) {
+				return true;
+			}
+			var mainInput = $(inputFields[0]);
 
 			if (mainInput.val() == 0 || mainInput.val() == "0:00") {
 				show_error("Error: Can't Enter Zero");
