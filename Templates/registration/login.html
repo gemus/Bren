@@ -130,6 +130,7 @@
 
 				<button type="submit" class="big_button">Login</button>
 				<input type="hidden" name="next" value="{{ next }}" />
+				{% csrf_token %}
 			</form>
 			<p id="errorBox" style="{% if form.errors %}{% else %}opacity: 0.0;{% endif %}">Wrong PIN. Please try again.</p>
 		</div>

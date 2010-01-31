@@ -25,6 +25,7 @@
   <div class="submit-row">
     <label>&nbsp;</label><input type="submit" value="{% trans 'Log in' %}" />
   </div>
+  {% csrf_token %}
 </form>
 
 <script type="text/javascript">
