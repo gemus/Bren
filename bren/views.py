@@ -151,25 +151,6 @@ def no_workout_found(request, date, *args):
     return render_to_response('no_workout_found.html', {"date": the_date})
 
 @login_required
-def full_element_history(request, user_id, element_id):
-    OUTPUT_FORMAT = "%B %d, %Y"
-    full_history = model.get_full_element_history(user_id, element_id)
-
-    for variation in full_history['element_history']:
-        for times in variation['variation_history']:
-            the_date = the_date = datetime.datetime.strptime(times['date'], model.DATE_FORMAT)
-            the_date = the_date.strftime(OUTPUT_FORMAT).replace(' 0', ' ')
-            times['date'] = the_date
-        the_date = the_date = datetime.datetime.strptime(variation['first']['date'], model.DATE_FORMAT)
-        the_date = the_date.strftime(OUTPUT_FORMAT).replace(' 0', ' ')
-        variation['first']['date'] = the_date
-    data = {
-        "full_history" : full_history,
-       }
-
-    return render_to_response('full_element_history.html', data)
-
-@login_required
 def user_history(request):
     OUTPUT_FORMAT = "%B %d, %Y" # December 1, 2009
     user_id = request.user.id

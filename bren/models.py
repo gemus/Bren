@@ -667,66 +667,6 @@ def weight_element(element_id, weight):
     v.element = Element.objects.get(id=element_id)
     v.save()
     return v.id
-def get_full_element_history(user_id, element_id):
-    """
-    Purpose: Given a user and element return the full history that user has done on that element
-    Input:
-        "user_id"       : The id of the user(INT),
-        "element_id"    : The id of the element(INT)
-    Output:
-        A dictionary of:
-        'user_name'         : The first name of the user (STRING)
-        'element_name'      : The name of the element (STRING)
-        'total'             : The number of totaly times the user has done that element (INT)
-        'element_history'   : A list of variations to that element(LIST)
-                            : "variation name" : The name of the variation (STRING), "variation_history" : A list of times that variation was done(LIST)
-                            : "variation_history": A list of times a variation was done
-                                                   "date"    : The date the variaition was done in YYYY-MM-DD format(STRING)}
-                                                   "reps"    : How many were done(INT)
-                                                   "rounds"  : How many rounds(INT)
-                            : "first"  : A dictionary about the first time a variation was done
-                                         "date"     : The date it was first done im YYYY-MM-DD format
-                                         "workout"  : The name of the workout it was first done in
-                                         "reps"     : How many reps for the first time
-                                         "rounds"   : How many rounds the first time
-    """
-    total = 0
-    element = Element.objects.get(id = element_id)
-    variations = Variation.objects.filter(element__id = element_id)
-    element_history = []
-    for variation in variations:
-        count = 0
-        variation_history = []
-        completed_elements = Completed_element.objects.filter(completed_workout__user__id = user_id, variation__id = variation.id).order_by('-completed_workout__workout_class__date')
-        if len(completed_elements) > 0:
-            first = len(completed_elements) - 1
-            first = completed_elements[first]
-            date = first.completed_workout.workout_class.date.isoformat()
-            first_time = {
-                "date"      : date,
-                "workout"   : first.completed_workout.workout_class.workout.name,
-                "reps"      : first.element_used.reps,
-                "rounds"    : first.completed_workout.workout_class.workout.rounds,
-                }
-        for completed_element in completed_elements:
-            if not len(completed_elements) == 0:
-                date = completed_element.completed_workout.workout_class.date.isoformat()
-                variation_history.append({
-                                            "reps" : completed_element.element_used.reps,
-                                            "rounds" : completed_element.completed_workout.workout_class.workout.rounds,
-                                            "date" : date
-                                        })
-                count = count + completed_element.element_used.reps
-        if not variation_history == []:
-            element_history.append({"variation_name" : variation.name, "variation_history" : variation_history, "count" : count, "first" : first_time})
-        total = total + count
-    return_dict = {
-            'user_name'         : User.objects.get(id=user_id).first_name,
-            'element_name'      : element.name,
-            'total'             : total,
-            'element_history'    : element_history,
-        }
-    return return_dict
 
 def user_history(user_id):
     """

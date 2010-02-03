@@ -24,7 +24,6 @@ urlpatterns = patterns('',
     (r'^user_data/(\d{4}-\d{2}-\d{2})/$', 'crossfit.bren.views.user_data'),
 
     # Development stuff
-    (r'^full_element_history/(?P<user_id>\d+)/(?P<element_id>\d+)/$', 'crossfit.bren.views.full_element_history'),
     (r'^user_history/', 'crossfit.bren.views.user_history'),
     
     # Reports
