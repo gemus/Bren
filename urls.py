@@ -18,10 +18,6 @@ urlpatterns = patterns('',
 
     (r'^json_api/$', 'crossfit.bren.views.json_api'),
     (r'^admin/', include(admin.site.urls)),
-
-    # Reports
-    (r'^report/', 'crossfit.bren.views.display_workout_rank'),
-    
 )
 
 if settings.DEBUG:
