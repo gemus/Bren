@@ -1,6 +1,5 @@
 import datetime
 from django.db import models
-from django.db.models import Q
 from django.contrib import admin
 from django.contrib.auth.models import User
 from django.utils import simplejson
@@ -131,30 +130,24 @@ class UserProfile(models.Model):
     """
     user = models.ForeignKey(User, unique=True)
 
-# -- API METHODS -------------- #
+# =============================================
+# = Model Methods =============================
+# =============================================
 def get_users(search_str):
     """
-    Returns:
-    {
-       "display_name": <str>,
-       "user_name":     <str>,
-    }
+    Purpose: Searches users based on first name using "strats_with" logic
+    Params: search_str <string>
+    Returns: Array of dictionaries with display_name, user_name keys
+        [{ "display_name": <str>, "user_name": <str>},...]
     # ordered by display_name
     """
-
-    # IF we want to search by last name too... but too confusing I think
-    #
-    #user_query = User.objects.filter(
-    #                    Q(first_name__startswith=search_str) |
-    #                    Q(last_name__startswith=search_str)
-    #                ).order_by("first_name")[:5]
-
     user_query = User.objects.filter(
                     first_name__istartswith=search_str
                 ).order_by("first_name")[:6]
 
-
-    return [{"display_name": "%s %s" % (user.first_name, user.last_name), "user_name": user.username} for user in user_query]
+    return [{"display_name" : "%s %s" % (user.first_name, user.last_name),
+             "user_name"    : user.username}
+                    for user in user_query]
 
 def check_user_login(username, password):
     """
