@@ -1,4 +1,5 @@
 import datetime
+
 from django.shortcuts import render_to_response
 from django import forms
 from django.http import HttpResponse
@@ -10,7 +11,6 @@ import crossfit.bren.models as model
 # =============================================================================
 # = Index Page ================================================================
 # =============================================================================
-
 @login_required
 def index(request):
     last_class = model.get_last_attended_class(request.user.id) or {}
@@ -24,7 +24,6 @@ def index(request):
 # =============================================================================
 # = Workout Form ==============================================================
 # =============================================================================
-
 class WorkoutForm(forms.Form):
 
     def __init__(self, elements, *args, **kw):
@@ -150,32 +149,6 @@ def no_workout_found(request, date, *args):
     the_date = the_date.strftime(OUTPUT_FORMAT).replace(' 0', ' ')
     return render_to_response('no_workout_found.html', {"date": the_date})
 
-@login_required
-def user_history(request):
-    OUTPUT_FORMAT = "%B %d, %Y" # December 1, 2009
-    user_id = request.user.id
-    user_history = model.user_history(user_id)
-    for workout in user_history['completed_workouts']:
-        workout_date = datetime.datetime.strptime(workout['date'], model.DATE_FORMAT)
-        workout['date'] = workout_date.strftime(OUTPUT_FORMAT).replace(' 0', ' ')
-        if workout['info']['type'] == "Timed":
-            time = workout['info']['time']
-            mins = time / 60
-            secs = time % 60
-            workout['info']['time'] = "%d:%02d" % (mins, secs)
-    time = user_history['total_time']
-    hours = time / 3600
-    time = time - (hours * 3600)
-    mins = time / 60
-    secs = time % 60
-    user_history['total_time'] = "%02d:%02d:%02d" % (hours, mins, secs)
-
-    data = {
-        "user_history" : user_history,
-       }
-
-    return render_to_response('user_history.html', data)
-
 def display_workout_rank(request):
 #def display_workout_rank(request, workout_id, date):
     OUTPUT_FORMAT = "%B %d, %Y" # December 1, 2009
@@ -201,7 +174,7 @@ def display_workout_rank(request):
 
 
 # =============================================================================
-# = APU Endpoint ==============================================================
+# = API Endpoint ==============================================================
 # =============================================================================
 
 def json_api(request):

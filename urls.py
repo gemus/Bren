@@ -22,9 +22,6 @@ urlpatterns = patterns('',
     # trainer stuff
     (r'^weekly_roster/(\d{4}-\d{2}-\d{2})/$', 'crossfit.bren.views.weekly_roster'),
 
-    # Development stuff
-    (r'^user_history/', 'crossfit.bren.views.user_history'),
-    
     # Reports
     (r'^report/', 'crossfit.bren.views.display_workout_rank'),
     
