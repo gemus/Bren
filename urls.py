@@ -19,9 +19,6 @@ urlpatterns = patterns('',
     (r'^json_api/$', 'crossfit.bren.views.json_api'),
     (r'^admin/', include(admin.site.urls)),
 
-    # trainer stuff
-    (r'^weekly_roster/(\d{4}-\d{2}-\d{2})/$', 'crossfit.bren.views.weekly_roster'),
-
     # Reports
     (r'^report/', 'crossfit.bren.views.display_workout_rank'),
     

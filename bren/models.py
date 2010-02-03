@@ -449,46 +449,6 @@ def get_workouts(date):
             "workout_list": workout_class_list,
         }
     return return_dict
-def get_week_roster(date):
-    """
-    Purpose: Given a date return the weeks classes and the people that did them.
-    Input:
-            date     : The date in YYYY-MM-DD format (STRING)
-    Output:
-            A list of   : Days of the week
-            "daye"      : Name of the day of the ect. "Sunday" (STRING)
-            "classes"   : A list of the classes that happend that day
-                        : {"class_name" : the name of the class(STRING), "class_id" : the class id of the class(INT),  "user" : a list of the users (LIST) as {"user" : The users first name}
-    """
-    date = datetime.datetime.strptime(date, DATE_FORMAT)
-    datedelta = datetime.timedelta(days=1)
-    while not date.weekday() == 6:
-        date = date - datedelta
-    days = []
-    start_date = date
-    i = 0
-    while i <= 6:
-        days.append ({"day": get_weekday(i), "classes": []})
-        i = i + 1
-    for day in days:
-        classes = []
-        for workout_class in Workout_class.objects.filter(date = date):
-            user_number = 0
-            for co in Completed_workout.objects.filter(workout_class__id = workout_class.id):
-                user_number = user_number + 1
-            classes.append({"class_name" : workout_class.class_info.title, "class_id" : workout_class.id, "user_number" : user_number,})
-        date = date + datedelta
-        day['classes'] = classes
-    user_count = []
-    for user in User.objects.all():
-        count = Completed_workout.objects.filter(workout_class__date__range=(start_date, date), user__id = user.id).count()
-        user_count.append({"name" : user.first_name, "count" : count})
-    
-    data = {
-    "days" : days,
-    "user_count" : user_count,
-    }
-    return data
 
 def create_completed_workout(create_dict):
     """
