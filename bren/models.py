@@ -153,9 +153,9 @@ def check_user_login(username, password):
     """
     Purpose: Verify that a user and password combination will result in a
              successful login if used
-    Input:   username : username of a user (STRING)
+    Params:   username : username of a user (STRING)
              password : a raw password (STRING)
-    Output:  success (boolean)
+    Returns:  success (boolean)
     """
     user = User.objects.get(username=username)
     return user.check_password(password)
@@ -163,8 +163,8 @@ def check_user_login(username, password):
 def get_element(element_id):
     """
     Purpose: Given a element id output element and all its variation
-    Input: element_id (INT)
-    Output:
+    Params: element_id (INT)
+    Returns:
             "id"        : The id of the element (INT)
             "name"      : The name of the element (STRING)
             "type"      : one of "variation" | "weight" | "regular" (STRING)
@@ -190,11 +190,11 @@ def get_element(element_id):
 def get_workout(workout_date_str, class_id):
     """
     Purpose: Given a workout date and class return the workout data
-    Input:
+    Params:
         workout_date_str : The date of the workout in YYYY-MM-DD format (STRING)
         class_id : the class id (INT)
 
-    Output:
+    Returns:
         "id"           : The workout id (INT)
         "name"         : The workout name (STRING)
         "comments"     : The workout comment (STRING)
@@ -240,9 +240,9 @@ def get_workout(workout_date_str, class_id):
 def get_element_history(user_id, element_id):
     """
     Purpose: Given a user and element return the users history with the element in list form
-    Input:
+    Params:
             user_id : user's id as (INT)
-    Output:
+    Returns:
             A List of       : Times the user has done the element
 
             "workout"       : The name of the workout the each element is coming from(STRING)
@@ -250,7 +250,7 @@ def get_element_history(user_id, element_id):
             "reps"          : How many reps per round of the element(INT)
             "variation"     : The name of the variation on the element(STRING)
             "variationn_id" : The id of the variation (INT)
-    Or Output:
+    Or Returns:
             "Error"         : you have never done the element before(STRING)
     """
 
@@ -271,10 +271,10 @@ def get_element_history(user_id, element_id):
 def get_workout_element_history(user_id, workout_id):
     """
     Purpose: Given a user and a workout output the element history of all the elements in the workout
-    Input:
+    Params:
             user_id     : The users id (INT)
             workout_id  : The workouts id (INT)
-    Output:
+    Returns:
             A List of           : The  elements that happend in the workout
 
             "element"           : The name of the element(STRING)
@@ -306,8 +306,8 @@ def get_workout_element_history(user_id, workout_id):
 def get_last_attended_class(user_id):
     """
     Purpose: Given a user return the last class the attended
-    Input: user_id     : The users id (INT)
-    Output:
+    Params: user_id     : The users id (INT)
+    Returns:
             "id"        : The id of the last class(INT)
             "title"     : The title of the class(STRING)
     """
@@ -320,10 +320,10 @@ def get_last_attended_class(user_id):
 def get_completed_workout(user_id, workout_id):
     """
     Purpose: Given a user and a workout return times the user has done the workout
-    Input:
+    Params:
             user_id     : The users id (INT)
             workout_id  : The workout id (INT)
-    Output:
+    Returns:
             A List of   : Times the user has done the workout
 
             "id"        : The id of the completed workout(INT)
@@ -345,9 +345,9 @@ def get_completed_workout(user_id, workout_id):
 def get_completed_workout_info(completed_workout_id):
     """
     Purpose: Given a completed workout id return a dictionary with all the information.
-    Input:
+    Params:
         completed_workout_id : the id number for the completed workout to look up.
-    Output:
+    Returns:
         id              : The id of the completed workout
         user_id         : The id of the user who did the workout,
         user_name       : The first name of the user who did the workout,
@@ -389,9 +389,9 @@ def get_completed_workout_info(completed_workout_id):
 def get_classes(date):
     """
     Purpose: Given a date output what classes happend
-    Input:
+    Params:
             date     : The date in YYYY-MM-DD format (STRING)
-    Output:
+    Returns:
             A list of   : Classes that happend that day
             "name"      : The name of the class(STRING)
             "id"        : The id of the class
@@ -408,9 +408,9 @@ def get_classes(date):
 def get_workouts(date):
     """
     Purpose: Given a date output what workouts happend
-    Input:
+    Params:
             date     : The date in YYYY-MM-DD format (STRING)
-    Output:
+    Returns:
             A list of   : Workouts that happend that day
             "name"      : The name of the workout(STRING)
             "id"        : The id of the workout
@@ -430,7 +430,7 @@ def get_workouts(date):
 def create_completed_workout(create_dict):
     """
     Purpose: Given a dictionary of a completed workout to be saved, save it
-    Input:
+    Params:
         "user_id"   : The id of the user that did the workout(INT),
         "time"      : The amount of time the workout took if its Timed in seconds(INT)
         "rounds"    : The rounds of the workout the user did if its AMRAP(INT),
@@ -441,7 +441,7 @@ def create_completed_workout(create_dict):
                       "variation_id": The id of the variation(INT),
                       "element_id"  : the id of the element(INT)}
 
-    Output:
+    Returns:
     """
     date = datetime.datetime.strptime(create_dict['date'], DATE_FORMAT).date()
     workout_class_id = Workout_class.objects.filter(date=date).get(class_info__id = create_dict['class_id']).id
@@ -476,11 +476,11 @@ def create_completed_workout(create_dict):
 def user_done_class(user_id, workout_id, date):
     """
     Purpose: Given a user and date and a workout
-    Input:
+    Params:
         "user_id"               : The id of the user(INT),
         "workout_id"            : The id of the workout(INT),
         "date"                  : The date of the workout as YYYY-MM-DD
-    Output: The completed workout or None if they haven't done it
+    Returns: The completed workout or None if they haven't done it
     """
     date = datetime.datetime.strptime(date, DATE_FORMAT).date()
     done = Completed_workout.objects.filter(user__id = user_id, workout_class__date = date, workout_class__workout__id = workout_id)
@@ -492,11 +492,11 @@ def user_done_class(user_id, workout_id, date):
 def get_workout_variations(user_id, workout_class_id):
     """
     Purpose: Given a user id and workout class id create a dictionary that will set the variations
-    Input:
+    Params:
         "user_id"               : The id of the user(INT),
         "workout_class_id"      : The id of the workout class(INT)
 
-    Output:
+    Returns:
         A dictionary of
         elements of the workouts form style      The variation that they previously selected of saved
         "varient_ element.id_elements.order"    : variation.id(INT)
@@ -520,9 +520,9 @@ def get_workout_variations(user_id, workout_class_id):
 def get_previous_variations(completed_workout_id):
     """
     Purpose: Given a completed workout output the variations used
-    Input:
+    Params:
         "completed_workout_id"  : The id of the completed workout(INT),
-    Output:
+    Returns:
         A dictionary of
         elements of the workouts form style      The variation that they been saved
         "varient_ element.id_elements.order"    : variation.id
@@ -541,10 +541,10 @@ def get_previous_variations(completed_workout_id):
 def get_workout_estimation(user_id, workout_id):
     """
     Purpose: Given a user and workout select the variation for the form to the last variations they used on each element
-    Input:
+    Params:
         "user_id"       : The id of the user(INT),
         "workout_id"    : The id of the workout(INT)
-    Output:
+    Returns:
         A dictionary of
         elements of the workouts form style      The variation that they been saved
         "varient_ element.id_elements.order"    : variation.id
@@ -574,10 +574,10 @@ def get_workout_estimation(user_id, workout_id):
 def weight_element(element_id, weight):
     """
     Purpose: Given a weight and an element find the right variations or create it than return it
-    Input:
+    Params:
         "element_id"    : The id of the element that is weighted(INT)
         "weight"        : The amount of weight in lbs(INT)
-    Output:
+    Returns:
         "variation_id"  : The id of the element that was created or selected
     """
     elemenet = Element.objects.get(id=1)
@@ -608,11 +608,11 @@ def weight_element(element_id, weight):
 def get_workout_with_date_class(date, class_id):
     """
     Purpose: Given a class id return the workout information of that class
-    Input:
+    Params:
         "date"      : The date of the class YYYY-MM-DD
         "class_id"  : The id of the class(INT),
 
-    Output:
+    Returns:
             "name"              : The name of the workout(STRING)
             "comments"          : The comments about the workout(STRING)
             "workout_type"      : "Timed" "AMRAP" ect.
