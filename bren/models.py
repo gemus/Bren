@@ -133,21 +133,6 @@ class UserProfile(models.Model):
     user = models.ForeignKey(User, unique=True)
 
 # -- API METHODS -------------- #
-def get_user_info(user_id):
-    """
-    CURRENTLY UNUSED
-    """
-    user = User.objects.get(id =user_id)
-    user_dict = {
-        "username"      : user.username,
-        "first_name"    : user.first_name,
-        "last_name"     : user.last_name,
-        "email"         : user.email,
-        "pin"           : 11111,
-        "pin_again"     : 11111,
-        }
-    return user_dict
-
 def get_users(search_str):
     """
     Returns:
