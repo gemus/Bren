@@ -22,8 +22,6 @@ urlpatterns = patterns('',
     # trainer stuff
     (r'^weekly_roster/(\d{4}-\d{2}-\d{2})/$', 'crossfit.bren.views.weekly_roster'),
     (r'^user_data/(\d{4}-\d{2}-\d{2})/$', 'crossfit.bren.views.user_data'),
-    (r'^create_user/', 'crossfit.bren.views.create_user'),
-    (r'^save_user/', 'crossfit.bren.views.save_user'),
 
     # Development stuff
     (r'^full_element_history/(?P<user_id>\d+)/(?P<element_id>\d+)/$', 'crossfit.bren.views.full_element_history'),

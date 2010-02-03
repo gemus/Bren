@@ -92,46 +92,8 @@ def workout_form(request, date_str, class_id):
     }
 
     return render_to_response('workout_form.html', data)
-"""
-@login_required
-"""
-class create_user_form(forms.Form):
-    username = forms.CharField()
-    first_name = forms.CharField()
-    last_name = forms.CharField()
-    pin = forms.IntegerField()
-    pin_again = forms.IntegerField()
-    email = forms.EmailField()
 
 @login_required
-
-def create_user(request):
-    form = create_user_form()
-    data = {
-        "create_form" : form,
-        }
-    return render_to_response('create_user.html', data)
-@login_required
-
-def save_user(request):
-    data = {
-        "username"      : request.POST['username'],
-        "first_name"    : request.POST['first_name'],
-        "last_name"     : request.POST['last_name'],
-        "pin"           : request.POST['pin'],
-        "pin_again"     : request.POST['pin_again'],
-        "email"         : request.POST['email'],
-    }
-    create_user = model.create_user(data)
-    if not create_user == None:
-        if 'pin_error' in create_user:
-            return render_to_response('create_user.html',create_user)
-        if 'username_error' in create_user:
-            return render_to_response('create_user.html',create_user)
-
-    return render_to_response('save_user.html')
-@login_required
-
 def weekly_roster(request, date_str):
     week_data = model.get_week_roster(date_str)
     data = {
@@ -139,8 +101,8 @@ def weekly_roster(request, date_str):
         'week_data' : week_data,
     }
     return render_to_response('weekly_roster.html', data)
-@login_required
 
+@login_required
 def save_workout(request):
     # Basic Information
     date_str = request.POST.get('date_str')
@@ -168,9 +130,6 @@ def save_workout(request):
         workout_rounds = 1
         workout_time = 0
 
-
-
-
     save_dict = {
         "time":       workout_time,
         "rounds":     workout_rounds,
@@ -181,9 +140,7 @@ def save_workout(request):
     }
 
     model.create_completed_workout(save_dict);
-
     HTTP_REFERER = request.META['HTTP_REFERER']
-
     return render_to_response('save_workout.html', {'HTTP_REFERER': HTTP_REFERER})
 
 @login_required
@@ -192,7 +149,6 @@ def no_workout_found(request, date, *args):
     the_date = datetime.datetime.strptime(date, model.DATE_FORMAT)
     the_date = the_date.strftime(OUTPUT_FORMAT).replace(' 0', ' ')
     return render_to_response('no_workout_found.html', {"date": the_date})
-
 
 @login_required
 def full_element_history(request, user_id, element_id):
@@ -238,6 +194,7 @@ def user_history(request):
        }
 
     return render_to_response('user_history.html', data)
+
 def user_data(request, date_str):
     OUTPUT_FORMAT = "%B %d, %Y" # December 1, 2009
     user_data = model.user_week(1, date_str)

@@ -536,34 +536,6 @@ def create_completed_workout(create_dict):
         ce.element_used = Element_used.objects.filter(workout__id = workout.id).get(order = variation['order'])
         ce.save()
 
-def create_user(user_dict):
-    """
-    Purpose: Given a dictionary of a user add the user to the database
-    Input:
-        "username"      : The id of the user that did the workout(INT),
-        "first_name"    : The amount of time the workout took if its Timed in seconds(INT)
-        "rounds"        : The rounds of the workout the user did if its AMRAP(INT),
-        "last_name"     : The date of the workout in YYYY-MM-DD format (STRING)
-        "pin"           : The pin the user entered (INT)
-        "pin_again"     : The pin to confirm the entry (INT)
-        "email"         : The users e-mail address(EMAIL) (OPTIONAL)
-
-    Output:
-    """
-
-    if not user_dict['pin'] == user_dict['pin_again']:
-        return {"pin_error": "PIN and PIN again did not match"}
-    if not User.objects.filter(username = user_dict['username']).count() == 0:
-        return { "username_error" : "User name is already taken"}
-    user = User()
-    user.username = user_dict['username']
-    user.first_name = user_dict['first_name']
-    user.last_name = user_dict['last_name']
-    user.set_password(user_dict['pin'])
-    if 'email' in user_dict:
-        user.email = user_dict['email']
-    user.save()
-
 def user_done_class(user_id, workout_id, date):
     """
     Purpose: Given a user and date and a workout
