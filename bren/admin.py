@@ -64,8 +64,3 @@ admin.site.register(Element_used, Element_usedAdmin)
 admin.site.register(Workout, WorkoutAdmin)
 admin.site.register(Variation, VariationAdmin)
 admin.site.register(Completed_element, Completed_elementAdmin)
-
-
-
-
-
