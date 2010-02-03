@@ -25,7 +25,6 @@ def index(request):
 # = Workout Form ==============================================================
 # =============================================================================
 class WorkoutForm(forms.Form):
-
     def __init__(self, elements, *args, **kw):
         super(WorkoutForm, self).__init__(*args, **kw)
         for field_dict in elements:

@@ -25,9 +25,6 @@ class Completed_workoutAdmin(admin.ModelAdmin):
     fields = ['user', 'workout_class', 'secs', 'rounds']
     list_filter = ['user', 'workout_class', 'rounds']
     inlines = [Completed_elementInline]
-
-    def day_of_week(self, completed_workout):
-        return get_weekday(completed_workout.date.weekday())
     
 class VariationAdmin(admin.ModelAdmin):
     list_display = ('element', 'name')
