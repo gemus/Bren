@@ -658,17 +658,3 @@ def get_workout_with_date_class(date, class_id):
         "rounds"            : rounds,
         }
     return return_dict
-
-#-- Tools ----------------------#
-def create_db_variations(element_name):
-    weight = 5
-    try:
-        element = Element.objects.get(name = element_name)
-    except:
-        return "No Element named " + element_name
-    while (weight < 50):
-        variation = Variation ()
-        variation.name = str(weight) + " lbs"
-        variation.element = element
-        variation.save ()
-        weight = weight + 5
