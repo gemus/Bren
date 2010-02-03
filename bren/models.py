@@ -764,69 +764,6 @@ def get_workout_with_date_class(date, class_id):
         }
     return return_dict
 # -- Reports --------------------- #
-def user_week(user_id, date):
-    """
-    Purpose: Given a user and date give back all the workout information about that week
-    Input:
-        user_id : The id of the user the look up <INT>
-        date    : A day of the week you want to know about <STRING AS YYYY-MM-DD>
-        
-    Output:
-    
-        week_end        : The last day of the week in YYYY-MM-DD format <STRING>
-        week_start      : The first day of the week in YYYY-MM-DD format <STRING>
-        user            : The first name of the user <STRING>
-        days            : A list of the workouts done on the day <LIST>
-                          name : The name of the workout <STRING>
-                          variations    : A list of the variations for that workout <LIST>
-                                          element : The name of the element <STRING>
-                                          variation : What variation was used with that element <STRING>
-                          "type_value"  : The information about type of workout and score based on that {"info": type_value} (DICT)
-                                          type_value if Timed equals {"type" : "Timed", "time": the amount of time it took in secs(INT)}
-                                          type_value if AMRAP equals {"type" : "AMRAP", "rounds": how many rounds the user did(INT)}
-                                          type_value if Done equals  {"type" : "Done"}
-    """
-    date = datetime.datetime.strptime(date, DATE_FORMAT).date()
-    days = []
-    datedelta = datetime.timedelta(days=1)
-    while not date.weekday() == 6:
-        date = date - datedelta
-        i = 0
-    while i <= 6:
-        days.append ({"day": get_weekday(i), "day_workouts": []})
-        i = i + 1
-    startweek = date
-    for day in days:
-        workouts = []
-        variations = []
-        for completed_workout in Completed_workout.objects.filter(user__id = user_id, workout_class__date = date):
-            for completed_element in Completed_element.objects.filter(completed_workout__id = completed_workout.id).order_by('element_used__order'):                
-                variations.append ({ "element" : completed_element.element_used.element.name, "variation" : completed_element.variation.name})
-            type_name = completed_workout.workout_class.workout.workout_type
-            if type_name == "Timed":
-                type_value = {"type" : "Timed", "time": completed_workout.secs}
-            elif type_name == "AMRAP":
-                type_value = {"type" : "AMRAP", "rounds": completed_workout.rounds}
-            else:
-                type_value = {"type" : "Done"}
-            workouts.append({
-                "name" : completed_workout.workout_class.workout.name,
-                "variations" : variations,
-                "type_value" : type_value,  
-            })
-        if workouts == []:
-            day['day_workouts'] = 0
-        else:    
-            day['day_workouts'] = workouts
-        date = date + datedelta
-    data = {
-        "week_end"      : date.isoformat(),
-        "week_start"    : startweek.isoformat(),
-        "user" : User.objects.get(id=user_id).first_name,
-        "days" : days,
-        }
-    return data
-
 def workout_date(workout_id, date):
     """
     Purpose: Given a workout id and date give back all the completed workouts

@@ -176,21 +176,6 @@ def user_history(request):
 
     return render_to_response('user_history.html', data)
 
-def user_data(request, date_str):
-    OUTPUT_FORMAT = "%B %d, %Y" # December 1, 2009
-    user_data = model.user_week(1, date_str)
-    week_start = datetime.datetime.strptime(user_data['week_start'], model.DATE_FORMAT)
-    week_start = week_start.strftime(OUTPUT_FORMAT).replace(' 0', ' ')
-    week_end = datetime.datetime.strptime(user_data['week_end'], model.DATE_FORMAT)
-    week_end = week_end.strftime(OUTPUT_FORMAT).replace(' 0', ' ')
-    
-    week = week_start + "-" + week_end
-    data = {
-        'user_data' : user_data,
-        'week'      : week,
-        }
-    return render_to_response('user_data.html', data)
-
 def display_workout_rank(request):
 #def display_workout_rank(request, workout_id, date):
     OUTPUT_FORMAT = "%B %d, %Y" # December 1, 2009
