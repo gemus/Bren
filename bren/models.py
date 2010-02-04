@@ -391,28 +391,6 @@ def get_classes(date):
         }
     return return_dict
 
-def get_workouts(date):
-    """
-    Purpose: Given a date output what workouts happend
-    Params:
-            date     : The date in YYYY-MM-DD format (STRING)
-    Returns:
-            A list of   : Workouts that happend that day
-            "name"      : The name of the workout(STRING)
-            "id"        : The id of the workout
-    """
-    date = datetime.datetime.strptime(date, DATE_FORMAT)
-    workouts = {}
-    workout_class_list = []
-    for classes in Workout_class.objects.filter(date__exact=date):
-        if not classes.workout.name in workouts:
-            workout_class_list.append ({"name": classes.workout.name , "id": classes.workout.id})
-            workouts.update({classes.workout.name : 1})
-        return_dict = {
-            "workout_list": workout_class_list,
-        }
-    return return_dict
-
 def create_completed_workout(create_dict):
     """
     Purpose: Given a dictionary of a completed workout to be saved, save it
