@@ -46,8 +46,7 @@
 				var class_modal_value = '';
 				for (i in result.result) {
 					var class_row = result.result[i];
-					var selected = {{ last_class_id }} == class_row.id ? "selected" : "";
-					class_drop_value += '<option value="'+class_row.id+'" '+ selected +'>'+class_row.name+'</option>';
+					class_drop_value += '<option value="'+class_row.id+'">'+class_row.name+'</option>';
 					class_modal_value += '<a href="#" onclick="modal_class_pick_func('+class_row.id+', \''+class_row.name+'\')">'+class_row.name+'</a>'
 				}
 				if (class_drop_value == '') {
@@ -182,7 +181,7 @@
 <body>
 	<a id="logoutLink" href="/logout">Logout</a>
 	<div id="defualt_date">
-		{{ cur_date_str }} ~ <span id="class_name">{{ last_class_title }}</span> Class <br>
+		{{ cur_date_str }} ~ <span id="class_name"></span> Class <br>
 		<a href="javascript:void(0)" onclick="showDateClassPickers()">Change Date / Class </a>
 	</div>
 	<h1 id="topHeader">Welcome {{ display_name }}</h1>

@@ -303,20 +303,6 @@ def get_workout_element_history(user_id, workout_id):
                                       })
     return workout_element_history   
     
-def get_last_attended_class(user_id):
-    """
-    Purpose: Given a user return the last class the attended
-    Params: user_id     : The users id (INT)
-    Returns:
-            "id"        : The id of the last class(INT)
-            "title"     : The title of the class(STRING)
-    """
-    for cwo in Completed_workout.objects.filter(user__id__exact=user_id).order_by('-workout_class__date')[:1]:
-        last_class = cwo.workout_class.class_info
-        return {'id': last_class.id, 'title': last_class.title}
-    return None
-
-
 def get_completed_workout(user_id, workout_id):
     """
     Purpose: Given a user and a workout return times the user has done the workout
