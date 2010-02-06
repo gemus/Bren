@@ -12,19 +12,18 @@ body {
 /* = Text And Headers = */
 /* ==================== */
 h1 {
-	text-align: center;
-	padding: 60px 0pt 30px;
-	font-size: 200%;
-	background-color: #3C5F7F;
-	color: #FFF;
-}
-
-h2 {
-	font-size: 150%;
-	font-weight: bold;
+	font-size: 250%;
 	color: #3C5F7F;
-	margin-bottom: 3px;
+	font-weight: bold;
 	text-align: center;
+	margin-top: 50px;
+}
+h2 {
+	font-size: 200%;
+	color: #3C5F7F;
+	font-weight: bold;
+	text-align: center;
+	margin-top: 20px;
 }
 
 /* ==================== */
@@ -45,5 +44,4 @@ button.big_button {
 /* ========== */
 .error_box {
 	color: #F00;
-	font-weight: bold;
 }

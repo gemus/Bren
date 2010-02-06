@@ -1,32 +1,6 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
-   "http://www.w3.org/TR/html4/strict.dtd">
-
-<html lang="en">
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>Crossfit DPL</title>
-	<link rel="stylesheet" type="text/css" href="/site_media/css/reset-min.css">
-	<link rel="stylesheet" type="text/css" href="/site_media/css/global.css">
-	<style type="text/css" media="screen">
-		h1 {
-			font-size: 250%;
-			color: #3C5F7F;
-			font-weight: bold;
-			text-align: center;
-			margin-top: 50px;
-		}
-		h2 {
-			font-size: 200%;
-			color: #3C5F7F;
-			font-weight: bold;
-			text-align: center;
-			margin-top: 20px;
-		}
-
-	</style>
-</head>
-<body>
+{% extends "base.html" %}
+{% block head_content %}{% endblock %}
+{% block content %}
 	<h1>No Workout Today</h1>
 	<h2>- {{ date }} -</h2>
-</body>
-</html>
+{% endblock %}
