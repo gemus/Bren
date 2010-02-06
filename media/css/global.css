@@ -39,6 +39,15 @@ button.big_button {
 	width: 305px;
 }
 
+a.button {
+	border: 1px solid #3C5F7F;
+	padding: 7px 15px;
+	color: #3C5F7F;
+	margin: 10px;
+	font-weight: bold;
+	font-size: 125%;
+}
+
 /* ========== */
 /* = Errors = */
 /* ========== */
