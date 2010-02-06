@@ -1,18 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
-	"http://www.w3.org/TR/html4/strict.dtd">
-
-<html lang="en">
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>Crossfit DPL</title>
+{% extends "base.html" %}
+{% block head_content %}
 	<link type="text/css" href="/site_media/css/redmond/jquery-ui-1.7.2.custom.css" rel="stylesheet" />
-	<link rel="stylesheet" type="text/css" href="/site_media/css/reset-min.css">
-	<link rel="stylesheet" type="text/css" href="/site_media/css/global.css">
 	<link rel="stylesheet" type="text/css" href="/site_media/css/numpad_input.css" />
 	<link rel="stylesheet" type="text/css" href="/site_media/css/jquery.simplemodal.css" />
-
-	<script type="text/javascript" src="/site_media/js/jquery-1.3.2.min.js"></script>
-	<script type="text/javascript" src="/site_media/js/jquery-ui-1.7.2.custom.min.js"></script>
 	<script type="text/javascript" src="/site_media/js/jquery.simplemodal.js"></script>
 
 	<script type="text/javascript" charset="utf-8">
@@ -99,11 +89,11 @@
 			font-size: 175%;
 			background-color: #3C5F7F;
 			color: #FFF;
+			font-weight: normal;
 		}
 		h2 {
 			font-size: 150%;
 			color: #3C5F7F;
-			font-weight: bold;
 		}
 		div#modal_class_selection h1 {
 			text-align: center;
@@ -117,14 +107,12 @@
 			display: block;
 			text-align: center;
 		}
-
 		div#defualt_date {
 			float: right;
 			clear: right;
 			color: #FFF;
 			margin-right: 10px;
 		}
-
 		div#defualt_date a {
 			border: 2px solid #3C5F7F;
 			padding: 5px 15px 7px;
@@ -176,9 +164,8 @@
 		.ui-datepicker-calendar tbody tr td a { padding-bottom: 30px; }
 
 	</style>
-
-</head>
-<body>
+{% endblock %}
+{% block content %}
 	<a id="logoutLink" href="/logout">Logout</a>
 	<div id="defualt_date">
 		{{ cur_date_str }} ~ <span id="class_name"></span> Class <br>
@@ -194,13 +181,9 @@
 			<option value="no_date">Please Select A Date</option>
 		</select>
 	</div>
-
 	<div id="basic-modal-content">
 		<h1>Select A Class Please</h1>
 		<div id="modal_class_selection" class="simplemodal-close"></div>
 	</div>
-
-
 	<iframe id="formViewer"></iframe>
-</body>
-</html>
+{% endblock %}
