@@ -1,12 +1,6 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
-	"http://www.w3.org/TR/html4/strict.dtd">
+{% extends "base.html" %}
 
-<html lang="en">
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>Crossfit DPL</title>
-	<link rel="stylesheet" type="text/css" href="/site_media/css/reset-min.css">
-	<link rel="stylesheet" type="text/css" href="/site_media/css/global.css">
+{% block head_content %}
 	<link rel="stylesheet" type="text/css" href="/site_media/css/numpad_input.css" />
 	<link rel="stylesheet" type="text/css" href="/site_media/css/user_picker.css" />
 
@@ -114,9 +108,8 @@
 			return false;
 		}
 	</script>
-
-</head>
-<body>
+{% endblock %}
+{% block content %}
 	<h1>Welcome To Vancouver Island CrossFit</h1>
 	<div id="pageContainer">
 		<div id="userPickerCanvas"></div>
@@ -136,5 +129,4 @@
 			<p id="errorBox" style="{% if form.errors %}{% else %}opacity: 0.0;{% endif %}">Wrong PIN. Please try again.</p>
 		</div>
 	</div>
-</body>
-</html>
+{% endblock %}
