@@ -150,7 +150,6 @@
 		div.texter { margin-bottom: 10px; }
 
 		div.texter div {
-			border-bottom: 1px solid #ccc;
 			padding: 5px 0pt 2px;
 			margin-left: 15px;
 			font-size: 80%;
@@ -170,7 +169,6 @@
 						{% ifequal workout_type 'AMRAP' %}
 							AMRAP in {{time}} mins of
 						{% endifequal %}
-
 				</h2>
 			</div>
 
@@ -238,7 +236,7 @@
 				<div onClick="expand('texter', '{{element.element}}')" class="mainExpand"><b>{{element.element}} : </b> {{element.last_variation}}  </div>
 					<div id="{{element.element}}" class="texter">
 						{% for history in element.history %}
-									{% if history.variation %} <div> {{history.variation}} {{element.element}} {{history.rounds}} rounds of {{history.reps}} </div> <br>{% endif %}
+									{% if history.variation %} <div> {{history.variation}} :: {{history.reps}} Rep{% ifnotequal history.reps 1 %}s{%endifnotequal%} :: {{history.rounds}} Round{% ifnotequal history.rounds 1 %}s{%endifnotequal%}</div>{% endif %}
 						{% endfor %}
 					</div>
 				{% endfor %}
