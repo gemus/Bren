@@ -102,7 +102,7 @@
 				<input type="hidden" name="next" value="{{ next }}" />
 				{% csrf_token %}
 			</form>
-			<p id="errorBox" class="error_box" style="{% if form.errors %}{% else %}opacity: 0.0;{% endif %}">Wrong PIN. Please try again.</p>
+			<p id="errorBox" class="error" style="{% if form.errors %}{% else %}opacity: 0.0;{% endif %}">Wrong PIN. Please try again.</p>
 		</div>
 	</div>
 {% endblock %}
