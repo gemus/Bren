@@ -1,39 +1,18 @@
 {% extends "base.html" %}
-
 {% block head_content %}
 	<link rel="stylesheet" type="text/css" href="/site_media/css/numpad_input.css" />
 	<link rel="stylesheet" type="text/css" href="/site_media/css/user_picker.css" />
-
 	<script type="text/javascript" src="/site_media/js/numpad_input.js"></script>
 	<script type="text/javascript" src="/site_media/js/user_picker.js"></script>
-
 	<style type="text/css" media="screen">
-		h1 {
-			text-align: center;
-			padding: 60px 0pt 30px;
-			font-size: 200%;
-			background-color: #3C5F7F;
-			color: #FFF;
-		}
-
-		h2 {
-			font-size: 150%;
-			font-weight: bold;
-			color: #3C5F7F;
-			margin-bottom: 3px;
-			text-align: center;
-		}
-
 		div#pageContainer {
 			margin: 10px;
 		}
-
 		div#userPickerCanvas {
 			float: left;
 			width: 640px;
 			margin-left: 170px;
 		}
-
 		div#login_content {
 			float: left;
 			margin-left: 5px;
@@ -44,37 +23,19 @@
 			display: none;
 			{% endif %}
 		}
-
-		/*
-		*/
-		button.big_button {
-			border: 2px solid #3C5F7F;
-			background-color: #FFF;
-			color: #3C5F7F;
-			padding-top: 10px; padding-bottom: 10px;
-			cursor: pointer;
-			font-size: 200%;
-			width: 305px;
-		}
-
-		p#errorBox {
-			color: #F00;
+		p.error_box {
 			margin-top: 15px;
-			font-size: 150%;
 		}
-
 		input#id_password {
 			border: 1px solid #3C5F7F;
 			text-align: center;
 			font-size: 30px;
 			width: 302px;
 		}
-
 		div.numpad_input_container {
 			margin: 5px 1px;
 		}
 	</style>
-
 	<script type="text/javascript" charset="utf-8">
 		$(document).ready(function() {
 			var default_picked = $("#id_username").val();
@@ -124,7 +85,7 @@
 				<input type="hidden" name="next" value="{{ next }}" />
 				{% csrf_token %}
 			</form>
-			<p id="errorBox" style="{% if form.errors %}{% else %}opacity: 0.0;{% endif %}">Wrong PIN. Please try again.</p>
+			<p id="errorBox" class="error_box" style="{% if form.errors %}{% else %}opacity: 0.0;{% endif %}">Wrong PIN. Please try again.</p>
 		</div>
 	</div>
 {% endblock %}
