@@ -86,5 +86,6 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
     'django.contrib.admin',
     'crossfit.bren',
+    'crossfit.reports',
 )
 AUTH_PROFILE_MODULE = 'bren.UserProfile'

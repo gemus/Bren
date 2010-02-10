@@ -2,12 +2,15 @@ from django.conf.urls.defaults import *
 from django.conf import settings
 from django.contrib import admin
 import django.contrib.auth.views
+import crossfit.reports.urls
+import crossfit.bren.urls
 
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    (r'^admin/', include(admin.site.urls)),
-    (r'^',       include(crossfit.bren.urls)),
+    (r'^admin/',   include(admin.site.urls)),
+    (r'^reports/', include(crossfit.reports.urls)),
+    (r'^',         include(crossfit.bren.urls)),
 )
 
 if settings.DEBUG:
