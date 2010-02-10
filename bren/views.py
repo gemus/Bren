@@ -15,7 +15,7 @@ import crossfit.bren.models as model
 def index(request):
     data = {'display_name': "%s %s" % (request.user.first_name, request.user.last_name),
             'cur_date_str': datetime.datetime.now().strftime("%A %B %d %Y").replace(' 0', ' ')}
-    return render_to_response('index.html', data)
+    return render_to_response('bren/index.html', data)
 
 # =============================================================================
 # = Workout Form ==============================================================
@@ -85,7 +85,7 @@ def workout_form(request, date_str, class_id):
         'initial_time_reps': initial_time_reps,
     }
 
-    return render_to_response('workout_form.html', data)
+    return render_to_response('bren/workout_form.html', data)
 
 @login_required
 def save_workout(request):
@@ -126,14 +126,14 @@ def save_workout(request):
 
     model.create_completed_workout(save_dict);
     HTTP_REFERER = request.META['HTTP_REFERER']
-    return render_to_response('save_workout.html', {'HTTP_REFERER': HTTP_REFERER})
+    return render_to_response('bren/save_workout.html', {'HTTP_REFERER': HTTP_REFERER})
 
 @login_required
 def no_workout_found(request, date, *args):
     OUTPUT_FORMAT = "%A %B %d, %Y" # December 1, 2009
     the_date = datetime.datetime.strptime(date, model.DATE_FORMAT)
     the_date = the_date.strftime(OUTPUT_FORMAT).replace(' 0', ' ')
-    return render_to_response('no_workout_found.html', {"date": the_date})
+    return render_to_response('bren/no_workout_found.html', {"date": the_date})
 
 # =============================================================================
 # = API Endpoint ==============================================================
