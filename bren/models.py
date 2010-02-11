@@ -334,7 +334,6 @@ def get_completed_workout_info(completed_workout_id):
     Params:
         completed_workout_id : the id number for the completed workout to look up.
     Returns:
-        user_id         : The id of the user who did the workout,
         workout         : The name of the workout
         date            : The date of the workout
         info            : The information about type of workout and score based on that {"info": type_value} (DICT)
@@ -358,7 +357,6 @@ def get_completed_workout_info(completed_workout_id):
             variations.append({"element": completed_element.variation.element.name , "variation": completed_element.variation.name})
     
     data = {
-        "user_id" : completed_workout.user.id,
         "workout" : completed_workout.workout_class.workout.name,
         "date" : completed_workout.workout_class.date.isoformat(),
         "info" : type_value,
