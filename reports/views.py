@@ -43,8 +43,11 @@ def completed_workouts(request, user):
     start_date = date_str_to_python(request.GET['start_date'])
     end_date = date_str_to_python(request.GET['end_date'])
 
-    for i in Completed_workout.objects.filter(user=user).filter(workout_class__date__range=(start_date, end_date)):
-        print get_completed_workout_info(i.id)
 
+    data = []
+    for i in Completed_workout.objects.filter(user=user)\
+                .filter(workout_class__date__range=(start_date, end_date))\
+                .order_by("workout_class__date"):
+        data.append(get_completed_workout_info(i.id))
 
-    return render_to_response('reports/completed_workouts.html')
+    return render_to_response('reports/completed_workouts.html', data)
