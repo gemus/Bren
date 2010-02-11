@@ -1,10 +1,11 @@
 from django.conf.urls.defaults import *
 
-# URLs take the form /<user_id>/<report_name>/<param>-<param>-.../
+# URLs take the form /<user_id>/<report_name>/
+# Get parameters not not handled by urls
 
-urlpatterns = patterns('',
-    (r'^$', 'crossfit.reports.views.index'),
+urlpatterns = patterns('crossfit.reports.views',
+    (r'^$', 'index'),
 
-    # <user_id>/weekly_report/<year>-<week_num>/
-    (r'^(\d+)/weekly_report/(\d+)-(\d+)/$', 'crossfit.reports.views.weekly_report'),
+    # /1/weekly_report/?start_date=2010-01-01&end_date=2010-01-07
+    (r'^(\d+)/completed_workouts/$', 'completed_workouts'),
 )
