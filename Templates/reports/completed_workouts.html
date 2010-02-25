@@ -17,7 +17,7 @@
 	<h1>Completed Workouts!</h1>
 	{% for workout in workouts %}
 		<p>{{workout.date_display}}<br>
-			<strong>{{workout.name}}</strong><br>
+			<strong>{{workout.name}} {% if workout.comments %} - {{workout.comments}}{% endif %}</strong><br>
 
 			{% ifequal workout.info.type "Done" %}
 			<i>Completed</i>

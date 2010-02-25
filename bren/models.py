@@ -360,6 +360,7 @@ def get_completed_workout_info(completed_workout_id):
     
     data = {
         "name" : completed_workout.workout_class.workout.name,
+        "comments" : completed_workout.workout_class.workout.comments,
         "date" : completed_workout.workout_class.date.isoformat(),
         "info" : type_value,
         "variations" : variations,
