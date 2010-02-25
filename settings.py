@@ -54,6 +54,16 @@ ADMIN_MEDIA_PREFIX = '/mediass/'
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
 
+# Email settings for sending emails
+EMAIL_HOST = "smtp.webfaction.com"
+EMAIL_HOST_USER = "owenmead_server"
+EMAIL_HOST_PASSWORD = "r0v3rb0y"
+# Specify if we want to actually send it, output it, or just ignore it
+#EMAIL_BACKEND = "django.core.mail.backends.smtp"
+#EMAIL_BACKEND = "django.core.mail.backends.console"
+EMAIL_BACKEND = "django.core.mail.backends.dummy"
+
+
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = '!_osfgf^saypyx=w21k+s1&(bci2c9nghi74(&ne*!!t*z)tf%'
 
