@@ -354,7 +354,9 @@ def get_completed_workout_info(completed_workout_id):
         
     variations = []    
     for completed_element in Completed_element.objects.filter(completed_workout__id = completed_workout_id).order_by('element_used__order'):
-            variations.append({"element": completed_element.variation.element.name , "variation": completed_element.variation.name})
+            variations.append({"element": completed_element.variation.element.name,
+                               "variation": completed_element.variation.name,
+                               "rounds":    completed_element.element_used.reps})
     
     data = {
         "workout" : completed_workout.workout_class.workout.name,
