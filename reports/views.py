@@ -2,9 +2,9 @@ import datetime
 
 from django.shortcuts import render_to_response
 from django.contrib.auth.models import User
-from django.template import loader, Context
 
 from crossfit.bren.models import *
+from email_sender import fire_off_email
 
 """
 === Design Philosophy =========================================================
@@ -68,9 +68,6 @@ def completed_workouts(request, user):
 
         the_workouts.append(workout_info)
 
-    t = loader.get_template('reports/completed_workouts.html')
-    c = Context({'workouts': the_workouts})
-
-    print t.render(c)
+    fire_off_email(user, 'Email Subject', 'reports/completed_workouts.html', {'workouts': the_workouts})
 
     return render_to_response('reports/completed_workouts.html', {'workouts': the_workouts})
