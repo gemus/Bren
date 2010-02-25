@@ -8,11 +8,17 @@
 
 	<link rel="stylesheet" type="text/css" href="/site_media/css/reset-min.css">
 	<link rel="stylesheet" type="text/css" href="/site_media/css/global.css">
+
+	<style type="text/css" media="screen">
+		p { margin-bottom: 20px; }
+	</style>
 </head>
 <body>
 	<h1>Completed Workouts!</h1>
 	{% for workout in workouts %}
-		<p>{{workout.date}} {{workout.workout}} {{workout.info}}</p>
+		<p>{{workout.date_display}}<br>
+			<strong>{{workout.workout}}</strong><br>
+			{{workout.info}}</p>
 	{% endfor %}
 </body>
 </html>

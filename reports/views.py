@@ -20,6 +20,10 @@ DATE_FORMAT = "%Y-%m-%d"
 def date_str_to_python(date_str):
     return datetime.datetime.strptime(date_str, DATE_FORMAT)
 
+OUTPUT_FORMAT = "%A %B %d, %Y" # December 1, 2009
+def python_date_to_display_str(python_date):
+    return python_date.strftime(OUTPUT_FORMAT).replace(' 0', ' ')
+
 # Instead of getting a user_id get a User object as the 2nd param
 def report_user(func):
     def new_func(*args, **kw):
@@ -48,6 +52,10 @@ def completed_workouts(request, user):
                 .filter(workout_class__date__range=(start_date, end_date))\
                 .order_by("workout_class__date"):
         workout_info = get_completed_workout_info(i.id)
+
+        # Make a user friendly version of the date
+        workout_date = date_str_to_python(workout_info['date'])
+        workout_info['date_display'] = python_date_to_display_str(workout_date)
 
         # Create a user friendly version of the time
         if 'time' in workout_info['info']:
