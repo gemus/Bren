@@ -43,11 +43,20 @@ def completed_workouts(request, user):
     start_date = date_str_to_python(request.GET['start_date'])
     end_date = date_str_to_python(request.GET['end_date'])
 
-
-    data = []
+    the_workouts = []
     for i in Completed_workout.objects.filter(user=user)\
                 .filter(workout_class__date__range=(start_date, end_date))\
                 .order_by("workout_class__date"):
-        data.append(get_completed_workout_info(i.id))
+        workout_info = get_completed_workout_info(i.id)
 
-    return render_to_response('reports/completed_workouts.html', data)
+        # Create a user friendly version of the time
+        if 'time' in workout_info['info']:
+            time_val = workout_info['info']['time']
+            minutes = time_val / 60
+            seconds = time_val % 60
+            time_display = "%d:%d" % (minutes, seconds)
+            workout_info['info']['time_display'] = time_display
+
+        the_workouts.append(workout_info)
+
+    return render_to_response('reports/completed_workouts.html', {'workouts': the_workouts})

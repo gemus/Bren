@@ -11,5 +11,8 @@
 </head>
 <body>
 	<h1>Completed Workouts!</h1>
+	{% for workout in workouts %}
+		<p>{{workout.date}} {{workout.workout}} {{workout.info}}</p>
+	{% endfor %}
 </body>
 </html>
