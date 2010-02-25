@@ -18,7 +18,17 @@
 	{% for workout in workouts %}
 		<p>{{workout.date_display}}<br>
 			<strong>{{workout.workout}}</strong><br>
-			{{workout.info}}</p>
+
+			{% ifequal workout.info.type "Done" %}
+			<i>Completed</i>
+			{% endifequal %}
+			{% ifequal workout.info.type "AMRAP" %}
+			<i>{{workout.info.rounds}} Rounds Completed</i>
+			{% endifequal %}
+			{% ifequal workout.info.type "Timed" %}
+			<i>Completed In {{workout.info.time_display}}</i>
+			{% endifequal %}
+		</p>
 	{% endfor %}
 </body>
 </html>
