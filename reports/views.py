@@ -2,6 +2,7 @@ import datetime
 
 from django.shortcuts import render_to_response
 from django.contrib.auth.models import User
+from django.template import loader, Context
 
 from crossfit.bren.models import *
 
@@ -66,5 +67,10 @@ def completed_workouts(request, user):
             workout_info['info']['time_display'] = time_display
 
         the_workouts.append(workout_info)
+
+    t = loader.get_template('reports/completed_workouts.html')
+    c = Context({'workouts': the_workouts})
+
+    print t.render(c)
 
     return render_to_response('reports/completed_workouts.html', {'workouts': the_workouts})
