@@ -8,17 +8,14 @@
 
 	<link rel="stylesheet" type="text/css" href="/site_media/css/reset-min.css">
 	<link rel="stylesheet" type="text/css" href="/site_media/css/global.css">
-
-	<style type="text/css" media="screen">
-		p { margin-bottom: 20px; }
-	</style>
 </head>
 <body>
 	<h1>Completed Workouts!</h1>
 	{% for workout in workouts %}
-		<p>{{workout.date_display}}<br>
-			<strong>{{workout.name}} {% if workout.comments %} - {{workout.comments}}{% endif %}</strong><br>
-
+		<div>{{workout.date_display}}<br>
+			<strong>{{workout.name}}{% if workout.comments %} - {{workout.comments}}{% endif %}</strong>
+		</div>
+		<div style="border-bottom: 1px solid #333;">
 			{% ifequal workout.info.type "Done" %}
 			<i>Completed</i>
 			{% endifequal %}
@@ -28,7 +25,13 @@
 			{% ifequal workout.info.type "Timed" %}
 			<i>Completed In {{workout.info.time_display}}</i>
 			{% endifequal %}
-		</p>
+		</div>
+		<div style="margin-bottom: 20px;">
+			{% for variation in workout.variations %}
+				{{variation.rounds}} {{variation.element}} {{variation.variation}}<br>
+			{% endfor %}
+		</div>
+
 	{% endfor %}
 </body>
 </html>
