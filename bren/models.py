@@ -313,7 +313,7 @@ def get_completed_workout(user_id, workout_id):
             A List of   : Times the user has done the workout
 
             "id"        : The id of the completed workout(INT)
-            "workout"   : The name of the workout(STRING)
+            "name"      : The name of the workout(STRING)
             "date"      : The date they did the workout in YYYY-MM-DD format(STRING)
             "info"      : The information about type of workout and score based on that {"info": type_value} (DICT)
                         : type_value if Timed equals {"type" : "Timed", "time": the amount of time it took in secs(INT)}
@@ -334,7 +334,7 @@ def get_completed_workout_info(completed_workout_id):
     Params:
         completed_workout_id : the id number for the completed workout to look up.
     Returns:
-        workout         : The name of the workout
+        name            : The name of the workout
         date            : The date of the workout
         info            : The information about type of workout and score based on that {"info": type_value} (DICT)
                         : type_value if Timed equals {"type" : "Timed", "time": the amount of time it took in secs(INT)}
@@ -359,7 +359,7 @@ def get_completed_workout_info(completed_workout_id):
                                "rounds":    completed_element.element_used.reps})
     
     data = {
-        "workout" : completed_workout.workout_class.workout.name,
+        "name" : completed_workout.workout_class.workout.name,
         "date" : completed_workout.workout_class.date.isoformat(),
         "info" : type_value,
         "variations" : variations,
