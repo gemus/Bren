@@ -4,7 +4,7 @@ from django.shortcuts import render_to_response
 from django.contrib.auth.models import User
 
 from crossfit.bren.models import *
-from email_sender import fire_off_email
+from crossfit.email_sender.sender import email_user
 
 """
 === Design Philosophy =========================================================
@@ -68,6 +68,6 @@ def completed_workouts(request, user):
 
         the_workouts.append(workout_info)
 
-    fire_off_email(user, 'Email Subject', 'reports/completed_workouts.html', {'workouts': the_workouts})
+    email_user(user, 'Email Subject', 'reports/completed_workouts.html', {'workouts': the_workouts})
 
     return render_to_response('reports/completed_workouts.html', {'workouts': the_workouts})
