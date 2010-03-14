@@ -5,33 +5,82 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title>Crossfit DPL</title>
-
-	<link rel="stylesheet" type="text/css" href="/site_media/css/reset-min.css">
-	<link rel="stylesheet" type="text/css" href="/site_media/css/global.css">
+	<style type="text/css" media="screen">
+		body {
+			font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
+			color: #333;
+		}
+		h1 {
+			margin-left: 25px;
+		}
+		div.date_box {
+			float: left;
+			width: 150px;
+			text-align: right;
+			font-weight: bold;
+			font-size: 14pt;
+			margin-right: 20px;
+		}
+		div.workout_title {
+			font-weight: bold;
+			font-size: 14pt;
+			margin-right: 10px;
+		}
+		div.workout_comments {
+			font-weight: bold;
+			font-size: 12pt;
+			margin: 5px 0pt 2px;
+		}
+		table.elements {
+			font-size: 12pt;
+			line-height: 12pt;
+		}
+		td.rounds {
+			width: 35pt;
+			text-align: right;
+			padding-right: 5pt;
+		}
+		td.element {
+			width: 145pt;
+		}
+		td.varient {}
+	</style>
 </head>
 <body>
-	<h1>Completed Workouts!</h1>
-	{% for workout in workouts %}
-		<div>{{workout.date_display}}<br>
-			<strong>{{workout.name}}{% if workout.comments %} - {{workout.comments}}{% endif %}</strong>
-		</div>
-		<div style="border-bottom: 1px solid #333;">
-			{% ifequal workout.info.type "Done" %}
-			<i>Completed</i>
-			{% endifequal %}
-			{% ifequal workout.info.type "AMRAP" %}
-			<i>{{workout.info.rounds}} Rounds Completed</i>
-			{% endifequal %}
-			{% ifequal workout.info.type "Timed" %}
-			<i>Completed In {{workout.info.time_display}}</i>
-			{% endifequal %}
-		</div>
-		<div style="margin-bottom: 20px;">
-			{% for variation in workout.variations %}
-				{{variation.rounds}} {{variation.element}} {{variation.variation}}<br>
-			{% endfor %}
-		</div>
+	<h1>{{display_name}} Completed Workouts</h1>
 
+	{% for workout in workouts %}
+		<div class="date_box">
+			{{workout.date_display}}
+		</div>
+		<div style="float: left;">
+			<div class="workout_title">
+				{{workout.name}} -
+
+				{% ifequal workout.info.type "Done" %}
+				<i>Completed</i>
+				{% endifequal %}
+				{% ifequal workout.info.type "AMRAP" %}
+				<i>{{workout.info.rounds}} Rounds Completed</i>
+				{% endifequal %}
+				{% ifequal workout.info.type "Timed" %}
+				<i>Completed In {{workout.info.time_display}}</i>
+				{% endifequal %}
+			</div>
+			{% if workout.comments %}<div class="workout_comments">{{workout.comments}}</div>{% endif %}
+
+			<table class="elements">
+			{% for variation in workout.variations %}
+				<tr>
+					<td class="rounds">{% ifnotequal variation.rounds 1 %}{{variation.rounds}}x{% endifnotequal %}</td>
+					<td class="element">{{variation.element}}</td>
+					<td class="varient">{{variation.variation}}</td>
+				</tr>
+			{% endfor %}
+			</table>
+		</div>
+		<br style="clear: left;">
+		<br>
 	{% endfor %}
 </body>
 </html>

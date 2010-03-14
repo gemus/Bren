@@ -21,9 +21,12 @@ DATE_FORMAT = "%Y-%m-%d"
 def date_str_to_python(date_str):
     return datetime.datetime.strptime(date_str, DATE_FORMAT)
 
-OUTPUT_FORMAT = "%A %B %d, %Y" # December 1, 2009
+OUTPUT_FORMAT = "%A %B %d, %Y" # Monday December 1, 2009
 def python_date_to_display_str(python_date):
     return python_date.strftime(OUTPUT_FORMAT).replace(' 0', ' ')
+
+def get_day_of_week_str(python_date):
+    return python_date.strftime("%A")
 
 # Instead of getting a user_id get a User object as the 2nd param
 def report_user(func):
@@ -56,7 +59,7 @@ def completed_workouts(request, user):
 
         # Make a user friendly version of the date
         workout_date = date_str_to_python(workout_info['date'])
-        workout_info['date_display'] = python_date_to_display_str(workout_date)
+        workout_info['date_display'] = get_day_of_week_str(workout_date)
 
         # Create a user friendly version of the time
         if 'time' in workout_info['info']:
@@ -70,4 +73,14 @@ def completed_workouts(request, user):
 
     email_user(user, 'Email Subject', 'reports/completed_workouts.html', {'workouts': the_workouts})
 
-    return render_to_response('reports/completed_workouts.html', {'workouts': the_workouts})
+    display_name = "%s" % (user.first_name)
+
+    if display_name[-1:] == 's':
+        display_name += "'"
+    else:
+        display_name += "'s"
+
+    return render_to_response('reports/completed_workouts.html',
+                                { 'workouts':     the_workouts,
+                                  'display_name' : display_name })
+
