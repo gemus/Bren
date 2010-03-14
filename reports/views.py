@@ -71,14 +71,16 @@ def completed_workouts(request, user):
 
         the_workouts.append(workout_info)
 
-    email_user(user, 'Email Subject', 'reports/completed_workouts.html', {'workouts': the_workouts})
-
     display_name = "%s" % (user.first_name)
 
     if display_name[-1:] == 's':
         display_name += "'"
     else:
         display_name += "'s"
+
+    email_user(user, 'Workout Report', 'reports/completed_workouts.html',
+                                        {'workouts': the_workouts,
+                                         'display_name' : display_name })
 
     return render_to_response('reports/completed_workouts.html',
                                 { 'workouts':     the_workouts,

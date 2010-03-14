@@ -55,13 +55,14 @@ LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
 
 # Email settings for sending emails
-EMAIL_HOST = "smtp.webfaction.com"
-EMAIL_HOST_USER = "owenmead_server"
-EMAIL_HOST_PASSWORD = "r0v3rb0y"
+EMAIL_HOST = "opriusmail.com"
+EMAIL_PORT = 587
+EMAIL_HOST_USER = "owen"
+EMAIL_HOST_PASSWORD = "bl0wM3!"
 # Specify if we want to actually send it, output it, or just ignore it
-#EMAIL_BACKEND = "django.core.mail.backends.smtp"
+EMAIL_BACKEND = "django.core.mail.backends.smtp"
 #EMAIL_BACKEND = "django.core.mail.backends.console"
-EMAIL_BACKEND = "django.core.mail.backends.dummy"
+#EMAIL_BACKEND = "django.core.mail.backends.dummy"
 
 
 # Make this unique, and don't share it with anybody.

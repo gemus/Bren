@@ -4,14 +4,13 @@ from django.core.mail import EmailMessage
 from crossfit.email_sender.models import UserEmailPermissions
 
 def email_user(user, subject, email_template, data_dict):
-
     # Manually create the template and context, then render the result
     t = loader.get_template(email_template)
     c = Context(data_dict)
     html_content = t.render(c)
 
     # TODO : Register a better username
-    from_email   = "owenmead_server@owenmead.webfactional.com"
+    from_email   = "owen@opriusmail.com"
     to_address = [user.email]
 
     # Create the actual message
