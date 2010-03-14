@@ -1,60 +1,14 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
-	"http://www.w3.org/TR/html4/strict.dtd">
-
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html lang="en">
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>Crossfit DPL</title>
-	<style type="text/css" media="screen">
-		body {
-			font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
-			color: #333;
-		}
-		h1 {
-			margin-left: 25px;
-		}
-		div.date_box {
-			float: left;
-			width: 150px;
-			text-align: right;
-			font-weight: bold;
-			font-size: 14pt;
-			margin-right: 20px;
-		}
-		div.workout_title {
-			font-weight: bold;
-			font-size: 14pt;
-			margin-right: 10px;
-		}
-		div.workout_comments {
-			font-weight: bold;
-			font-size: 12pt;
-			margin: 5px 0pt 2px;
-		}
-		table.elements {
-			font-size: 12pt;
-			line-height: 12pt;
-		}
-		td.rounds {
-			width: 35pt;
-			text-align: right;
-			padding-right: 5pt;
-		}
-		td.element {
-			width: 145pt;
-		}
-		td.varient {}
-	</style>
-</head>
-<body>
-	<h1>{{display_name}} Completed Workouts</h1>
+<body style="font-family: 'lucida grande',tahoma,verdana,arial,sans-serif; color: #333;">
+	<h1 style="margin-left: 25px; font-size: 16pt;">{{display_name}} Completed Workouts</h1>
 
 	{% for workout in workouts %}
-		<div class="date_box">
+		<div style="float: left; width: 150px; text-align: right; font-weight: bold; font-size: 12pt; margin-right: 20px;">
 			{{workout.date_display}}
 		</div>
 		<div style="float: left;">
-			<div class="workout_title">
+			<div style="font-weight: bold; font-size: 12pt; margin-right: 10px;">
 				{{workout.name}} -
 
 				{% ifequal workout.info.type "Done" %}
@@ -67,13 +21,13 @@
 				<i>Completed In {{workout.info.time_display}}</i>
 				{% endifequal %}
 			</div>
-			{% if workout.comments %}<div class="workout_comments">{{workout.comments}}</div>{% endif %}
+			{% if workout.comments %}<div style="font-weight: bold; font-size: 10pt; margin: 5px 0pt 2px;">{{workout.comments}}</div>{% endif %}
 
-			<table class="elements">
+			<table style="font-size: 10pt; line-height: 10pt;">
 			{% for variation in workout.variations %}
 				<tr>
-					<td class="rounds">{% ifnotequal variation.rounds 1 %}{{variation.rounds}}x{% endifnotequal %}</td>
-					<td class="element">{{variation.element}}</td>
+					<td style="width: 35pt; text-align: right; padding-right: 5pt;">{% ifnotequal variation.rounds 1 %}{{variation.rounds}}x{% endifnotequal %}</td>
+					<td style="width: 145pt;">{{variation.element}}</td>
 					<td class="varient">{{variation.variation}}</td>
 				</tr>
 			{% endfor %}
