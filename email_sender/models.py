@@ -7,6 +7,11 @@ from django.utils.hashcompat import sha_constructor
 def gen_subscribe_hash():
     return sha_constructor(str(random())).hexdigest()[:10]
 
+def can_email_user(user):
+    if user.email and user.email != u'':
+        return UserEmailPermissions.objects.filter(user = user).filter(has_permission = True).count() == 1
+    return False
+
 class UserEmailPermissions(models.Model):
     subscribe_hash = models.CharField(max_length=20, primary_key=True, default=gen_subscribe_hash)
 
