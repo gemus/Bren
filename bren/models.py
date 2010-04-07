@@ -147,7 +147,9 @@ def get_users(search_str):
                     first_name__istartswith=search_str
                 ).order_by("first_name")[:6]
 
-    return {'total': 30,
+    total_results = len(User.objects.filter(first_name__istartswith=search_str))
+
+    return {'total': total_results,
             'users': [{"display_name" : "%s %s" % (user.first_name, user.last_name),
                        "user_name"    : user.username} for user in user_query]}
 
