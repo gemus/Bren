@@ -1,7 +1,35 @@
 {% extends "bren/base.html" %}
 {% block head_content %}
 	<script type="text/javascript" src="/site_media/js/user_scroller.js"></script>
+	<style type="text/css" media="screen">
+		div#user_scroller_container {
+			border: 1px solid #000;
+			height: 200px;
+			float: left;
+			width: 300px;
+		}
+
+		input#userScroller_searchBox.empty_search {
+			color: #999;
+		}
+
+		input#userScroller_searchBox {
+			border: 1px solid #3C5F7F;
+			padding: 2px;
+			margin-bottom: 5px;
+			color: #000;
+		}
+	</style>
+	<script type="text/javascript" charset="utf-8">
+		$(document).ready(function() {
+			$("#user_scroller_container").userScroller();
+		});
+	</script>
 {% endblock %}
 {% block content %}
-	<h1>Manager!</h1>
+	<div style="padding: 20px;">
+		<h1>Manager!</h1>
+		<br>
+		<div id="user_scroller_container"></div>
+	</div>
 {% endblock %}
