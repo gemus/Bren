@@ -133,25 +133,27 @@ class UserProfile(models.Model):
 # =============================================
 # = Model Methods =============================
 # =============================================
-def get_users(search_str):
+def get_users(search_str, num_results):
     """
     Purpose: Searches users based on first name using "strats_with" logic
     Params: search_str <string>
-    Returns: {"total": total_matched_users
-              "users": Array of dictionaries with display_name, user_name keys
-                       [{ "display_name": <str>, "user_name": <str>},...]
-                       # ordered by display_name
-             }
+            num_results <int> (-1 returns all)
+    Returns: Array of dictionaries with display_name, user_name keys
+        [{ "display_name": <str>, "user_name": <str>},...]
+    # ordered by display_name
     """
+    
     user_query = User.objects.filter(
                     first_name__istartswith=search_str
-                ).order_by("first_name")[:6]
+                ).order_by("first_name")
 
-    total_results = len(User.objects.filter(first_name__istartswith=search_str))
+    # Are we limiting results?
+    if num_results > 0:    
+        user_query = user_query[:num_results]
 
-    return {'total': total_results,
-            'users': [{"display_name" : "%s %s" % (user.first_name, user.last_name),
-                       "user_name"    : user.username} for user in user_query]}
+    return [{"display_name" : "%s %s" % (user.first_name, user.last_name),
+             "user_name"    : user.username}
+                    for user in user_query]
 
 def check_user_login(username, password):
     """

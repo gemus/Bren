@@ -164,7 +164,7 @@ def json_api(request):
         }
     elif method == 'get_users':
         json_params = simplejson.loads(request.GET['params'])
-        result = model.get_users(json_params[0])
+        result = model.get_users(json_params[0], json_params[1])
         to_return = {
             "id"     : request.GET['id'],
             "result" : result,

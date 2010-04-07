@@ -1,14 +1,28 @@
 jQuery.fn.userScroller = function() {
 
-    var search_box_focus = function() {
+    var performSearch = function(search_term) {
+        var search_callback = function(result, status) {
+            var user_results = result.result;
+            var collect = "";
+            for (var i=0; i<user_results.length; i++) {
+                if (user_results[i]['display_name'] == " ") continue; // Skip users with no display name (admin people)
+                collect += '<div class="user_button" id="user_'+i+'">'+user_results[i]['display_name']+'</div>';
+            }
+            $("#userScrollerCanvas").html(collect);
+        }
 
+        $.getJSON("/json_api/", {"id": 1,
+                                 "method": "get_users",
+                                 "params" : '["'+search_term+'", -1]'
+                                 },
+                                 search_callback);
     }
 
     // Create a user picker
     return this.each(function() {
         var search_default = "Search Users";
 
-        $(this).html("<h2>Loading Users...</h2>");
+        $(this).html("<div id='userScrollerCanvas'>Loading Users...</div>");
         $(this).before('<div>'+
                         '<input class="empty_search" type="text" value="'+search_default+'" id="userScroller_searchBox">'+
                         '</div>');
@@ -20,25 +34,6 @@ jQuery.fn.userScroller = function() {
                 $(this).removeClass("empty_search");
             }
         });
-
+        performSearch("");
     });
 }
-
-
-/*var search_callback = function(result, status) {
-    var result = result.result;
-
-    var collect = "";
-    for (i in result) {
-        console.log(result[i]['display_name']);
-    }
-}
-
-
-var params = '[""]';
-$.getJSON("/json_api/", {"id": 1,
-                         "method": "get_users",
-                         "params" : params
-                         },
-                         search_callback);
-                         */

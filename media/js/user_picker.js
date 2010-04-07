@@ -76,7 +76,7 @@ jQuery.fn.userPicker = function() {
                      "<div id='user_select_canvas'></div>");
 
         var search_callback = function(result, status) {
-            var result = result.result['users'];
+            var result = result.result;
 
             var collect = "";
             for (i in result) {
@@ -95,7 +95,7 @@ jQuery.fn.userPicker = function() {
         var keyboard_pressed_func = function(letter) {
             $("#keyboard_line").val($("#keyboard_line").val() + letter);
 
-            var params = '["' + $("#keyboard_line").val() + '"]';
+            var params = '["' + $("#keyboard_line").val() + '", 6]';
             $.getJSON("/json_api/", {"id": 1,
                                      "method": "get_users",
                                      "params" : params
