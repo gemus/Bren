@@ -76,7 +76,7 @@ jQuery.fn.userPicker = function() {
                      "<div id='user_select_canvas'></div>");
 
         var search_callback = function(result, status) {
-            var result = result.result;
+            var result = result.result['users'];
 
             var collect = "";
             for (i in result) {

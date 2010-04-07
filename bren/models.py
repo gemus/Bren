@@ -137,17 +137,19 @@ def get_users(search_str):
     """
     Purpose: Searches users based on first name using "strats_with" logic
     Params: search_str <string>
-    Returns: Array of dictionaries with display_name, user_name keys
-        [{ "display_name": <str>, "user_name": <str>},...]
-    # ordered by display_name
+    Returns: {"total": total_matched_users
+              "users": Array of dictionaries with display_name, user_name keys
+                       [{ "display_name": <str>, "user_name": <str>},...]
+                       # ordered by display_name
+             }
     """
     user_query = User.objects.filter(
                     first_name__istartswith=search_str
                 ).order_by("first_name")[:6]
 
-    return [{"display_name" : "%s %s" % (user.first_name, user.last_name),
-             "user_name"    : user.username}
-                    for user in user_query]
+    return {'total': 30,
+            'users': [{"display_name" : "%s %s" % (user.first_name, user.last_name),
+                       "user_name"    : user.username} for user in user_query]}
 
 def check_user_login(username, password):
     """
