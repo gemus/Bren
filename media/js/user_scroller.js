@@ -27,6 +27,9 @@ jQuery.fn.userScroller = function() {
                         '<input class="empty_search" type="text" value="'+search_default+'" id="userScroller_searchBox">'+
                         '</div>');
 
+        // Start By Showing Everyone
+        performSearch("");
+
         // Clear Search Box When Focused
         $("#userScroller_searchBox").focus(function() {
             if (this.value == search_default) {
@@ -34,6 +37,9 @@ jQuery.fn.userScroller = function() {
                 $(this).removeClass("empty_search");
             }
         });
-        performSearch("");
+        // Search when typing in the search box
+        $("#userScroller_searchBox").keyup(function() {
+            performSearch(this.value);
+        });
     });
 }
