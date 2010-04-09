@@ -1,6 +1,6 @@
-jQuery.fn.userManager = function(user_id) {
+jQuery.fn.userManager = function(user_name) {
     var container = this;
-    var user_id = user_id;
+    var user_name = user_name;
     
     // Create a user picker
     return this.each(function() {
@@ -23,9 +23,10 @@ jQuery.fn.userManager = function(user_id) {
         }
         $.getJSON("/json_api/", {"id": 1,
                                  "method": "get_user",
-                                 "params" : '['+user_id+']'
+                                 "params" : '["'+user_name+'"]'
                                  },
                                  get_user_callback);
+
 
     });
 }

@@ -155,14 +155,14 @@ def get_users(search_str, num_results):
              "user_name"    : user.username}
                     for user in user_query]
 
-def get_user(user_id):
+def get_user(user_name):
     """
     Purpose: Return user information given an id
-    Params: user_id <int>
+    Params: user_name <string>
     Returns: Dictionary containing user information
     """
 
-    user = User.objects.get(pk=user_id)
+    user = User.objects.get(username__exact=user_name)
 
     return { 'first_name'  : user.first_name,
              'last_name'   : user.last_name,
