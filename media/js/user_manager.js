@@ -12,7 +12,7 @@ jQuery.fn.userManager = function(user_name) {
             collect += '<span id="last_name">'  + user.last_name + '</span>';
             collect += '</div>';
             collect += '<div class="email">';
-            collect += '<span id="email">' + user.email + '</span> ';
+            collect += '<a href="mailto:'+user.email+'">' + user.email + '</a> ';
             collect += '</div>';
             collect += '<div class="dates">';
             collect += '<label>Last Login</label><span id="last_login">'  + user.last_login + '</span><br>';
