@@ -7,7 +7,7 @@ jQuery.fn.userManager = function(user_name) {
         var get_user_callback = function(result, status) {
             user = result.result;
 
-            collect='<div class="name_plate" style="display: none;">' +
+            collect='<div class="name_plate">' +
                         '<div style="float: right;" id="name_edit_link">'+
                             '<a href="javascript:void();">Edit</a>'+
                         '</div>' +
@@ -15,10 +15,10 @@ jQuery.fn.userManager = function(user_name) {
                         '<span id="last_name">'  + user.last_name  + '</span> '+
                     '</div>'+
 
-                    '<div class="name_plate_edit">'+
+                    '<div class="name_plate_edit" style="display: none;">'+
                         '<div style="float: right;">'+
                           '<a href="javascript:void();">Save</a> '+
-                          '<a href="javascript:void();">Cancel</a>'+
+                          '<a id="name_cancel_button" href="javascript:void();">Cancel</a>'+
                         '</div>'+
                         '<input type="text" id="first_name" value="' + user.first_name + '" style="width: 125px;"> '+
                         '<input type="text" id="last_name" value="'  + user.last_name  + '" style="width: 175px;"> '+
@@ -36,6 +36,22 @@ jQuery.fn.userManager = function(user_name) {
                     '</div>';
 
             container.html(collect);
+
+            // User clicks to edit it
+            $("div.name_plate").click(function(){
+                $('div.name_plate').hide();
+                $('div.name_plate_edit').show();
+            });
+
+            // User cancels the edit
+            $("#name_cancel_button").click(function(){
+                $('div.name_plate').show();
+                $('div.name_plate_edit').hide();
+
+                // Reset the input fields
+                $('input#first_name').val($('span#first_name').html());
+                $('input#last_name').val($('span#last_name').html());
+            });
         }
         $.getJSON("/json_api/", {"id": 1,
                                  "method": "get_user",
