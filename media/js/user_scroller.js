@@ -6,7 +6,9 @@ jQuery.fn.userScroller = function() {
             var collect = "";
             for (var i=0; i<user_results.length; i++) {
                 if (user_results[i]['display_name'] == " ") continue; // Skip users with no display name (admin people)
-                collect += '<div class="user_button" id="user_'+i+'">'+user_results[i]['display_name']+'</div>';
+                collect += '<div class="user_button" id="'+user_results[i]['user_name']+'">'+
+                                user_results[i]['display_name']+
+                           '</div>';
             }
             $("#userScrollerCanvas").html(collect);
         }
