@@ -7,7 +7,7 @@ jQuery.fn.userManager = function(user_name) {
         var get_user_callback = function(result, status) {
             user = result.result;
 
-            collect='<div class="name_plate">' +
+            collect='<div class="name_plate" style="display: none;">' +
                         '<div style="float: right;" id="name_edit_link">'+
                             '<a href="javascript:void();">Edit</a>'+
                         '</div>' +
@@ -20,8 +20,8 @@ jQuery.fn.userManager = function(user_name) {
                           '<a href="javascript:void();">Save</a> '+
                           '<a href="javascript:void();">Cancel</a>'+
                         '</div>'+
-                        '<span id="first_name">' + user.first_name + '</span> '+
-                        '<span id="last_name">'  + user.last_name + '</span> '+
+                        '<input type="text" id="first_name" value="' + user.first_name + '" style="width: 125px;"> '+
+                        '<input type="text" id="last_name" value="'  + user.last_name  + '" style="width: 175px;"> '+
                     '</div>'+
 
 
