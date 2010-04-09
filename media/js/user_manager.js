@@ -7,17 +7,33 @@ jQuery.fn.userManager = function(user_name) {
         var get_user_callback = function(result, status) {
             user = result.result;
 
-            collect  = '<div class="name_plate">';
-            collect += '<span id="first_name">' + user.first_name + '</span> ';
-            collect += '<span id="last_name">'  + user.last_name + '</span>';
-            collect += '</div>';
-            collect += '<div class="email">';
-            collect += '<a href="mailto:'+user.email+'">' + user.email + '</a> ';
-            collect += '</div>';
-            collect += '<div class="dates">';
-            collect += '<span id="last_login">'  + user.last_login + '</span> <label>Last Logged In</label><br>';
-            collect += '<span id="date_joined">' + user.date_joined + '</span> <label>Date Joined</label>';
-            collect += '</div>';
+            collect='<div class="name_plate">' +
+                        '<div style="float: right;" id="name_edit_link">'+
+                            '<a href="javascript:void();">Edit</a>'+
+                        '</div>' +
+                        '<span id="first_name">' + user.first_name + '</span> '+
+                        '<span id="last_name">'  + user.last_name  + '</span> '+
+                    '</div>'+
+
+                    '<div class="name_plate_edit">'+
+                        '<div style="float: right;">'+
+                          '<a href="javascript:void();">Save</a> '+
+                          '<a href="javascript:void();">Cancel</a>'+
+                        '</div>'+
+                        '<span id="first_name">' + user.first_name + '</span> '+
+                        '<span id="last_name">'  + user.last_name + '</span> '+
+                    '</div>'+
+
+
+                    '<div class="email">'+
+                        '<a href="mailto:'+user.email+'">' + user.email + '</a> '+
+                    '</div>'+
+
+
+                    '<div class="dates">'+
+                        '<span id="last_login">'  + user.last_login + '</span> <label>Last Logged In</label><br>'+
+                        '<span id="date_joined">' + user.date_joined + '</span> <label>Date Joined</label>'+
+                    '</div>';
 
             container.html(collect);
         }
