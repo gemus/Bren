@@ -41,11 +41,14 @@
 		/* ----------------------------------------------------------------- */
 		div#user_viewer_container {
 			float: left;
-			border: 1px solid #000;
-			width: 400px;
 			margin-left: 20px;
-			padding: 10px;
 		}
+
+		div#user_viewer_container div.name_plate:hover {
+			background-color: #FF9;
+			cursor: pointer;
+		}
+
 
 		div#user_viewer_container div.name_plate span {
 			font-size: 1.5em;
@@ -54,15 +57,13 @@
 
 		div#user_viewer_container div.dates {
 			margin-top: 0.5em;
-			font-size: 80%;
-			color: #999;
-			float: right;
-			text-align: right;
 		}
 
 		div#user_viewer_container div.dates label {
-			font-weight: bold;
 			margin-right: 5px;
+			color: #666;
+			font-size: 0.75em;
+			font-weight: bold;
 		}
 	</style>
 	<script type="text/javascript" charset="utf-8">
