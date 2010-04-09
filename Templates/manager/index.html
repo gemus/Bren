@@ -11,13 +11,14 @@
 		div#userScrollerCanvas {
 			border: 1px solid #000;
 			overflow: auto;
-			height: 300px;
+			height: 500px;
 		}
 
 		div#user_scroller_container div.user_button {
 			border-bottom: 1px solid #ccc;
 			padding: 4px;
 			height: 20px;
+			cursor: pointer;
 		}
 
 		div#user_scroller_container div.user_button:hover {
@@ -35,17 +36,39 @@
 			color: #000;
 		}
 
+		/* ----------------------------------------------------------------- */
+		/* ---- User Viewer ------------------------------------------------ */
+		/* ----------------------------------------------------------------- */
 		div#user_viewer_container {
 			float: left;
 			border: 1px solid #000;
 			width: 400px;
-			height: 300px;
 			margin-left: 20px;
+			padding: 10px;
+		}
+
+		div#user_viewer_container div.name_plate span {
+			font-size: 1.5em;
+			height: 40px;
+		}
+
+		div#user_viewer_container div.dates {
+			margin-top: 0.5em;
+			font-size: 80%;
+			color: #999;
+			float: right;
+			text-align: right;
+		}
+
+		div#user_viewer_container div.dates label {
+			font-weight: bold;
+			margin-right: 5px;
 		}
 	</style>
 	<script type="text/javascript" charset="utf-8">
 		$(document).ready(function() {
 			$("#user_scroller_container").userScroller("user_viewer_container");
+			$("#user_viewer_container").userManager("DPL_Amanda");
 		});
 	</script>
 {% endblock %}
