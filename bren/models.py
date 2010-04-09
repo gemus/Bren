@@ -142,18 +142,33 @@ def get_users(search_str, num_results):
         [{ "display_name": <str>, "user_name": <str>},...]
     # ordered by display_name
     """
-    
+
     user_query = User.objects.filter(
                     first_name__istartswith=search_str
                 ).order_by("first_name")
 
     # Are we limiting results?
-    if num_results > 0:    
+    if num_results > 0:
         user_query = user_query[:num_results]
 
     return [{"display_name" : "%s %s" % (user.first_name, user.last_name),
              "user_name"    : user.username}
                     for user in user_query]
+
+def get_user(user_id):
+    """
+    Purpose: Return user information given an id
+    Params: user_id <int>
+    Returns: Dictionary containing user information
+    """
+
+    user = User.objects.get(pk=user_id)
+
+    return { 'first_name'  : user.first_name,
+             'last_name'   : user.last_name,
+             'email'       : user.email,
+             'last_login'  : user.last_login.strftime(DATE_FORMAT),
+             'date_joined' : user.date_joined.strftime(DATE_FORMAT) }
 
 def check_user_login(username, password):
     """
@@ -307,8 +322,8 @@ def get_workout_element_history(user_id, workout_id):
                                         "history"           : history,
                                         "last_variation"    : last_variation,
                                       })
-    return workout_element_history   
-    
+    return workout_element_history
+
 def get_completed_workout(user_id, workout_id):
     """
     Purpose: Given a user and a workout return times the user has done the workout
@@ -346,10 +361,10 @@ def get_completed_workout_info(completed_workout_id):
                         : type_value if Timed equals {"type" : "Timed", "time": the amount of time it took in secs(INT)}
                         : type_value if AMRAP equals {"type" : "AMRAP", "rounds": how many rounds the user did(INT)}
                         : type_value if Done equals  {"type" : "Done"}
-        variations      : a list of the variations that the user inputed as ("element" : The name of the element(STRING), "variation" : the name of the variation used(STRING)}                       
+        variations      : a list of the variations that the user inputed as ("element" : The name of the element(STRING), "variation" : the name of the variation used(STRING)}
     """
     completed_workout = Completed_workout.objects.get(id=completed_workout_id)
-    
+
     type_name = completed_workout.workout_class.workout.workout_type
     if type_name == "Timed":
         type_value = {"type" : "Timed", "time": completed_workout.secs}
@@ -357,13 +372,13 @@ def get_completed_workout_info(completed_workout_id):
         type_value = {"type" : "AMRAP", "rounds": completed_workout.rounds}
     else:
         type_value = {"type" : "Done"}
-        
-    variations = []    
+
+    variations = []
     for completed_element in Completed_element.objects.filter(completed_workout__id = completed_workout_id).order_by('element_used__order'):
             variations.append({"element": completed_element.variation.element.name,
                                "variation": completed_element.variation.name,
                                "rounds":    completed_element.element_used.reps})
-    
+
     data = {
         "name" : completed_workout.workout_class.workout.name,
         "comments" : completed_workout.workout_class.workout.comments,

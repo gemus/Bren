@@ -170,6 +170,14 @@ def json_api(request):
             "result" : result,
             "error"  : None
         }
+    elif method == 'get_user':
+        json_params = simplejson.loads(request.GET['params'])
+        result = model.get_user(json_params[0])
+        to_return = {
+            "id"     : request.GET['id'],
+            "result" : result,
+            "error"  : None
+        }
     elif method == 'check_user_login':
         json_params = simplejson.loads(request.GET['params'])
         username, password = json_params
