@@ -1,5 +1,6 @@
 {% extends "bren/base.html" %}
 {% block head_content %}
+	<script type="text/javascript" src="/site_media/js/user_manager.js"></script>
 	<script type="text/javascript" src="/site_media/js/user_scroller.js"></script>
 	<style type="text/css" media="screen">
 		div#user_scroller_container {
@@ -9,7 +10,7 @@
 			width: 300px;
 			overflow: auto;
 		}
-		
+
 		div#user_scroller_container div.user_button {
 			border-bottom: 1px solid #ccc;
 			padding: 4px;
@@ -30,10 +31,19 @@
 			margin-bottom: 5px;
 			color: #000;
 		}
+
+		div#user_viewer_container {
+			float: left;
+			border: 1px solid #000;
+			width: 400px;
+			height: 300px;
+			margin-left: 20px;
+		}
 	</style>
 	<script type="text/javascript" charset="utf-8">
 		$(document).ready(function() {
 			$("#user_scroller_container").userScroller();
+			$("#user_viewer_container").userManager(112);
 		});
 	</script>
 {% endblock %}
@@ -42,5 +52,6 @@
 		<h1>Manager!</h1>
 		<br>
 		<div id="user_scroller_container"></div>
+		<div id="user_viewer_container">Hi</div>
 	</div>
 {% endblock %}
