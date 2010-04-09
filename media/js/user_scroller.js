@@ -22,10 +22,11 @@ jQuery.fn.userScroller = function() {
     return this.each(function() {
         var search_default = "Search Users";
 
-        $(this).html("<div id='userScrollerCanvas'>Loading Users...</div>");
-        $(this).before('<div>'+
-                        '<input class="empty_search" type="text" value="'+search_default+'" id="userScroller_searchBox">'+
-                        '</div>');
+        $(this).html("");
+        $(this).html('<div>'+
+                       '<input class="empty_search" type="text" value="'+search_default+'" id="userScroller_searchBox">'+
+                     '</div>'+
+                     '<div id="userScrollerCanvas">Loading Users...</div>');
 
         // Start By Showing Everyone
         performSearch("");
