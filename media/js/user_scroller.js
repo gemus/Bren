@@ -1,4 +1,10 @@
-jQuery.fn.userScroller = function() {
+jQuery.fn.userScroller = function(viewer_container_id) {
+    // Where to tie the userManager to when a user item is clicked
+    var viewer_container_id = viewer_container_id;
+
+    var user_click = function() {
+        $("#"+viewer_container_id+"").userManager(this.id);
+    }
 
     var performSearch = function(search_term) {
         var search_callback = function(result, status) {
@@ -11,6 +17,7 @@ jQuery.fn.userScroller = function() {
                            '</div>';
             }
             $("#userScrollerCanvas").html(collect);
+            $("#userScrollerCanvas div").click(user_click);
         }
 
         $.getJSON("/json_api/", {"id": 1,

@@ -45,8 +45,7 @@
 	</style>
 	<script type="text/javascript" charset="utf-8">
 		$(document).ready(function() {
-			$("#user_scroller_container").userScroller();
-			$("#user_viewer_container").userManager("DPL_Alex");
+			$("#user_scroller_container").userScroller("user_viewer_container");
 		});
 	</script>
 {% endblock %}
@@ -55,6 +54,6 @@
 		<h1>Manager!</h1>
 		<br>
 		<div id="user_scroller_container"></div>
-		<div id="user_viewer_container">Hi</div>
+		<div id="user_viewer_container"></div>
 	</div>
 {% endblock %}

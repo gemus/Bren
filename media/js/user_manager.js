@@ -26,7 +26,5 @@ jQuery.fn.userManager = function(user_name) {
                                  "params" : '["'+user_name+'"]'
                                  },
                                  get_user_callback);
-
-
     });
 }
