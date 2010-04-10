@@ -4,6 +4,7 @@
 	<link rel="stylesheet" type="text/css" href="/site_media/css/user_picker.css" />
 	<script type="text/javascript" src="/site_media/js/numpad_input.js"></script>
 	<script type="text/javascript" src="/site_media/js/user_picker.js"></script>
+	<script type="text/javascript" src="/site_media/js/json2.js"></script>
 	<style type="text/css" media="screen">
 		h1 {
 			font-size: 200%;
@@ -76,7 +77,7 @@
 			var password = $("#id_password").val()
 			$.getJSON("/json_api/", {"id": 1,
                                      "method": "check_user_login",
-                                     "params" : '["'+username+'","'+password+'"]'
+                                     "params" : JSON.stringify([username, password])
                                      },
                                      check_user_callback)
 

@@ -86,7 +86,7 @@ jQuery.fn.userManager = function(user_name) {
         }
         $.getJSON("/json_api/", {"id": 1,
                                  "method": "get_user",
-                                 "params" : '["'+user_name+'"]'
+                                 "params" : JSON.stringify([user_name])
                                  },
                                  get_user_callback);
     });

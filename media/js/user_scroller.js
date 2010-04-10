@@ -22,7 +22,7 @@ jQuery.fn.userScroller = function(viewer_container_id) {
 
         $.getJSON("/json_api/", {"id": 1,
                                  "method": "get_users",
-                                 "params" : '["'+search_term+'", -1]'
+                                 "params" : JSON.stringify([search_term, -1])
                                  },
                                  search_callback);
     }
