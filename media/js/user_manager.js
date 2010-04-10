@@ -11,7 +11,16 @@ jQuery.fn.userManager = function(user_name) {
         if (last_name_val  == '') errors.push('last_name');
 
         var save_user_callback = function(result, status) {
-            console.log("SAVED!");
+            // Update the view name plate
+            $('span#first_name').html(first_name_val);
+            $('span#last_name').html(last_name_val);
+
+            // Then update the scroller
+            $('#'+user_name+'').html(first_name_val + " " + last_name_val);
+
+            // Finally flip the edit and view plate
+            $('div.name_plate').show();
+            $('div.name_plate_edit').hide();
         }
 
         // No Errors so save the user

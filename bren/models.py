@@ -171,7 +171,19 @@ def get_user(user_name):
              'date_joined' : user.date_joined.strftime(DATE_FORMAT) }
 
 def update_user(user_dict):
-    print user_dict
+    user = User.objects.get(username__exact=user_dict['user_name'])
+
+    # Validate the keys
+    # TODO : This should be done in the views
+    del(user_dict['user_name'])
+    allowed_keys = set(['first_name', 'last_name'])
+    if len(set(user_dict.keys()) - allowed_keys) != 0:
+        return "fail - Unexpected keyword %s" % (set(user_dict.keys()) - allowed_keys).pop()
+
+    # Do the updating
+    for key, value in user_dict.items():
+        setattr(user, key, value)
+    user.save()
     return "success"
 
 def check_user_login(username, password):
