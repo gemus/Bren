@@ -4,11 +4,26 @@ jQuery.fn.userManager = function(user_name) {
 
     var validate_and_save_name = function() {
         var errors = new Array();
-        if ($('#first_name_input').val() == '') errors.push('first_name');
-        if ($('#last_name_input').val()  == '') errors.push('last_name');
+        var first_name_val = $('#first_name_input').val();
+        var last_name_val = $('#last_name_input').val();
 
+        if (first_name_val == '') errors.push('first_name');
+        if (last_name_val  == '') errors.push('last_name');
+
+        var save_user_callback = function(result, status) {
+            console.log("SAVED!");
+        }
+
+        // No Errors so save the user
         if (errors.length == 0) {
-            alert("save user")
+            $.getJSON("/json_api/", {"id": 1,
+                                     "method": "update_user",
+                                     "params" : JSON.stringify([{'user_name': user_name,
+                                                  'first_name': first_name_val,
+                                                  'last_name' : last_name_val
+                                                 }])
+                                     },
+                                     save_user_callback);
         }
     }
 

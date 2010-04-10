@@ -170,6 +170,10 @@ def get_user(user_name):
              'last_login'  : user.last_login.strftime(DATE_FORMAT),
              'date_joined' : user.date_joined.strftime(DATE_FORMAT) }
 
+def update_user(user_dict):
+    print user_dict
+    return "success"
+
 def check_user_login(username, password):
     """
     Purpose: Verify that a user and password combination will result in a
