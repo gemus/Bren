@@ -7,8 +7,8 @@ jQuery.fn.userManager = function(user_name) {
         var first_name_val = $('#first_name_input').val();
         var last_name_val = $('#last_name_input').val();
 
-        if (first_name_val == '') errors.push('first_name');
-        if (last_name_val  == '') errors.push('last_name');
+        if (first_name_val == '') errors.push('First Name');
+        if (last_name_val  == '') errors.push('Last Name');
 
         var save_user_callback = function(result, status) {
             // Update the view name plate
@@ -25,6 +25,7 @@ jQuery.fn.userManager = function(user_name) {
 
         // No Errors so save the user
         if (errors.length == 0) {
+            $("div.name_plate_error").hide();
             $.getJSON("/json_api/", {"id": 1,
                                      "method": "update_user",
                                      "params" : JSON.stringify([{'user_name': user_name,
@@ -33,6 +34,9 @@ jQuery.fn.userManager = function(user_name) {
                                                  }])
                                      },
                                      save_user_callback);
+        } else {
+            $("div.name_plate_error").slideDown();
+            $("div.name_plate_error").html(errors.join(", ") + " Is Required");
         }
     }
 
@@ -58,6 +62,9 @@ jQuery.fn.userManager = function(user_name) {
                         '<input type="text" id="last_name_input" value="'  + user.last_name  + '" style="width: 175px;"> '+
                     '</div>'+
 
+                    '<div class="name_plate_error" style="display: none;">'+
+                    '</div>'+
+
 
                     '<div class="email">'+
                         '<a href="mailto:'+user.email+'">' + user.email + '</a> '+
@@ -81,6 +88,7 @@ jQuery.fn.userManager = function(user_name) {
             $("#name_cancel_button").click(function(){
                 $('div.name_plate').show();
                 $('div.name_plate_edit').hide();
+                $("div.name_plate_error").hide();
 
                 // Reset the input fields
                 $('input#first_name_input').val($('span#first_name').html());
