@@ -20,13 +20,27 @@ jQuery.fn.userManager = function(user_name) {
         }
     }
 
+    var validate_email_address = function(email_addy) {
+        var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+        return reg.test(email_addy);
+    }
+
     var validate_and_save = function() {
+        // Clear old validation errors
+        $("#name_plate_error").hide();
+        $("#email_plate_error").hide();
+
         var errors = new Array();
         var first_name_val = $('#first_name_input').val();
         var last_name_val = $('#last_name_input').val();
+        var email_val = $('#email_input').val();
 
-        if (first_name_val == '') errors.push('First Name');
-        if (last_name_val  == '') errors.push('Last Name');
+        // Do some validation
+        if (first_name_val == '') errors.push(['name', 'First Name']);
+        if (last_name_val  == '') errors.push(['name', 'Last Name']);
+        if (!validate_email_address(email_val) && email_val.length > 0 ) {
+            errors.push(['email','Invalid Email']);
+        }
 
         var success_save_user_callback = function(result, status) {
             // Update the view name plate
@@ -52,8 +66,23 @@ jQuery.fn.userManager = function(user_name) {
                                      },
                                      success_save_user_callback);
         } else {
-            $("#name_plate_error").slideDown();
-            $("#name_plate_error").html(errors.join(", ") + " Is Required");
+            var name_errors = new Array();
+            var email_errors = new Array();
+            for (i in errors) {
+                if (errors[i][0] == 'name') name_errors.push(errors[i][1]);
+                if (errors[i][0] == 'email') email_errors.push(errors[i][1]);
+            }
+
+            console.log(email_errors);
+
+            if (name_errors.length > 0) {
+                $("#name_plate_error").slideDown();
+                $("#name_plate_error").html(name_errors.join(", ") + " Is Required");
+            }
+            if (email_errors.length > 0) {
+                $("#email_plate_error").slideDown();
+                $("#email_plate_error").html("Invalid Email");
+            }
         }
     }
 
@@ -78,12 +107,12 @@ jQuery.fn.userManager = function(user_name) {
                             '<input type="text" id="first_name_input" value="' + user.first_name + '" style="width: 125px;"> '+
                             '<input type="text" id="last_name_input" value="'  + user.last_name  + '" style="width: 175px;"> '+
                         '</div>'+
-                        '<div id="name_plate_error" style="display: none;"></div>'+
+                        '<div id="name_plate_error" class="error_plate" style="display: none;"></div>'+
 
                         '<div class="email_plate_edit">'+
                             '<input type="text" id="email_input" value="'  + user.email  + '" style="width: 175px;"> '+
                         '</div>'+
-                        '<div class="email_plate_error" style="display: none;"></div>'+
+                        '<div id="email_plate_error" class="error_plate" style="display: none;"></div>'+
                     '</div>' +
 
                     '<div class="dates">'+
@@ -95,7 +124,7 @@ jQuery.fn.userManager = function(user_name) {
                         '<a href="javascript:void(0);" id="edit_button">Edit</a>' +
                     '</div>' +
                     '<div id="edit_actions" style="display: none;">'+
-                        '<a href="javascript:void(0);" id="save_button">Save</a>' +
+                        '<a href="javascript:void(0);" id="save_button">Save</a> ' +
                         '<a href="javascript:void(0);" id="cancel_button">Cancel</a>' +
                     '</div>';
 
