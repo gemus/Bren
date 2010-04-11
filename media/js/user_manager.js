@@ -2,7 +2,25 @@ jQuery.fn.userManager = function(user_name) {
     var container = this;
     var user_name = user_name;
 
-    var validate_and_save_name = function() {
+    var change_view = function(view) {
+        // View One of: 'edit', 'view'
+        if (view == 'view') {
+            $("#view_canvas").show();
+            $("#view_actions").show();
+
+            $("#edit_canvas").hide();
+            $("#edit_actions").hide();
+            $("#name_plate_error").hide();
+        } else if (view == 'edit') {
+            $("#edit_canvas").show();
+            $("#edit_actions").show();
+
+            $("#view_canvas").hide();
+            $("#view_actions").hide();
+        }
+    }
+
+    var validate_and_save = function() {
         var errors = new Array();
         var first_name_val = $('#first_name_input').val();
         var last_name_val = $('#last_name_input').val();
@@ -10,7 +28,7 @@ jQuery.fn.userManager = function(user_name) {
         if (first_name_val == '') errors.push('First Name');
         if (last_name_val  == '') errors.push('Last Name');
 
-        var save_user_callback = function(result, status) {
+        var success_save_user_callback = function(result, status) {
             // Update the view name plate
             $('span#first_name').html(first_name_val);
             $('span#last_name').html(last_name_val);
@@ -18,14 +36,13 @@ jQuery.fn.userManager = function(user_name) {
             // Then update the scroller
             $('#'+user_name+'').html(first_name_val + " " + last_name_val);
 
-            // Finally flip the edit and view plate
-            $('div.name_plate').show();
-            $('div.name_plate_edit').hide();
+            // Finally change the view
+            change_view("view");
         }
 
         // No Errors so save the user
         if (errors.length == 0) {
-            $("div.name_plate_error").hide();
+            $("#name_plate_error").hide();
             $.getJSON("/json_api/", {"id": 1,
                                      "method": "update_user",
                                      "params" : JSON.stringify([{'user_name': user_name,
@@ -33,10 +50,10 @@ jQuery.fn.userManager = function(user_name) {
                                                   'last_name' : last_name_val
                                                  }])
                                      },
-                                     save_user_callback);
+                                     success_save_user_callback);
         } else {
-            $("div.name_plate_error").slideDown();
-            $("div.name_plate_error").html(errors.join(", ") + " Is Required");
+            $("#name_plate_error").slideDown();
+            $("#name_plate_error").html(errors.join(", ") + " Is Required");
         }
     }
 
@@ -45,59 +62,64 @@ jQuery.fn.userManager = function(user_name) {
         var get_user_callback = function(result, status) {
             user = result.result;
 
-            collect='<div class="name_plate">' +
-                        '<div style="float: right;" id="name_edit_link">'+
-                            '<a href="javascript:void(0);">Edit</a>'+
-                        '</div>' +
-                        '<span id="first_name">' + user.first_name + '</span> '+
-                        '<span id="last_name">'  + user.last_name  + '</span> '+
-                    '</div>'+
-
-                    '<div class="name_plate_edit" style="display: none;">'+
-                        '<div style="float: right;">'+
-                          '<a id="name_save_button" href="javascript:void(0);">Save</a> '+
-                          '<a id="name_cancel_button" href="javascript:void(0);">Cancel</a>'+
+            collect='<div id="view_canvas">'+
+                        '<div class="name_plate">' +
+                            '<span id="first_name">' + user.first_name + '</span> '+
+                            '<span id="last_name">'  + user.last_name  + '</span> '+
                         '</div>'+
-                        '<input type="text" id="first_name_input" value="' + user.first_name + '" style="width: 125px;"> '+
-                        '<input type="text" id="last_name_input" value="'  + user.last_name  + '" style="width: 175px;"> '+
-                    '</div>'+
 
-                    '<div class="name_plate_error" style="display: none;">'+
-                    '</div>'+
+                        '<div class="email_plate">'+
+                            '<a id="email" class="email_link" href="mailto:'+user.email+'">' + user.email + '</a> '+
+                        '</div>'+
+                    '</div>' +
 
+                    '<div id="edit_canvas" style="display: none;">' +
+                        '<div class="name_plate_edit">'+
+                            '<input type="text" id="first_name_input" value="' + user.first_name + '" style="width: 125px;"> '+
+                            '<input type="text" id="last_name_input" value="'  + user.last_name  + '" style="width: 175px;"> '+
+                        '</div>'+
+                        '<div id="name_plate_error" style="display: none;"></div>'+
 
-                    '<div class="email">'+
-                        '<a href="mailto:'+user.email+'">' + user.email + '</a> '+
-                    '</div>'+
-
+                        '<div class="email_plate_edit">'+
+                            '<input type="text" id="email_input" value="'  + user.email  + '" style="width: 175px;"> '+
+                        '</div>'+
+                        '<div class="email_plate_error" style="display: none;"></div>'+
+                    '</div>' +
 
                     '<div class="dates">'+
                         '<span id="last_login">'  + user.last_login + '</span> <label>Last Logged In</label><br>'+
                         '<span id="date_joined">' + user.date_joined + '</span> <label>Date Joined</label>'+
+                    '</div>' +
+
+                    '<div id="view_actions">'+
+                        '<a href="javascript:void(0);" id="edit_button">Edit</a>' +
+                    '</div>' +
+                    '<div id="edit_actions" style="display: none;">'+
+                        '<a href="javascript:void(0);" id="save_button">Save</a>' +
+                        '<a href="javascript:void(0);" id="cancel_button">Cancel</a>' +
                     '</div>';
+
 
             container.html(collect);
 
             // User clicks to edit it
-            $("div.name_plate").click(function(){
-                $('div.name_plate').hide();
-                $('div.name_plate_edit').show();
+            $("#edit_button").click(function(){
+                change_view("edit");
             });
 
             // User cancels the edit
-            $("#name_cancel_button").click(function(){
-                $('div.name_plate').show();
-                $('div.name_plate_edit').hide();
-                $("div.name_plate_error").hide();
+            $("#cancel_button").click(function(){
+                change_view("view");
 
                 // Reset the input fields
                 $('input#first_name_input').val($('span#first_name').html());
                 $('input#last_name_input').val($('span#last_name').html());
+                $('input#email_input').val($('a#email').html());
             });
 
             // User clicks save
-            $("#name_save_button").click(function(e){
-                validate_and_save_name();
+            $("#save_button").click(function(e){
+                validate_and_save();
             });
 
         }
