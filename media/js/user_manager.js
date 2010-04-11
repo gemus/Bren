@@ -43,9 +43,11 @@ jQuery.fn.userManager = function(user_name) {
         }
 
         var success_save_user_callback = function(result, status) {
-            // Update the view name plate
+            // Update the view canvas
             $('span#first_name').html(first_name_val);
             $('span#last_name').html(last_name_val);
+            $('a#email').html(email_val);
+            $('a#email').attr('href', email_val);
 
             // Then update the scroller
             $('#'+user_name+'').html(first_name_val + " " + last_name_val);
@@ -56,12 +58,12 @@ jQuery.fn.userManager = function(user_name) {
 
         // No Errors so save the user
         if (errors.length == 0) {
-            $("#name_plate_error").hide();
             $.getJSON("/json_api/", {"id": 1,
                                      "method": "update_user",
                                      "params" : JSON.stringify([{'user_name': user_name,
                                                   'first_name': first_name_val,
-                                                  'last_name' : last_name_val
+                                                  'last_name' : last_name_val,
+                                                  'email'     : email_val
                                                  }])
                                      },
                                      success_save_user_callback);
@@ -72,8 +74,6 @@ jQuery.fn.userManager = function(user_name) {
                 if (errors[i][0] == 'name') name_errors.push(errors[i][1]);
                 if (errors[i][0] == 'email') email_errors.push(errors[i][1]);
             }
-
-            console.log(email_errors);
 
             if (name_errors.length > 0) {
                 $("#name_plate_error").slideDown();

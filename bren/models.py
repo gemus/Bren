@@ -176,7 +176,7 @@ def update_user(user_dict):
     # Validate the keys
     # TODO : This should be done in the views
     del(user_dict['user_name'])
-    allowed_keys = set(['first_name', 'last_name'])
+    allowed_keys = set(['first_name', 'last_name', 'email'])
     if len(set(user_dict.keys()) - allowed_keys) != 0:
         return "fail - Unexpected keyword %s" % (set(user_dict.keys()) - allowed_keys).pop()
 
