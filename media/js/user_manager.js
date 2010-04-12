@@ -12,6 +12,10 @@ jQuery.fn.userManager = function(user_name) {
             $("#edit_actions").hide();
             $("#name_plate_error").hide();
         } else if (view == 'edit') {
+            // Clear old validation errors
+            $("#name_plate_error").hide();
+            $("#email_plate_error").hide();
+
             $("#edit_canvas").show();
             $("#edit_actions").show();
 
@@ -26,10 +30,6 @@ jQuery.fn.userManager = function(user_name) {
     }
 
     var validate_and_save = function() {
-        // Clear old validation errors
-        $("#name_plate_error").hide();
-        $("#email_plate_error").hide();
-
         var errors = new Array();
         var first_name_val = $('#first_name_input').val();
         var last_name_val = $('#last_name_input').val();
