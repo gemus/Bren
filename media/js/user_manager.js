@@ -4,7 +4,8 @@ jQuery.fn.userManager = function(user_name) {
     // Initalize the userManager
     return this.each(function() {
         // Setup the HTML
-        $(this).html('<div style="border: 1px solid #F00;" id="basic_details"></div>');
+        $(this).html('<div style="border: 1px solid #F00;" id="basic_details"></div>'+
+                     '<div style="border: 1px solid #FF0;" id="manage_pin"></div>');
         // Create the manager to get the ball rolling
         new TopManager(user_name).init();
     });
@@ -19,10 +20,12 @@ TopManager = function(user_name) {
 
     // The different sections
     this.userDetailManager = new UserDetailManager(this, 'basic_details');
+    this.userPinManager = new UserPinManager(this, 'manage_pin');
 }
 
 TopManager.prototype.init = function() {
     this.userDetailManager.init();
+    this.userPinManager.init();
 }
 
 TopManager.prototype.notify_change = function(section) {
@@ -143,7 +146,7 @@ UserDetailManager.prototype.validate_and_save = function() {
 
                                      // Then draw the view screen
                                      self.draw_view();
-                                     
+
                                      // Notify others of the change
                                      self.manager.notify_change(self.notify_name);
                                  });
@@ -166,4 +169,41 @@ UserDetailManager.prototype.validate_and_save = function() {
             this.getItem("#email_plate_error").html("Invalid Email");
         }
     }
+}
+
+// ===============================================================
+// = UserDetailManager - Manage basic user details (name, email) =
+// ===============================================================
+UserPinManager = function(manager, canvas_id) {
+    this.notify_name = "user_pin"; // Used when notifying others of changes
+    this.manager = manager;
+    this.canvas_id = canvas_id;
+}
+UserPinManager.prototype.getItem = function(selector_text) {
+    // Return #basic_details selector_text
+    // So sub methods don't have to worry about name conflicts or grabbing wrong elemnts
+    return $('#'+this.canvas_id + " " + (selector_text == undefined ? "" : selector_text));
+}
+UserPinManager.prototype.init = function() {
+    this.draw_view();
+}
+UserPinManager.prototype.draw_view = function() {
+    var self = this;
+    this.getItem().html('<a href="javascript:void(0);" id="change_pin_button">Change Pin</a>');
+    this.getItem("#change_pin_button").click(function(){ self.draw_edit(); });
+}
+UserPinManager.prototype.draw_edit = function() {
+    var self = this;
+    this.getItem().html('<input type="text" value="Enter New Pin"/>'+
+                        '<div id="edit_actions">'+
+                            '<a href="javascript:void(0);" id="save_button">Save</a> ' +
+                            '<a href="javascript:void(0);" id="cancel_button">Cancel</a>' +
+                        '</div>');
+
+    this.getItem("#cancel_button").click(function(){ self.draw_view(); });
+    this.getItem("#save_button").click(function(){ self.validate_and_save(); });
+}
+UserPinManager.prototype.validate_and_save = function() {
+    console.log("SAVE PIN!");
+    this.draw_view();
 }
