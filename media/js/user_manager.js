@@ -81,8 +81,6 @@ CreateUserManager.prototype.draw_form = function() {
                         '<div id="edit_actions">'+
                             '<a href="javascript:void(0);" id="save_button">Save</a> ' +
                         '</div>';
-    console.log(this.getItem()[0]);
-
     this.getItem().html(create_canvas);
     //this.getItem("#save_button").click(function(){ self.validate_and_save(); });
 }
@@ -254,8 +252,6 @@ UserPinManager.prototype.validate_and_save = function() {
                                                              'password': pin_val }])
                                  },
                                  function(result, status) {
-                                     console.log(result);
-
                                      // Then draw the view screen
                                      self.draw_view();
 
