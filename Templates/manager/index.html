@@ -39,7 +39,7 @@
 			float: left;
 			margin-left: 20px;
 		}
-		
+
 		/*
 
 		div#user_viewer_container input {
@@ -82,6 +82,11 @@
 		$(document).ready(function() {
 			$("#user_scroller_container").userScroller("user_viewer_container");
 			$("#user_viewer_container").userManager("DPL_Amanda");
+
+			$("#create_user_button").click(function(e) {
+				$("#user_viewer_container").userManager("_CREATE_USER");
+			});
+
 		});
 	</script>
 {% endblock %}
@@ -89,5 +94,8 @@
 	<div style="padding: 20px;">
 		<div id="user_scroller_container"></div>
 		<div id="user_viewer_container"></div>
+		<div style="clear: left">
+			<a href="javascript:void(0);" id="create_user_button">Create User</a>
+		</div>
 	</div>
 {% endblock %}

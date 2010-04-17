@@ -21,9 +21,12 @@ TopManager = function(user_name) {
     var self = this;
     this.user_name = user_name;
 
-    // The different sections
-    this.userDetailManager = new UserDetailManager(this, 'basic_details');
-    this.userPinManager = new UserPinManager(this, 'manage_pin');
+    if (user_name == "_CREATE_USER") {
+        this.createUserManager = new CreateUserManager(this, 'basic_details');
+    } else {
+        this.userDetailManager = new UserDetailManager(this, 'basic_details');
+        this.userPinManager = new UserPinManager(this, 'manage_pin');
+    }
 }
 
 TopManager.prototype.notify_change = function(section) {
@@ -74,14 +77,16 @@ CreateUserManager.prototype.constructor = CreateUserManager;
 CreateUserManager.prototype.parent = BaseManager.prototype;
 function CreateUserManager(manager, canvas_id) {
     this.parent.constructor.call(this, manager, canvas_id);
+    this.draw_form();
 }
 CreateUserManager.prototype.draw_form = function() {
     var self = this;
     var create_canvas = getUserEditForm("","","");
+    console.log(this.getItem()[0]);
 
     this.getItem().html(create_canvas);
-    this.getItem("#cancel_button").click(function(){ self.draw_view(); });
-    this.getItem("#save_button").click(function(){ self.validate_and_save(); });
+    //this.getItem("#cancel_button").click(function(){ self.draw_view(); });
+    //this.getItem("#save_button").click(function(){ self.validate_and_save(); });
 }
 
 // ===============================================================
