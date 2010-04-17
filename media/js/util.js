@@ -6,7 +6,7 @@
  * $("input#first_name").exampleInput();
  *
  */
- 
+
 (function ($) {
     $.extend($.fn, {
         exampleInput: function (options) {
@@ -14,17 +14,19 @@
             options = $.extend(defaults, options);
 
             return this.each(function () {
-                // Setup the example if there is nothing in the field
                 var input = $(this);
-                if (input.val() == "") {
-                    input.addClass(options.blurClass)
-                    .val(input.attr("example_text"))
-                    .bind('focus.exampleInput', function() { // This is done so we can remove
-                        input.val("")                        // it later without removing
-                        .unbind('focus.exampleInput')        // other bound focus events
-                        .removeClass(options.blurClass)
-                    });
-                }
+                var example_text = options.example_text || input.attr("example_text");
+                input.blur(function () {
+                    if (input.val() === '') {
+                        input.val(example_text).addClass(options.blurClass);
+                    }
+                }).focus(function () {
+                    if (input.hasClass(options.blurClass)) {
+                        input.val('');
+                    }
+                    input.removeClass(options.blurClass);
+                });
+                input.blur();
             });
         }
     });

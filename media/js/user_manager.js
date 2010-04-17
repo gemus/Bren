@@ -153,6 +153,7 @@ UserDetailManager.prototype.draw_edit = function() {
                       '</div>';
 
     this.getItem().html(edit_canvas);
+    this.getItem("input").exampleInput({blurClass: 'blur'});
     this.getItem("#cancel_button").click(function(){ self.draw_view(); });
     this.getItem("#save_button").click(function(){ self.validate_and_save(); });
 }
