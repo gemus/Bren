@@ -205,7 +205,8 @@ UserPinManager.prototype.draw_view = function() {
 }
 UserPinManager.prototype.draw_edit = function() {
     var self = this;
-    this.getItem().html('<input type="text" value="Enter New Pin"/>'+
+    this.getItem().html('<input type="text" id="pin_input" value=""/>'+
+                        '<div id="pin_error" class="error_plate" style="display: none;"></div>'+
                         '<div id="edit_actions">'+
                             '<a href="javascript:void(0);" id="save_button">Save</a> ' +
                             '<a href="javascript:void(0);" id="cancel_button">Cancel</a>' +
@@ -215,6 +216,37 @@ UserPinManager.prototype.draw_edit = function() {
     this.getItem("#save_button").click(function(){ self.validate_and_save(); });
 }
 UserPinManager.prototype.validate_and_save = function() {
-    console.log("SAVE PIN!");
-    this.draw_view();
+    var self = this;
+    var pin_val = this.getItem("input#pin_input").val();
+
+    if (pin_val.length < 3) {
+        var error = "PIN must be at least 3 digits";
+    } else if (pin_val[0] == 0) {
+        var error = "PIN can not start with '0'";
+    } else if (!(/^[0-9]+$/).test(pin_val)) {
+        var error = "PIN may only contain numbers";
+    }
+
+    // No Errors so save the user
+    if (error == undefined) {
+        $.getJSON("/json_api/", {"id": 1,
+                                 "method": "update_user",
+                                 "params" : JSON.stringify([{'user_name': this.manager.user_name,
+                                                             'pin': pin_val }])
+                                 },
+                                 function(result, status) {
+                                     console.log(result);
+
+                                     // Then draw the view screen
+                                     self.draw_view();
+
+                                     // Notify others of the change
+                                     self.manager.notify_change(self.notify_name);
+                                 });
+
+    // Validation Errors. Show the user the problems
+    } else {
+        this.getItem("#pin_error").slideDown();
+        this.getItem("#pin_error").html(error);
+    }
 }
