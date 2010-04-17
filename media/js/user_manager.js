@@ -195,11 +195,6 @@ function UserPinManager(manager, canvas_id) {
     this.parent.constructor.call(this, manager, canvas_id);
     this.notify_name = "user_pin"; // Used when notifying others of changes
 }
-UserPinManager.prototype.getItem = function(selector_text) {
-    // Return #basic_details selector_text
-    // So sub methods don't have to worry about name conflicts or grabbing wrong elemnts
-    return $('#'+this.canvas_id + " " + (selector_text == undefined ? "" : selector_text));
-}
 UserPinManager.prototype.init = function() {
     this.draw_view();
 }
