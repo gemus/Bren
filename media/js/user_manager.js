@@ -56,13 +56,13 @@ BaseManager.prototype.getItem = function(selector_text) {
 function getUserEditForm(first_name_val, last_name_val, email_val) {
     return '<div id="user_edit_canvas">' +
                '<div class="name_plate_edit">'+
-                   '<input type="text" id="first_name" value="' + first_name_val + '"> '+
-                   '<input type="text" id="last_name" value="'  + last_name_val  + '"> '+
+                   '<input example_text="First Name" type="text" id="first_name" value="' + first_name_val + '"> '+
+                   '<input example_text="Last Name" type="text" id="last_name" value="'  + last_name_val  + '"> '+
                '</div>'+
                '<div id="name_plate_error" class="error_plate" style="display: none;"></div>'+
 
                '<div class="email_plate_edit">'+
-                   '<input type="text" id="email" value="'  + email_val  + '" style="width: 175px;"> '+
+                   '<input example_text="Email Address" type="text" id="email" value="'  + email_val  + '" style="width: 175px;"> '+
                '</div>'+
                '<div id="email_plate_error" class="error_plate" style="display: none;"></div>'+
            '</div>';
@@ -70,7 +70,7 @@ function getUserEditForm(first_name_val, last_name_val, email_val) {
 
 function getPinEditForm() {
     return '<div id="pin_edit_canvas">'+
-               '<input type="text" id="pin_input" value=""/>'+
+               '<input example_text="PIN #" type="text" id="pin_input" value=""/>'+
                '<div id="pin_error" class="error_plate" style="display: none;"></div>'+
            '</div>';
 }
@@ -90,6 +90,8 @@ CreateUserManager.prototype.draw_form = function() {
                             '<a href="javascript:void(0);" id="save_button">Save</a> ' +
                         '</div>';
     this.getItem().html(create_canvas);
+
+    this.getItem("input").exampleInput();
     //this.getItem("#save_button").click(function(){ self.validate_and_save(); });
 }
 
