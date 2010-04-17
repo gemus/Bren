@@ -54,7 +54,7 @@ BaseManager.prototype.getItem = function(selector_text) {
 }
 
 function getUserEditForm(first_name_val, last_name_val, email_val) {
-    return '<div id="edit_canvas">' +
+    return '<div id="user_edit_canvas">' +
                '<div class="name_plate_edit">'+
                    '<input type="text" id="first_name" value="' + first_name_val + '"> '+
                    '<input type="text" id="last_name" value="'  + last_name_val  + '"> '+
@@ -68,6 +68,13 @@ function getUserEditForm(first_name_val, last_name_val, email_val) {
            '</div>';
 }
 
+function getPinEditForm() {
+    return '<div id="pin_edit_canvas">'+
+               '<input type="text" id="pin_input" value=""/>'+
+               '<div id="pin_error" class="error_plate" style="display: none;"></div>'+
+           '</div>';
+}
+
 CreateUserManager.prototype = new BaseManager();
 CreateUserManager.prototype.constructor = CreateUserManager;
 CreateUserManager.prototype.parent = BaseManager.prototype;
@@ -78,6 +85,7 @@ function CreateUserManager(manager, canvas_id) {
 CreateUserManager.prototype.draw_form = function() {
     var self = this;
     var create_canvas = getUserEditForm("","","") +
+                        getPinEditForm() +
                         '<div id="edit_actions">'+
                             '<a href="javascript:void(0);" id="save_button">Save</a> ' +
                         '</div>';
@@ -222,8 +230,7 @@ UserPinManager.prototype.draw_view = function() {
 }
 UserPinManager.prototype.draw_edit = function() {
     var self = this;
-    this.getItem().html('<input type="text" id="pin_input" value=""/>'+
-                        '<div id="pin_error" class="error_plate" style="display: none;"></div>'+
+    this.getItem().html(getPinEditForm() +
                         '<div id="edit_actions">'+
                             '<a href="javascript:void(0);" id="save_button">Save</a> ' +
                             '<a href="javascript:void(0);" id="cancel_button">Cancel</a>' +
