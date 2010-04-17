@@ -65,10 +65,6 @@ function getUserEditForm(first_name_val, last_name_val, email_val) {
                    '<input type="text" id="email" value="'  + email_val  + '" style="width: 175px;"> '+
                '</div>'+
                '<div id="email_plate_error" class="error_plate" style="display: none;"></div>'+
-           '</div>'+
-           '<div id="edit_actions">'+
-               '<a href="javascript:void(0);" id="save_button">Save</a> ' +
-               '<a href="javascript:void(0);" id="cancel_button">Cancel</a>' +
            '</div>';
 }
 
@@ -81,11 +77,13 @@ function CreateUserManager(manager, canvas_id) {
 }
 CreateUserManager.prototype.draw_form = function() {
     var self = this;
-    var create_canvas = getUserEditForm("","","");
+    var create_canvas = getUserEditForm("","","") +
+                        '<div id="edit_actions">'+
+                            '<a href="javascript:void(0);" id="save_button">Save</a> ' +
+                        '</div>';
     console.log(this.getItem()[0]);
 
     this.getItem().html(create_canvas);
-    //this.getItem("#cancel_button").click(function(){ self.draw_view(); });
     //this.getItem("#save_button").click(function(){ self.validate_and_save(); });
 }
 
@@ -135,7 +133,11 @@ UserDetailManager.prototype.draw_edit = function() {
     var self = this;
     var edit_canvas = getUserEditForm(this.user_obj['first_name'],
                                       this.user_obj['last_name'],
-                                      this.user_obj['email']);
+                                      this.user_obj['email']) +
+                      '<div id="edit_actions">'+
+                          '<a href="javascript:void(0);" id="save_button">Save</a> ' +
+                          '<a href="javascript:void(0);" id="cancel_button">Cancel</a>' +
+                      '</div>';
 
     this.getItem().html(edit_canvas);
     this.getItem("#cancel_button").click(function(){ self.draw_view(); });
