@@ -10,7 +10,7 @@ jQuery.fn.userManager = function(user_name) {
         $(this).html('<div id="basic_details"></div>'+
                      '<div id="manage_pin"></div>');
         // Create the manager to get the ball rolling
-        new TopManager(user_name).init();
+        new TopManager(user_name);
     });
 }
 
@@ -24,11 +24,6 @@ TopManager = function(user_name) {
     // The different sections
     this.userDetailManager = new UserDetailManager(this, 'basic_details');
     this.userPinManager = new UserPinManager(this, 'manage_pin');
-}
-
-TopManager.prototype.init = function() {
-    this.userDetailManager.init();
-    this.userPinManager.init();
 }
 
 TopManager.prototype.notify_change = function(section) {
@@ -96,14 +91,12 @@ UserDetailManager.prototype = new BaseManager();
 UserDetailManager.prototype.constructor = UserDetailManager;
 UserDetailManager.prototype.parent = BaseManager.prototype;
 function UserDetailManager(manager, canvas_id) {
+    var self = this;
     this.parent.constructor.call(this, manager, canvas_id);
 
     this.notify_name = "user_details"; // Used when notifying others of changes
     this.user_obj; // For storing some hot user data pulled from the DB
-}
 
-UserDetailManager.prototype.init = function() {
-    var self = this;
     // Pull in needed data
     $.getJSON("/json_api/", {"id": 1,
                              "method": "get_user",
@@ -215,8 +208,6 @@ UserPinManager.prototype.parent = BaseManager.prototype;
 function UserPinManager(manager, canvas_id) {
     this.parent.constructor.call(this, manager, canvas_id);
     this.notify_name = "user_pin"; // Used when notifying others of changes
-}
-UserPinManager.prototype.init = function() {
     this.draw_view();
 }
 UserPinManager.prototype.draw_view = function() {
