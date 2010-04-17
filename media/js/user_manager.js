@@ -1,3 +1,6 @@
+// ===================================================================
+// = Lets get the ball rolling by applying all the love we just made =
+// ===================================================================
 jQuery.fn.userManager = function(user_name) {
     // If we need options. http://docs.jquery.com/Plugins/Authoring#Options
 
@@ -38,20 +41,31 @@ TopManager.prototype.notify_change = function(section) {
     }
 }
 
-// ===============================================================
-// = UserDetailManager - Manage basic user details (name, email) =
-// ===============================================================
-UserDetailManager = function(manager, canvas_id) {
-    this.notify_name = "user_details"; // Used when notifying others of changes
+// =====================================================
+// = BaseManager - Using some sexy OO style of coding. =
+// =====================================================
+function BaseManager(manager, canvas_id) {
     this.manager = manager;
     this.canvas_id = canvas_id;
-    this.user_obj;
 }
 
-UserDetailManager.prototype.getItem = function(selector_text) {
+BaseManager.prototype.getItem = function(selector_text) {
     // Return #basic_details selector_text
     // So sub methods don't have to worry about name conflicts or grabbing wrong elemnts
     return $('#'+this.canvas_id + " " + (selector_text == undefined ? "" : selector_text));
+}
+
+// ===============================================================
+// = UserDetailManager - Manage basic user details (name, email) =
+// ===============================================================
+UserDetailManager.prototype = new BaseManager();
+UserDetailManager.prototype.constructor = UserDetailManager;
+UserDetailManager.prototype.parent = BaseManager.prototype;
+function UserDetailManager(manager, canvas_id) {
+    this.parent.constructor.call(this, manager, canvas_id);
+
+    this.notify_name = "user_details"; // Used when notifying others of changes
+    this.user_obj; // For storing some hot user data pulled from the DB
 }
 
 UserDetailManager.prototype.init = function() {
@@ -174,10 +188,12 @@ UserDetailManager.prototype.validate_and_save = function() {
 // ===============================================================
 // = UserDetailManager - Manage basic user details (name, email) =
 // ===============================================================
-UserPinManager = function(manager, canvas_id) {
+UserPinManager.prototype = new BaseManager();
+UserPinManager.prototype.constructor = UserPinManager;
+UserPinManager.prototype.parent = BaseManager.prototype;
+function UserPinManager(manager, canvas_id) {
+    this.parent.constructor.call(this, manager, canvas_id);
     this.notify_name = "user_pin"; // Used when notifying others of changes
-    this.manager = manager;
-    this.canvas_id = canvas_id;
 }
 UserPinManager.prototype.getItem = function(selector_text) {
     // Return #basic_details selector_text
