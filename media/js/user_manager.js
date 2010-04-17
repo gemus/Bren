@@ -232,7 +232,7 @@ UserPinManager.prototype.validate_and_save = function() {
         $.getJSON("/json_api/", {"id": 1,
                                  "method": "update_user",
                                  "params" : JSON.stringify([{'user_name': this.manager.user_name,
-                                                             'pin': pin_val }])
+                                                             'password': pin_val }])
                                  },
                                  function(result, status) {
                                      console.log(result);

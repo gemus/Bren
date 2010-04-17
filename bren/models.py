@@ -176,9 +176,15 @@ def update_user(user_dict):
     # Validate the keys
     # TODO : This should be done in the views
     del(user_dict['user_name'])
-    allowed_keys = set(['first_name', 'last_name', 'email'])
+    allowed_keys = set(['first_name', 'last_name', 'email', 'password'])
     if len(set(user_dict.keys()) - allowed_keys) != 0:
         return "fail - Unexpected keyword %s" % (set(user_dict.keys()) - allowed_keys).pop()
+
+    # Change the password if requested, then remove key.
+    # Bad things happen if you set the password attribute on a user directly
+    if 'password' in user_dict:
+        user.set_password(user_dict['password'])
+        del user_dict['password']
 
     # Do the updating
     for key, value in user_dict.items():
