@@ -7,8 +7,8 @@ jQuery.fn.userManager = function(user_name) {
     // Initalize the userManager
     return this.each(function() {
         // Setup the HTML
-        $(this).html('<div style="border: 1px solid #F00;" id="basic_details"></div>'+
-                     '<div style="border: 1px solid #FF0;" id="manage_pin"></div>');
+        $(this).html('<div id="basic_details"></div>'+
+                     '<div id="manage_pin"></div>');
         // Create the manager to get the ball rolling
         new TopManager(user_name).init();
     });
