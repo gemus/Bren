@@ -91,8 +91,13 @@ CreateUserManager.prototype.draw_form = function() {
                         '</div>';
     this.getItem().html(create_canvas);
 
-    this.getItem("input").exampleInput();
-    //this.getItem("#save_button").click(function(){ self.validate_and_save(); });
+    this.getItem("input").exampleInput({blurClass: 'blur'});
+    this.getItem("#save_button").click(function(){ self.validate_and_save(); });
+}
+
+CreateUserManager.prototype.validate_and_save = function() {
+    this.getItem("input.blur").val(""); // Clear out the example texts
+    alert(this.getItem("input#first_name").val());
 }
 
 // ===============================================================

@@ -22,6 +22,7 @@
                     .bind('focus.exampleInput', function() { // This is done so we can remove
                         input.val("")                        // it later without removing
                         .unbind('focus.exampleInput')        // other bound focus events
+                        .removeClass(options.blurClass)
                     });
                 }
             });
