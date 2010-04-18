@@ -127,7 +127,7 @@ CreateUserManager.prototype.validate_and_save = function() {
                                  "params" : JSON.stringify([{'first_name': first_name_val,
                                                              'last_name' : last_name_val,
                                                              'email'     : email_val,
-                                                             'pin'       : pin_val
+                                                             'password'  : pin_val
                                                             }])
                                  },
                                  function(result, status) {

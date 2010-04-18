@@ -1,3 +1,4 @@
+import re
 import datetime
 from django.db import models
 from django.contrib import admin
@@ -193,10 +194,15 @@ def update_user(user_dict):
     return "success"
 
 def create_user(user_dict):
-    print "CREATE USER"
-    print user_dict
+    user_name = "DPL_%s_%s" % (user_dict['first_name'], user_dict['last_name'])
+    user_name = re.sub("\W", "", user_name)
 
-    # user = User.objects.create_user()
+    user_dict['user_name'] = user_name
+
+    user = User(username=user_name)
+    user.save()
+
+    return update_user(user_dict)
 
 def check_user_login(username, password):
     """
