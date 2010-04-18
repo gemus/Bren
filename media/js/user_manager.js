@@ -96,8 +96,61 @@ CreateUserManager.prototype.draw_form = function() {
 }
 
 CreateUserManager.prototype.validate_and_save = function() {
+    var self = this;
+
     this.getItem("input.blur").val(""); // Clear out the example texts
-    alert(this.getItem("input#first_name").val());
+
+    var errors = new Array();
+    var first_name_val = this.getItem("input#first_name").val();
+    var last_name_val  = this.getItem("input#last_name").val();
+    var email_val      = this.getItem("input#email").val();
+    var pin_val        = this.getItem("input#pin_input").val();
+
+    // Do some validation. Need all of these
+    if (first_name_val == '') errors.push(['name', 'First Name']);
+    if (last_name_val  == '') errors.push(['name', 'Last Name']);
+    if (pin_val        == '') {
+        errors.push(['pin',  'PIN Is Required']);
+    } else if (pin_error = validate_pin(pin_val)) {
+        errors.push(['pin', pin_error]);
+    }
+
+    // If we get an email, ensure that it is valid
+    if (!validate_email_address(email_val) && email_val.length > 0 ) {
+        errors.push(['email','Invalid Email Address']);
+    }
+
+    // No Errors so create the user
+    if (errors.length == 0) {
+        console.log("SAVE THE USER");
+
+    // Validation Errors. Show the user the problems
+    } else {
+        var name_errors  = new Array();
+        var email_errors = new Array();
+        var pin_errors   = new Array();
+        for (i in errors) {
+            if (errors[i][0] == 'name')  name_errors.push(errors[i][1]);
+            if (errors[i][0] == 'email') email_errors.push(errors[i][1]);
+            if (errors[i][0] == 'pin')   pin_errors.push(errors[i][1]);
+        }
+
+        if (name_errors.length > 0) {
+            this.getItem("#name_plate_error").slideDown();
+            this.getItem("#name_plate_error").html(name_errors.join(", ") + " Is Required");
+        }
+        if (email_errors.length > 0) {
+            this.getItem("#email_plate_error").slideDown();
+            this.getItem("#email_plate_error").html(email_errors[0]);
+        }
+        if (pin_errors.length > 0) {
+            this.getItem("#pin_error").slideDown();
+            this.getItem("#pin_error").html(pin_errors[0]);
+        }
+
+        // Re-add examples if needed
+        this.getItem("input").exampleInput({blurClass: 'blur'});
+    }
 }
 
 // ===============================================================
@@ -158,12 +211,15 @@ UserDetailManager.prototype.draw_edit = function() {
     this.getItem("#save_button").click(function(){ self.validate_and_save(); });
 }
 
+var validate_email_address = function(email_addy) {
+    var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+    return reg.test(email_addy);
+}
+
 UserDetailManager.prototype.validate_and_save = function() {
     var self = this;
-    var validate_email_address = function(email_addy) {
-        var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
-        return reg.test(email_addy);
-    }
+
+    this.getItem("input.blur").val(""); // Clear out the example texts
 
     var errors = new Array();
     var first_name_val = this.getItem("input#first_name").val();
@@ -174,7 +230,7 @@ UserDetailManager.prototype.validate_and_save = function() {
     if (first_name_val == '') errors.push(['name', 'First Name']);
     if (last_name_val  == '') errors.push(['name', 'Last Name']);
     if (!validate_email_address(email_val) && email_val.length > 0 ) {
-        errors.push(['email','Invalid Email']);
+        errors.push(['email','Invalid Email Address']);
     }
 
     // No Errors so save the user
@@ -215,7 +271,7 @@ UserDetailManager.prototype.validate_and_save = function() {
         }
         if (email_errors.length > 0) {
             this.getItem("#email_plate_error").slideDown();
-            this.getItem("#email_plate_error").html("Invalid Email");
+            this.getItem("#email_plate_error").html(email_errors[0]);
         }
     }
 }
@@ -247,17 +303,22 @@ UserPinManager.prototype.draw_edit = function() {
     this.getItem("#cancel_button").click(function(){ self.draw_view(); });
     this.getItem("#save_button").click(function(){ self.validate_and_save(); });
 }
+
+function validate_pin(pin_val) {
+    if (pin_val.length < 3) {
+        return "PIN must be at least 3 digits";
+    } else if (pin_val[0] == 0) {
+        return "PIN can not start with '0'";
+    } else if (!(/^[0-9]+$/).test(pin_val)) {
+        return "PIN may only contain numbers";
+    }
+}
+
 UserPinManager.prototype.validate_and_save = function() {
     var self = this;
     var pin_val = this.getItem("input#pin_input").val();
 
-    if (pin_val.length < 3) {
-        var error = "PIN must be at least 3 digits";
-    } else if (pin_val[0] == 0) {
-        var error = "PIN can not start with '0'";
-    } else if (!(/^[0-9]+$/).test(pin_val)) {
-        var error = "PIN may only contain numbers";
-    }
+    var error = validate_pin(pin_val);
 
     // No Errors so save the user
     if (error == undefined) {
