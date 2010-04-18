@@ -192,6 +192,12 @@ def update_user(user_dict):
     user.save()
     return "success"
 
+def create_user(user_dict):
+    print "CREATE USER"
+    print user_dict
+
+    # user = User.objects.create_user()
+
 def check_user_login(username, password):
     """
     Purpose: Verify that a user and password combination will result in a

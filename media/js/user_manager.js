@@ -122,7 +122,28 @@ CreateUserManager.prototype.validate_and_save = function() {
 
     // No Errors so create the user
     if (errors.length == 0) {
-        console.log("SAVE THE USER");
+        $.getJSON("/json_api/", {"id": 1,
+                                 "method": "create_user",
+                                 "params" : JSON.stringify([{'first_name': first_name_val,
+                                                             'last_name' : last_name_val,
+                                                             'email'     : email_val,
+                                                             'pin'       : pin_val
+                                                            }])
+                                 },
+                                 function(result, status) {
+                                     console.log(result);
+
+                                     //// Update our user_obj to reflect the save
+                                     //self.user_obj['first_name'] = first_name_val;
+                                     //self.user_obj['last_name'] = last_name_val;
+                                     //self.user_obj['email'] = email_val;
+                                     //
+                                     //// Then draw the view screen
+                                     //self.draw_view();
+                                     //
+                                     //// Notify others of the change
+                                     //self.manager.notify_change(self.notify_name);
+                                 });
 
     // Validation Errors. Show the user the problems
     } else {
