@@ -131,18 +131,10 @@ CreateUserManager.prototype.validate_and_save = function() {
                                                             }])
                                  },
                                  function(result, status) {
-                                     console.log(result);
+                                     var user_name = result.result;
 
-                                     //// Update our user_obj to reflect the save
-                                     //self.user_obj['first_name'] = first_name_val;
-                                     //self.user_obj['last_name'] = last_name_val;
-                                     //self.user_obj['email'] = email_val;
-                                     //
-                                     //// Then draw the view screen
-                                     //self.draw_view();
-                                     //
-                                     //// Notify others of the change
-                                     //self.manager.notify_change(self.notify_name);
+                                     // Show the view screen for the user we just created
+                                     self.getItem().parent().userManager(user_name);
                                  });
 
     // Validation Errors. Show the user the problems

@@ -202,7 +202,8 @@ def create_user(user_dict):
     user = User(username=user_name)
     user.save()
 
-    return update_user(user_dict)
+    update_user(user_dict)
+    return user_name
 
 def check_user_login(username, password):
     """
