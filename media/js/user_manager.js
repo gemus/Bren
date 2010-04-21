@@ -9,7 +9,8 @@ jQuery.fn.userManager = function(user_name) {
         // Setup the HTML
         $(this).html('<div id="basic_details"></div>'+
                      '<div id="manage_pin"></div>'+
-                     '<div id="delete_user"></div>');
+                     '<div id="delete_user"></div>'+
+                     '<div id="perm_manager"></div>');
         // Create the manager to get the ball rolling
         new TopManager(user_name);
     });
@@ -28,6 +29,7 @@ TopManager = function(user_name) {
         this.userDetailManager = new UserDetailManager(this, 'basic_details');
         this.userPinManager = new UserPinManager(this, 'manage_pin');
         this.deleteUserManager = new DeleteUserManager(this, 'manage_pin');
+        this.permissionManager = new PermissionManager(this, 'perm_manager')
     }
 }
 
@@ -359,9 +361,9 @@ UserPinManager.prototype.validate_and_save = function() {
     }
 }
 
-// ========================================
+// ================================================
 // = DeleteUserManager - Ability to Delete A user =
-// ========================================
+// ================================================
 DeleteUserManager.prototype = new BaseManager();
 DeleteUserManager.prototype.constructor = DeleteUserManager;
 DeleteUserManager.prototype.parent = BaseManager.prototype;
@@ -396,4 +398,20 @@ DeleteUserManager.prototype.delete_user = function() {
                                  // Notify others of the change
                                  self.manager.notify_change(self.notify_name);
                              });
+}
+
+// ==========================================================
+// = PermissionManager - Manage email permissions for users =
+// ==========================================================
+PermissionManager.prototype = new BaseManager();
+PermissionManager.prototype.constructor = PermissionManager;
+PermissionManager.prototype.parent = BaseManager.prototype;
+function PermissionManager(manager, canvas_id) {
+    this.parent.constructor.call(this, manager, canvas_id);
+    this.notify_name = "permission_manager"; // Used when notifying others of changes
+    this.draw_view();
+}
+PermissionManager.prototype.draw_view = function() {
+    var self = this;
+    this.getItem().html('<a href="javascript:void(0);">Has Permission</a>');
 }
