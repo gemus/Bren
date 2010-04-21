@@ -12,7 +12,7 @@ jQuery.fn.userManager = function(user_name) {
                      '<div id="delete_user"></div>'+
                      '<div id="perm_manager"></div>');
         // Create the manager to get the ball rolling
-        new TopManager(user_name);
+        topManager = new TopManager(user_name);
     });
 }
 
@@ -409,9 +409,43 @@ PermissionManager.prototype.parent = BaseManager.prototype;
 function PermissionManager(manager, canvas_id) {
     this.parent.constructor.call(this, manager, canvas_id);
     this.notify_name = "permission_manager"; // Used when notifying others of changes
-    this.draw_view();
+    this.get_permission();
 }
-PermissionManager.prototype.draw_view = function() {
+PermissionManager.prototype.get_permission = function() {
     var self = this;
-    this.getItem().html('<a href="javascript:void(0);">Has Permission</a>');
+    $.getJSON("/json_api/", {"id": 1,
+                             "method": "has_email_permission",
+                             "params" : JSON.stringify([{'user_name': this.manager.user_name}])
+                             },
+                             function(result, status) {
+                                 if (result.result) {
+                                     self.draw_has_permission();
+                                 } else {
+                                     self.draw_no_permission();
+                                 }
+                             });
+}
+PermissionManager.prototype.draw_has_permission = function() {
+    this.getItem().html('<span>[YES]</span><a href="javascript:void(0);">Unsubscribe</a>');
+}
+PermissionManager.prototype.draw_no_permission = function() {
+    var self = this;
+    this.getItem().html('<span>[NO]</span><a href="javascript:void(0);" id="send_perm_request_button">Send Permission Request</a>');
+    this.getItem("#send_perm_request_button").click(function() {
+        self.send_permission_request();
+    })
+}
+PermissionManager.prototype.send_permission_request = function() {
+    var self = this;
+    this.getItem().html('<span>Sending Email...</span>');
+    $.getJSON("/json_api/", {"id": 1,
+                             "method": "send_permission_request",
+                             "params" : JSON.stringify([{'user_name': this.manager.user_name}])
+                             },
+                             function(result, status) {
+                                 self.draw_sent_success();
+                             });
+}
+PermissionManager.prototype.draw_sent_success = function() {
+    this.getItem().html('<span>Sent</span>');
 }

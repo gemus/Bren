@@ -1,5 +1,6 @@
 from django.shortcuts import render_to_response
 from django.contrib.auth.models import User
+from django.conf import settings
 
 from crossfit.email_sender.models import UserEmailPermissions
 from crossfit.email_sender.sender import email_user
@@ -14,9 +15,7 @@ def confirm(request, given_code):
         data = dict(given_code=given_code)
         return render_to_response('email_sender/bad_confirm_code.html')
 
-def send_perm_request(request, user_id):
-    user = User.objects.get(pk=user_id)
-
+def send_perm_request(user):
     # Grab existing hash, or generate one
     email_perms = UserEmailPermissions.objects.filter(user=user)
     if len(email_perms) > 0:
@@ -26,8 +25,8 @@ def send_perm_request(request, user_id):
         email_perm.save()
     subscribe_hash = email_perm.subscribe_hash
 
-    subscribe_url = "http://%s/email/confirm/%s/" % (request.get_host(),
-                                                     subscribe_hash)
+    subscribe_url = "%semail/confirm/%s/" % (settings.CONFIRM_EMAIL_PERM_BASE_URL,
+                                              subscribe_hash)
 
     email_user(user,
                "Permission Request",

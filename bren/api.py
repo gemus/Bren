@@ -1,7 +1,11 @@
 from django.http import HttpResponse
 from django.utils import simplejson
+from django.contrib.auth.models import User
 
 import crossfit.bren.models as model
+import crossfit.email_sender.models as email_sender_model
+import crossfit.email_sender.views
+
 # =============================================================================
 # = API Endpoint ==============================================================
 # =============================================================================
@@ -12,6 +16,9 @@ def json_api(request):
     """
 
     # TODO : Ensure all are using proper JSON
+    #      : Validate request
+    #      : Require permission for certain calls
+    #      : Clean up this ugly elseif business
 
     method = request.GET['method']
 
@@ -44,6 +51,15 @@ def json_api(request):
             "result" : result,
             "error"  : None
         }
+    elif method == 'check_user_login':
+        json_params = simplejson.loads(request.GET['params'])
+        username, password = json_params
+        result = model.check_user_login(username, password)
+        to_return = {
+            "id"     : request.GET['id'],
+            "result" : result,
+            "error"  : None
+        }
     elif method == 'update_user':
         json_params = simplejson.loads(request.GET['params'])
         result = model.update_user(json_params[0])
@@ -60,35 +76,39 @@ def json_api(request):
         json_params = simplejson.loads(request.GET['params'])
         result = model.create_user(json_params[0])
         error_result = None
-        if result[:4] == 'fail':
-            error_result = result
-            result = None
         to_return = {
             "id"     : request.GET['id'],
             "result" : result,
             "error"  : error_result
         }
     elif method == 'delete_user':
-        print request.GET['params']
         json_params = simplejson.loads(request.GET['params'])
         result = model.delete_user(json_params[0]['user_name'])
         error_result = None
-        if result[:4] == 'fail':
-            error_result = result
-            result = None
         to_return = {
             "id"     : request.GET['id'],
             "result" : result,
             "error"  : error_result
         }
-    elif method == 'check_user_login':
+    elif method == 'has_email_permission':
         json_params = simplejson.loads(request.GET['params'])
-        username, password = json_params
-        result = model.check_user_login(username, password)
+        user = User.objects.get(username__exact=json_params[0]['user_name'])
+        result = email_sender_model.can_email_user(user)
+        error_result = None
         to_return = {
             "id"     : request.GET['id'],
             "result" : result,
-            "error"  : None
+            "error"  : error_result
+        }
+    elif method == 'send_permission_request':
+        json_params = simplejson.loads(request.GET['params'])
+        user = User.objects.get(username__exact=json_params[0]['user_name'])
+        crossfit.email_sender.views.send_perm_request(user)
+        error_result = None
+        to_return = {
+            "id"     : request.GET['id'],
+            "result" : "success",
+            "error"  : error_result
         }
 
     return HttpResponse(simplejson.dumps(to_return))

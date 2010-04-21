@@ -18,6 +18,10 @@ DATABASE_PASSWORD = 'crossfit'           # Not used with sqlite3.
 DATABASE_HOST = ''             # Set to empty string for localhost. Not used with sqlite3.
 DATABASE_PORT = ''             # Set to empty string for default. Not used with sqlite3.
 
+# Used when sending permission requests. <value>/email/confirm/<hash>/
+# Eg: 'http://localhost:8000/'   BE SURE TO INCLUDE TRAILING SLASH
+CONFIRM_EMAIL_PERM_BASE_URL = 'http://localhost:8000/'
+
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
