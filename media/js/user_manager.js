@@ -38,6 +38,8 @@ TopManager.prototype.notify_change = function(section) {
         var name_tag = this.userDetailManager.user_obj['first_name'] + " " +
                             this.userDetailManager.user_obj['last_name'];
         $('#'+this.user_name+'').html(name_tag);
+    } else if (section == this.deleteUserManager.notify_name) {
+        $('#'+this.user_name+'').slideUp(); // Remove the user from the scroller
     }
 }
 
@@ -388,7 +390,6 @@ DeleteUserManager.prototype.delete_user = function() {
                              "params" : JSON.stringify([{'user_name': this.manager.user_name}])
                              },
                              function(result, status) {
-                                 console.log(result);
                                  // Then draw the confirm screen for feedback
                                  self.draw_delete_confirm();
 
