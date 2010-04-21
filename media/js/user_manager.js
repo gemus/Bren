@@ -8,7 +8,8 @@ jQuery.fn.userManager = function(user_name) {
     return this.each(function() {
         // Setup the HTML
         $(this).html('<div id="basic_details"></div>'+
-                     '<div id="manage_pin"></div>');
+                     '<div id="manage_pin"></div>'+
+                     '<div id="delete_user"></div>');
         // Create the manager to get the ball rolling
         new TopManager(user_name);
     });
@@ -26,6 +27,7 @@ TopManager = function(user_name) {
     } else {
         this.userDetailManager = new UserDetailManager(this, 'basic_details');
         this.userPinManager = new UserPinManager(this, 'manage_pin');
+        this.deleteUserManager = new DeleteUserManager(this, 'manage_pin');
     }
 }
 
@@ -289,9 +291,9 @@ UserDetailManager.prototype.validate_and_save = function() {
     }
 }
 
-// ===============================================================
-// = UserDetailManager - Manage basic user details (name, email) =
-// ===============================================================
+// ========================================
+// = UserPinManager - Change a user's PIN =
+// ========================================
 UserPinManager.prototype = new BaseManager();
 UserPinManager.prototype.constructor = UserPinManager;
 UserPinManager.prototype.parent = BaseManager.prototype;
@@ -353,4 +355,44 @@ UserPinManager.prototype.validate_and_save = function() {
         this.getItem("#pin_error").slideDown();
         this.getItem("#pin_error").html(error);
     }
+}
+
+// ========================================
+// = DeleteUserManager - Ability to Delete A user =
+// ========================================
+DeleteUserManager.prototype = new BaseManager();
+DeleteUserManager.prototype.constructor = DeleteUserManager;
+DeleteUserManager.prototype.parent = BaseManager.prototype;
+function DeleteUserManager(manager, canvas_id) {
+    this.parent.constructor.call(this, manager, canvas_id);
+    this.notify_name = "delete_user"; // Used when notifying others of changes
+    this.draw_view();
+}
+DeleteUserManager.prototype.draw_view = function() {
+    var self = this;
+    this.getItem().html('<a href="javascript:void(0);" id="delete_user_button">Delete User</a>');
+    this.getItem("#delete_user_button").click(function(){
+        if (confirm("Really Delete This User?")) self.delete_user();
+    });
+}
+DeleteUserManager.prototype.draw_delete_confirm = function() {
+    this.getItem().parent().html("<strong>User Deleted</strong>");
+}
+DeleteUserManager.prototype.delete_user = function() {
+    var self = this;
+
+    console.log(JSON.stringify([{'user_name': this.manager.user_name}]))
+
+    $.getJSON("/json_api/", {"id": 1,
+                             "method": "delete_user",
+                             "params" : JSON.stringify([{'user_name': this.manager.user_name}])
+                             },
+                             function(result, status) {
+                                 console.log(result);
+                                 // Then draw the confirm screen for feedback
+                                 self.draw_delete_confirm();
+
+                                 // Notify others of the change
+                                 self.manager.notify_change(self.notify_name);
+                             });
 }

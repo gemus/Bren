@@ -205,6 +205,10 @@ def create_user(user_dict):
     update_user(user_dict)
     return user_name
 
+def delete_user(user_name):
+    print "----- DELETE USER %s -------" % user_name
+    return "success"
+
 def check_user_login(username, password):
     """
     Purpose: Verify that a user and password combination will result in a
