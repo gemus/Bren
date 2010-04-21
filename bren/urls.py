@@ -11,5 +11,5 @@ urlpatterns = patterns('',
     (r'^login/$', 'django.contrib.auth.views.login'),
     (r'^logout/$', 'django.contrib.auth.views.logout_then_login'),
 
-    (r'^json_api/$', 'crossfit.bren.views.json_api'),
+    (r'^json_api/$', 'crossfit.bren.api.json_api'),
 )
