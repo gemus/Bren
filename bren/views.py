@@ -205,7 +205,7 @@ def json_api(request):
     elif method == 'delete_user':
         print request.GET['params']
         json_params = simplejson.loads(request.GET['params'])
-        result = model.delete_user(json_params[0])
+        result = model.delete_user(json_params[0]['user_name'])
         error_result = None
         if result[:4] == 'fail':
             error_result = result

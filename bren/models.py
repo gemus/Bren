@@ -206,7 +206,7 @@ def create_user(user_dict):
     return user_name
 
 def delete_user(user_name):
-    print "----- DELETE USER %s -------" % user_name
+    User.objects.get(username__exact=user_name).delete()
     return "success"
 
 def check_user_login(username, password):
