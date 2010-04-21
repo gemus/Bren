@@ -426,14 +426,18 @@ PermissionManager.prototype.get_permission = function() {
                              });
 }
 PermissionManager.prototype.draw_has_permission = function() {
-    this.getItem().html('<span>[YES]</span><a href="javascript:void(0);">Unsubscribe</a>');
+    var self = this;
+    this.getItem().html('<span>[YES]</span><a href="javascript:void(0);" id="unsubscribe_perm_request_button">Unsubscribe</a>');
+    this.getItem("#unsubscribe_perm_request_button").click(function() {
+        if (confirm("Really remove permission?")) self.remove_permission_request();
+    });
 }
 PermissionManager.prototype.draw_no_permission = function() {
     var self = this;
     this.getItem().html('<span>[NO]</span><a href="javascript:void(0);" id="send_perm_request_button">Send Permission Request</a>');
     this.getItem("#send_perm_request_button").click(function() {
         self.send_permission_request();
-    })
+    });
 }
 PermissionManager.prototype.send_permission_request = function() {
     var self = this;
@@ -448,4 +452,19 @@ PermissionManager.prototype.send_permission_request = function() {
 }
 PermissionManager.prototype.draw_sent_success = function() {
     this.getItem().html('<span>Sent</span>');
+}
+PermissionManager.prototype.remove_permission_request = function() {
+    var self = this;
+    $.getJSON("/json_api/", {"id": 1,
+                             "method": "remove_permission_request",
+                             "params" : JSON.stringify([{'user_name': this.manager.user_name}])
+                             },
+                             function(result, status) {
+                                 console.log(result);
+                                 self.draw_remove_success();
+                             });
+
+}
+PermissionManager.prototype.draw_remove_success = function() {
+    this.getItem().html('<span>Permission Removed</span>');
 }

@@ -110,5 +110,15 @@ def json_api(request):
             "result" : "success",
             "error"  : error_result
         }
+    elif method == 'remove_permission_request':
+        json_params = simplejson.loads(request.GET['params'])
+        user = User.objects.get(username__exact=json_params[0]['user_name'])
+        email_sender_model.remove_permission_request(user)
+        error_result = None
+        to_return = {
+            "id"     : request.GET['id'],
+            "result" : "success",
+            "error"  : error_result
+        }
 
     return HttpResponse(simplejson.dumps(to_return))

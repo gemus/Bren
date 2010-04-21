@@ -12,6 +12,9 @@ def can_email_user(user):
         return UserEmailPermissions.objects.filter(user = user).filter(has_permission = True).count() == 1
     return False
 
+def remove_permission_request(user):
+    UserEmailPermissions.objects.filter(user=user).delete()
+
 class UserEmailPermissions(models.Model):
     subscribe_hash = models.CharField(max_length=20, primary_key=True, default=gen_subscribe_hash)
 
