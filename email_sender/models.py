@@ -16,7 +16,7 @@ def remove_permission_request(user):
     UserEmailPermissions.objects.filter(user=user).delete()
 
 def get_subscribed_users():
-    return [i for i in UserEmailPermissions.objects.filter(has_permission=True)]
+    return [i.user for i in UserEmailPermissions.objects.filter(has_permission=True)]
 
 class UserEmailPermissions(models.Model):
     subscribe_hash = models.CharField(max_length=20, primary_key=True, default=gen_subscribe_hash)
