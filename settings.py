@@ -103,5 +103,6 @@ INSTALLED_APPS = (
     'crossfit.bren',
     'crossfit.reports',
     'crossfit.email_sender',
+    'crossfit.scheduler',
 )
 AUTH_PROFILE_MODULE = 'bren.UserProfile'
