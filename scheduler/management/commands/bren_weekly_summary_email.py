@@ -11,8 +11,10 @@ class Command(NoArgsCommand):
     help = "Emails out a weekly report to all users who have subscribed"
 
     def handle_noargs(self, **options):
-        start_date = datetime.datetime(2010, 1, 1)
-        end_date = datetime.datetime(2010, 2, 20)
+        # Date range of the last 7 days
+        start_date = datetime.datetime.combine(datetime.date.today(), datetime.time())
+        end_date = start_date - datetime.timedelta(days=7)
+
         for user in get_subscribed_users():
             print "USER", user
             data = reports.completed_workouts(start_date, end_date, user)
