@@ -64,8 +64,8 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = "owen"
 EMAIL_HOST_PASSWORD = "bl0wM3!"
 # Specify if we want to actually send it, output it, or just ignore it
-EMAIL_BACKEND = "django.core.mail.backends.smtp"
-#EMAIL_BACKEND = "django.core.mail.backends.console"
+#EMAIL_BACKEND = "django.core.mail.backends.smtp"
+EMAIL_BACKEND = "django.core.mail.backends.console"
 #EMAIL_BACKEND = "django.core.mail.backends.dummy"
 
 
