@@ -1,43 +1,52 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html lang="en">
 <body style="font-family: 'lucida grande',tahoma,verdana,arial,sans-serif; color: #333;">
-	<h1 style="margin-left: 25px; font-size: 16pt;">{{display_name}} Completed Workouts</h1>
+	<h1 style="margin-left: 25px; font-size: 16pt;">{{display_name}} Completed Workouts [{{ start_date }} - {{ end_date }}]</h1>
 
-	{% for workout in workouts %}
-		<div style="float: left; width: 150px; text-align: right; font-weight: bold; font-size: 12pt; margin-right: 20px;">
-			{{workout.date_display}}
-		</div>
-		<div style="float: left;">
-			<div style="font-weight: bold; font-size: 12pt; margin-right: 10px;">
-				{{workout.name}} -
-
-				{% ifequal workout.info.type "Done" %}
-				<i>Completed</i>
-				{% endifequal %}
-				{% ifequal workout.info.type "AMRAP" %}
-				<i>{{workout.info.rounds}} Rounds Completed</i>
-				{% endifequal %}
-				{% ifequal workout.info.type "Timed" %}
-				<i>Completed In {{workout.info.time_display}}</i>
-				{% endifequal %}
+	<div style="clear: left;">
+		{% for workout in workouts %}
+			<div style="float: left; width: 150px; text-align: right; font-weight: bold; font-size: 12pt; margin-right: 20px;">
+				{{workout.date_display}}
 			</div>
-			{% if workout.comments %}<div style="font-weight: bold; font-size: 10pt; margin: 5px 0pt 2px;">{{workout.comments}}</div>{% endif %}
+			<div style="float: left;">
+				<div style="font-weight: bold; font-size: 12pt; margin-right: 10px;">
+					{{workout.name}} -
 
-			<table style="font-size: 10pt; line-height: 10pt;">
-			{% for variation in workout.variations %}
-				<tr>
-					<td style="width: 35pt; text-align: right; padding-right: 5pt;">{% ifnotequal variation.rounds 1 %}{{variation.rounds}}x{% endifnotequal %}</td>
-					<td style="width: 145pt;">{{variation.element}}</td>
-					<td class="varient">{{variation.variation}}</td>
-				</tr>
-			{% endfor %}
-			</table>
-		</div>
-		<br style="clear: left;">
-		<br>
-	{% empty %}
-		<div style="margin-left: 25px; font-size: 12pt; font-weight: bold;">You did not log
-			any workouts this week.</div>
-	{% endfor %}
+					{% ifequal workout.info.type "Done" %}
+					<i>Completed</i>
+					{% endifequal %}
+					{% ifequal workout.info.type "AMRAP" %}
+					<i>{{workout.info.rounds}} Rounds Completed</i>
+					{% endifequal %}
+					{% ifequal workout.info.type "Timed" %}
+					<i>Completed In {{workout.info.time_display}}</i>
+					{% endifequal %}
+				</div>
+				{% if workout.comments %}<div style="font-weight: bold; font-size: 10pt; margin: 5px 0pt 2px;">{{workout.comments}}</div>{% endif %}
+
+				<table style="font-size: 10pt; line-height: 10pt;">
+				{% for variation in workout.variations %}
+					<tr>
+						<td style="width: 35pt; text-align: right; padding-right: 5pt;">{% ifnotequal variation.rounds 1 %}{{variation.rounds}}x{% endifnotequal %}</td>
+						<td style="width: 145pt;">{{variation.element}}</td>
+						<td class="varient">{{variation.variation}}</td>
+					</tr>
+				{% endfor %}
+				</table>
+			</div>
+			<br style="clear: left;">
+			<br>
+		{% empty %}
+			<div style="margin-left: 25px; font-size: 12pt; font-weight: bold;">You did not log
+				any workouts last week.</div>
+
+
+
+			<div style="margin-left: 25px; font-size: 12pt; font-weight: bold;">Alex will not be happy.</div>
+		{% endfor %}
+	</div>
+	<div style="border-top: 1px solid #666; font-size: 80%; margin: 15px 0pt 0pt 25px; color: #666; width: 80%; padding-top: 2px;">
+		Workout Report Brought To You By <a href="http://www.crossfitvancouverisland.com/">CrossFit Vancouver Island</a>
+	</div>
 </body>
 </html>
