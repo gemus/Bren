@@ -52,6 +52,14 @@
 			width: 98%;
 		}
 
+		a.button {
+			border: 2px solid #3C5F7F;
+			padding: 3px 25px;
+			font-size: 90%;
+			text-decoration: none;
+			margin: 0pt;
+		}
+
 		/* ----------------------------------------------------------------- */
 		/* ---- User Viewer ------------------------------------------------ */
 		/* ----------------------------------------------------------------- */
@@ -89,8 +97,8 @@
 	<div style="padding: 20px;">
 		<div id="user_scroller_container"></div>
 		<div id="user_viewer_container"></div>
-		<div style="clear: left">
-			<a href="javascript:void(0);" id="create_user_button">Create User</a>
+		<div style="clear: left; padding-top: 10px;">
+			<a href="javascript:void(0);" id="create_user_button" class="button">Add User</a>
 		</div>
 	</div>
 {% endblock %}
