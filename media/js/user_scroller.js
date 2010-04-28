@@ -6,7 +6,7 @@ jQuery.fn.userScroller = function(viewer_container_id) {
         $("#"+viewer_container_id+"").userManager(this.id);
     }
 
-    var performSearch = function(search_term) {
+    var performSearch = function(search_term, done_loading_callback) {
         var search_callback = function(result, status) {
             var user_results = result.result;
             var collect = "";
@@ -18,6 +18,8 @@ jQuery.fn.userScroller = function(viewer_container_id) {
             }
             $("#userScrollerCanvas").html(collect);
             $("#userScrollerCanvas div").click(user_click);
+
+            if (done_loading_callback != undefined) done_loading_callback();
         }
 
         $.getJSON("/json_api/", {"id": 1,
@@ -36,8 +38,12 @@ jQuery.fn.userScroller = function(viewer_container_id) {
                      '</div>'+
                      '<div id="userScrollerCanvas">Loading Users...</div>');
 
+        // After scroller has loaded, 'click' the first person on the list
+        var done_loading_callback = function() {
+            $("div#userScrollerCanvas div.user_button:first").click();
+        }
         // Start By Showing Everyone
-        performSearch("");
+        performSearch("", done_loading_callback);
 
         // Clear Search Box When Focused
         $("#userScroller_searchBox").focus(function() {
