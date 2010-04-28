@@ -28,7 +28,7 @@ TopManager = function(user_name) {
     } else {
         this.userDetailManager = new UserDetailManager(this, 'basic_details');
         this.userPinManager = new UserPinManager(this, 'manage_pin');
-        this.deleteUserManager = new DeleteUserManager(this, 'manage_pin');
+        this.deleteUserManager = new DeleteUserManager(this, 'delete_user');
         this.permissionManager = new PermissionManager(this, 'perm_manager')
     }
 }
