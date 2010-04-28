@@ -4,6 +4,8 @@ jQuery.fn.userScroller = function(viewer_container_id) {
 
     var user_click = function() {
         $("#"+viewer_container_id+"").userManager(this.id);
+        $("div#userScrollerCanvas div.user_button").removeAttr('is_selected');
+        $(this).attr({'is_selected':'true'});
     }
 
     var performSearch = function(search_term, done_loading_callback) {
