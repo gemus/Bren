@@ -5,6 +5,7 @@ from django.contrib import admin
 from django.contrib.auth.models import User
 from django.utils import simplejson
 from django.db.models import Count
+from django.db.models import Q
 
 
 DATE_FORMAT = "%Y-%m-%d"
@@ -152,8 +153,11 @@ def get_users(search_str, num_results, search_type = "contains"):
                     ).order_by("first_name")
 
     if search_type == "contains":
-        user_query = User.objects.filter(first_name__icontains=search_str).filter(last_name__icontains=search_str).order_by("first_name")      
-   
+        user_query = User.objects.filter(
+            Q(first_name__istartswith=search_str) | 
+            Q(last_name__istartswith=search_str)
+            ).order_by("first_name")
+    
    
     # Are we limiting results?
     if num_results > 0:
