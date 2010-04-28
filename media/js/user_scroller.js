@@ -18,6 +18,9 @@ jQuery.fn.userScroller = function(viewer_container_id) {
                                 user_results[i]['display_name']+
                            '</div>';
             }
+            if (user_results.length == 0) {
+                collect = '<div class="no_results">We did not find results for: <strong>'+search_term+'</strong></div>';
+            }
             $("#userScrollerCanvas").html(collect);
             $("#userScrollerCanvas div").click(user_click);
 
