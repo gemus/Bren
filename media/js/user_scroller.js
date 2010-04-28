@@ -33,10 +33,8 @@ jQuery.fn.userScroller = function(viewer_container_id) {
 
     // Create a user picker
     return this.each(function() {
-        var search_default = "Search Users";
-
         $(this).html('<div>'+
-                       '<input class="empty_search" type="text" value="'+search_default+'" id="userScroller_searchBox">'+
+                       '<input example_text="Search Users" type="text" value="" id="userScroller_searchBox">'+
                      '</div>'+
                      '<div id="userScrollerCanvas">Loading Users...</div>');
 
@@ -47,13 +45,8 @@ jQuery.fn.userScroller = function(viewer_container_id) {
         // Start By Showing Everyone
         performSearch("", done_loading_callback);
 
-        // Clear Search Box When Focused
-        $("#userScroller_searchBox").focus(function() {
-            if (this.value == search_default) {
-                this.value = "";
-                $(this).removeClass("empty_search");
-            }
-        });
+        $("input#userScroller_searchBox").exampleInput({blurClass: 'blur'});
+
         // Search when typing in the search box
         $("#userScroller_searchBox").keyup(function() {
             performSearch(this.value);
