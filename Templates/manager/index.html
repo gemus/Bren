@@ -15,12 +15,12 @@
 
 		div#user_scroller_container {
 			float: left;
-			width: 300px;
+			width: 33%;
 		}
 		div#userScrollerCanvas {
 			border: 1px solid #000;
 			overflow: auto;
-			height: 500px;
+			height: 10px;
 		}
 		div#user_scroller_container div.user_button {
 			border-bottom: 1px solid #ccc;
@@ -33,6 +33,7 @@
 		}
 		input#userScroller_searchBox.empty_search {
 			color: #999;
+			width: 98%;
 		}
 		input#userScroller_searchBox {
 			border: 1px solid #3C5F7F;
@@ -54,6 +55,12 @@
 		}
 	</style>
 	<script type="text/javascript" charset="utf-8">
+		function on_window_resize() {
+			var height = $(window).height() - 180;
+			height = height < 150 ? 150 : height;
+			$("div#userScrollerCanvas").height(height);
+		}
+
 		$(document).ready(function() {
 			$("#user_scroller_container").userScroller("user_viewer_container");
 
@@ -61,6 +68,8 @@
 				$("#user_viewer_container").userManager("_CREATE_USER");
 			});
 
+			$(window).resize(on_window_resize);
+			on_window_resize();
 		});
 	</script>
 {% endblock %}
