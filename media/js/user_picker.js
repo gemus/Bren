@@ -95,10 +95,10 @@ jQuery.fn.userPicker = function() {
         var keyboard_pressed_func = function(letter) {
             $("#keyboard_line").val($("#keyboard_line").val() + letter);
 
-            var params = JSON.stringify([$("#keyboard_line").val(), 6]);
+            var params = JSON.stringify([$("#keyboard_line").val(), 6, "starts_with"]);
             $.getJSON("/json_api/", {"id": 1,
                                      "method": "get_users",
-                                     "params" : params
+                                     "params" : params,
                                      },
                                      search_callback)
         }
