@@ -4,6 +4,15 @@
 	<script type="text/javascript" src="/site_media/js/user_scroller.js"></script>
 	<script type="text/javascript" src="/site_media/js/json2.js"></script>
 	<style type="text/css" media="screen">
+		h1#topHeader {
+			padding: 33px 0px 15px 15px;
+			font-size: 175%;
+			background-color: #3C5F7F;
+			color: #FFF;
+			font-weight: normal;
+			text-align: center;
+		}
+
 		div#user_scroller_container {
 			float: left;
 			width: 300px;
@@ -94,6 +103,8 @@
 	</script>
 {% endblock %}
 {% block content %}
+	<h1 id="topHeader">Vancouver Island Crossfit Manager</h1>
+
 	<div style="padding: 20px;">
 		<div id="user_scroller_container"></div>
 		<div id="user_viewer_container"></div>
