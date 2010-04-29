@@ -86,7 +86,7 @@ function getUserEditForm(first_name_val, last_name_val, email_val) {
 
 function getPinEditForm() {
     return '<div id="pin_edit_canvas">'+
-               '<input example_text="PIN #" type="text" id="pin_input" value=""/>'+
+               '<input example_text="PIN #" type="text" id="pin_input" value="" style="width: 75px;"/>'+
                '<div id="pin_error" class="error_plate" style="display: none;"></div>'+
            '</div>';
 }
@@ -103,7 +103,7 @@ CreateUserManager.prototype.draw_form = function() {
     var create_canvas = getUserEditForm("","","") +
                         getPinEditForm() +
                         '<div id="edit_actions">'+
-                            '<a href="javascript:void(0);" id="save_button">Save</a> ' +
+                            '<a href="javascript:void(0);" id="save_button" class="button">Save</a> ' +
                         '</div>';
     this.getItem().html(create_canvas);
 
