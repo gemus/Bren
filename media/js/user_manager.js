@@ -72,13 +72,13 @@ BaseManager.prototype.getItem = function(selector_text) {
 function getUserEditForm(first_name_val, last_name_val, email_val) {
     return '<div id="user_edit_canvas">' +
                '<div class="name_plate_edit">'+
-                   '<input example_text="First Name" type="text" id="first_name" value="' + first_name_val + '"> '+
-                   '<input example_text="Last Name" type="text" id="last_name" value="'  + last_name_val  + '"> '+
+                   '<input example_text="First Name" type="text" id="first_name" value="' + first_name_val + '" style="width: 150px;"> '+
+                   '<input example_text="Last Name" type="text" id="last_name" value="'  + last_name_val  + '" style="width: 180px;"> '+
                '</div>'+
                '<div id="name_plate_error" class="error_plate" style="display: none;"></div>'+
 
                '<div class="email_plate_edit">'+
-                   '<input example_text="Email Address" type="text" id="email" value="'  + email_val  + '" style="width: 175px;"> '+
+                   '<input example_text="Email Address" type="text" id="email" value="'  + email_val  + '" style="width: 250px;"> '+
                '</div>'+
                '<div id="email_plate_error" class="error_plate" style="display: none;"></div>'+
            '</div>';
