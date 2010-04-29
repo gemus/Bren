@@ -13,16 +13,17 @@ jQuery.fn.userManager = function(user_name) {
                      '<div id="perm_manager" style="display: none;"></div>'+
                      '<div style="width: 400px;"></div>');
         // Create the manager to get the ball rolling
-        topManager = new TopManager(user_name);
+        topManager = new TopManager(user_name, this);
     });
 }
 
 // ==============================================
 // = TopManager - Used to coordinate everything =
 // ==============================================
-TopManager = function(user_name) {
+TopManager = function(user_name, dom_container) {
     var self = this;
     this.user_name = user_name;
+    this.dom_container = dom_container;
 
     if (user_name == "_CREATE_USER") {
         this.createUserManager = new CreateUserManager(this, 'basic_details');
@@ -44,6 +45,14 @@ TopManager.prototype.notify_change = function(section) {
     } else if (section == this.deleteUserManager.notify_name) {
         $('#'+this.user_name+'').slideUp(); // Remove the user from the scroller
     }
+}
+
+TopManager.prototype.hide_others = function(section) {
+    $(this.dom_container).children(":not(#"+section+")").hide();
+}
+
+TopManager.prototype.show_all = function(section) {
+    $(this.dom_container).children().show();
 }
 
 // =====================================================
@@ -213,6 +222,7 @@ UserDetailManager.prototype.draw_view = function() {
                       '</div>';
     this.getItem().html(view_canvas);
     this.getItem("#edit_button").click(function(){ self.draw_edit(); });
+    this.manager.show_all();
 }
 
 UserDetailManager.prototype.draw_edit = function() {
@@ -221,14 +231,15 @@ UserDetailManager.prototype.draw_edit = function() {
                                       this.user_obj['last_name'],
                                       this.user_obj['email']) +
                       '<div id="edit_actions">'+
-                          '<a href="javascript:void(0);" id="save_button">Save</a> ' +
-                          '<a href="javascript:void(0);" id="cancel_button">Cancel</a>' +
+                          '<a href="javascript:void(0);" id="save_button" class="button">Save</a>' +
+                          '<a href="javascript:void(0);" id="cancel_button" class="button">Cancel</a>' +
                       '</div>';
 
     this.getItem().html(edit_canvas);
     this.getItem("input").exampleInput({blurClass: 'blur'});
     this.getItem("#cancel_button").click(function(){ self.draw_view(); });
     this.getItem("#save_button").click(function(){ self.validate_and_save(); });
+    this.manager.hide_others(this.canvas_id);
 }
 
 var validate_email_address = function(email_addy) {
