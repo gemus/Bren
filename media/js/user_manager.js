@@ -104,11 +104,17 @@ CreateUserManager.prototype.draw_form = function() {
                         getPinEditForm() +
                         '<div id="edit_actions">'+
                             '<a href="javascript:void(0);" id="save_button" class="button">Save</a> ' +
+                            '<a href="javascript:void(0);" id="cancel_button" class="button">Cancel</a>' +
                         '</div>';
     this.getItem().html(create_canvas);
 
     this.getItem("input").exampleInput({blurClass: 'blur'});
     this.getItem("#save_button").click(function(){ self.validate_and_save(); });
+    this.getItem("#cancel_button").click(function(){
+        // Grab the selected user and display them
+        var user_name = $("div.user_button[is_selected=true]").attr('id');
+        $(self.manager.dom_container).userManager(user_name);
+    });
 }
 
 CreateUserManager.prototype.validate_and_save = function() {
