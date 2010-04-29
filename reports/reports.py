@@ -44,3 +44,47 @@ def completed_workouts(start_date, end_date, user):
         display_name += "'s"
         
     return {'workouts': the_workouts, 'display_name': display_name}
+
+
+def attendence(start_date, end_date, user):
+    """
+    Given a start and end date, will generate the attendence for the time period
+    """
+    start_date = datetime.datetime.strptime(start_date, DATE_FORMAT)
+    end_date = date = datetime.datetime.strptime(end_date, DATE_FORMAT)
+    datedelta = datetime.timedelta(days=1)
+    date = start_date
+    attendence = []
+    while date != end_date + datedelta:
+        attendence.append ({
+            'date': date,
+            'workout_classes' : []
+        })
+        date = date + datedelta
+        
+    for day in attendence:
+        workout_classes = []
+        for workout_class in Workout_class.objects.filter(date = day['date']):
+            users = []
+            for co in Completed_workout.objects.filter(workout_class__id = workout_class.id):
+                users.append (co.user.first_name)
+            user_number = len(users)
+            day['workout_classes'].append({
+                'class_name' : workout_class.class_info.title,
+                'users': users,
+                'user_number' : user_number,
+                })
+    """ TEST
+    for day in attendence:
+        for workout_class in day['workout_classes']:
+            print workout_class['class_name']
+            print workout_class['user_number']
+            for user in workout_class['users']:
+                print user  """
+                        
+    return_data = {
+        'start_date' : start_date,
+        'end_date' : end_date,
+        'attendence' : attendence
+        }
+    return (return_data)
