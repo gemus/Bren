@@ -8,9 +8,10 @@ jQuery.fn.userManager = function(user_name) {
     return this.each(function() {
         // Setup the HTML
         $(this).html('<div id="basic_details"></div>'+
-                     '<div id="manage_pin"></div>'+
                      '<div id="delete_user"></div>'+
-                     '<div id="perm_manager"></div>');
+                     '<div id="manage_pin"></div>'+
+                     '<div id="perm_manager" style="display: none;"></div>'+
+                     '<div style="width: 400px;"></div>');
         // Create the manager to get the ball rolling
         topManager = new TopManager(user_name);
     });
@@ -208,7 +209,7 @@ UserDetailManager.prototype.draw_view = function() {
                           '</a> '+
                       '</div>'+
                       '<div class="action_plate">'+
-                          '<a href="javascript:void(0);" id="edit_button">Edit</a>' +
+                          '<a href="javascript:void(0);" id="edit_button" class="button">Edit</a>' +
                       '</div>';
     this.getItem().html(view_canvas);
     this.getItem("#edit_button").click(function(){ self.draw_edit(); });
@@ -308,7 +309,7 @@ function UserPinManager(manager, canvas_id) {
 }
 UserPinManager.prototype.draw_view = function() {
     var self = this;
-    this.getItem().html('<a href="javascript:void(0);" id="change_pin_button">Change Pin</a>');
+    this.getItem().html('<a href="javascript:void(0);" id="change_pin_button" class="button">Change Pin</a>');
     this.getItem("#change_pin_button").click(function(){ self.draw_edit(); });
 }
 UserPinManager.prototype.draw_edit = function() {
@@ -374,7 +375,7 @@ function DeleteUserManager(manager, canvas_id) {
 }
 DeleteUserManager.prototype.draw_view = function() {
     var self = this;
-    this.getItem().html('<a href="javascript:void(0);" id="delete_user_button">Delete User</a>');
+    this.getItem().html('<a href="javascript:void(0);" id="delete_user_button" class="button">Delete</a>');
     this.getItem("#delete_user_button").click(function(){
         if (confirm("Really Delete This User?")) self.delete_user();
     });
