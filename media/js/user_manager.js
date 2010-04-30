@@ -68,7 +68,7 @@ BaseManager.prototype.getItem = function(selector_text) {
     return $('#'+this.canvas_id + " " + (selector_text == undefined ? "" : selector_text));
 }
 
-function getUserEditForm(first_name_val, last_name_val, email_val) {
+function getUserEditForm(first_name_val, last_name_val, email_val, pin_example) {
     return '<div id="user_edit_canvas">' +
                '<div class="name_plate_edit">'+
                    '<input example_text="First Name" type="text" id="first_name" value="' + first_name_val + '" style="width: 150px;"> '+
@@ -81,7 +81,7 @@ function getUserEditForm(first_name_val, last_name_val, email_val) {
                '</div>'+
                '<div id="email_plate_error" class="error_plate" style="display: none;"></div>'+
                '<div id="pin_edit_canvas">'+
-                   '<input example_text="PIN #" type="text" id="pin_input" value="" style="width: 75px;"/>'+
+                   '<input example_text="'+pin_example+'" type="text" id="pin_input" value="" style="width: 90px;"/>'+
                    '<div id="pin_error" class="error_plate" style="display: none;"></div>'+
                '</div>'+
            '</div>';
@@ -106,7 +106,7 @@ function CreateUserManager(manager, canvas_id) {
 }
 CreateUserManager.prototype.draw_form = function() {
     var self = this;
-    var create_canvas = getUserEditForm("","","") +
+    var create_canvas = getUserEditForm("","","", "PIN #") +
                         '<div id="edit_actions">'+
                             '<a href="javascript:void(0);" id="save_button" class="button">Save</a> ' +
                             '<a href="javascript:void(0);" id="cancel_button" class="button">Cancel</a>' +
@@ -240,7 +240,8 @@ UserDetailManager.prototype.draw_edit = function() {
     var self = this;
     var edit_canvas = getUserEditForm(this.user_obj['first_name'],
                                       this.user_obj['last_name'],
-                                      this.user_obj['email']) +
+                                      this.user_obj['email'],
+                                      'Change Pin') +
                       '<div id="edit_actions">'+
                           '<a href="javascript:void(0);" id="save_button" class="button">Save</a>' +
                           '<a href="javascript:void(0);" id="cancel_button" class="button">Cancel</a>' +
