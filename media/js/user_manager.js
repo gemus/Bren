@@ -29,7 +29,6 @@ TopManager = function(user_name, dom_container) {
         this.createUserManager = new CreateUserManager(this, 'basic_details');
     } else {
         this.userDetailManager = new UserDetailManager(this, 'basic_details');
-        this.userPinManager = new UserPinManager(this, 'manage_pin');
         this.deleteUserManager = new DeleteUserManager(this, 'delete_user');
         this.permissionManager = new PermissionManager(this, 'perm_manager')
     }
@@ -64,7 +63,7 @@ function BaseManager(manager, canvas_id) {
 }
 
 BaseManager.prototype.getItem = function(selector_text) {
-    // Return #basic_details selector_text
+    // Return $("#basic_details selector_text")
     // So sub methods don't have to worry about name conflicts or grabbing wrong elemnts
     return $('#'+this.canvas_id + " " + (selector_text == undefined ? "" : selector_text));
 }
@@ -81,14 +80,21 @@ function getUserEditForm(first_name_val, last_name_val, email_val) {
                    '<input example_text="Email Address" type="text" id="email" value="'  + email_val  + '" style="width: 250px;"> '+
                '</div>'+
                '<div id="email_plate_error" class="error_plate" style="display: none;"></div>'+
+               '<div id="pin_edit_canvas">'+
+                   '<input example_text="PIN #" type="text" id="pin_input" value="" style="width: 75px;"/>'+
+                   '<div id="pin_error" class="error_plate" style="display: none;"></div>'+
+               '</div>'+
            '</div>';
 }
 
-function getPinEditForm() {
-    return '<div id="pin_edit_canvas">'+
-               '<input example_text="PIN #" type="text" id="pin_input" value="" style="width: 75px;"/>'+
-               '<div id="pin_error" class="error_plate" style="display: none;"></div>'+
-           '</div>';
+function validate_pin(pin_val) {
+    if (pin_val.length < 3) {
+        return "PIN must be at least 3 digits";
+    } else if (pin_val[0] == 0) {
+        return "PIN can not start with '0'";
+    } else if (!(/^[0-9]+$/).test(pin_val)) {
+        return "PIN may only contain numbers";
+    }
 }
 
 CreateUserManager.prototype = new BaseManager();
@@ -101,7 +107,6 @@ function CreateUserManager(manager, canvas_id) {
 CreateUserManager.prototype.draw_form = function() {
     var self = this;
     var create_canvas = getUserEditForm("","","") +
-                        getPinEditForm() +
                         '<div id="edit_actions">'+
                             '<a href="javascript:void(0);" id="save_button" class="button">Save</a> ' +
                             '<a href="javascript:void(0);" id="cancel_button" class="button">Cancel</a>' +
@@ -262,6 +267,7 @@ UserDetailManager.prototype.validate_and_save = function() {
     var first_name_val = this.getItem("input#first_name").val();
     var last_name_val  = this.getItem("input#last_name").val();
     var email_val      = this.getItem("input#email").val();
+    var pin_val        = this.getItem("input#pin_input").val();
 
     // Do some validation
     if (first_name_val == '') errors.push(['name', 'First Name']);
@@ -270,15 +276,22 @@ UserDetailManager.prototype.validate_and_save = function() {
         errors.push(['email','Invalid Email Address']);
     }
 
+    if (pin_val != '' && (pin_error = validate_pin(pin_val))) { // Only change PIN if it was set
+        errors.push(['pin', pin_error]);
+    }
+
     // No Errors so save the user
     if (errors.length == 0) {
+        var data_to_send = {'user_name': this.manager.user_name,
+                            'first_name': first_name_val,
+                            'last_name' : last_name_val,
+                            'email'     : email_val }
+
+        if (pin_val != '') data_to_send['password'] = pin_val;
+
         $.getJSON("/json_api/", {"id": 1,
                                  "method": "update_user",
-                                 "params" : JSON.stringify([{'user_name': this.manager.user_name,
-                                              'first_name': first_name_val,
-                                              'last_name' : last_name_val,
-                                              'email'     : email_val
-                                             }])
+                                 "params" : JSON.stringify([data_to_send])
                                  },
                                  function(result, status) {
                                      // Update our user_obj to reflect the save
@@ -297,9 +310,11 @@ UserDetailManager.prototype.validate_and_save = function() {
     } else {
         var name_errors = new Array();
         var email_errors = new Array();
+        var pin_errors = new Array();
         for (i in errors) {
             if (errors[i][0] == 'name') name_errors.push(errors[i][1]);
             if (errors[i][0] == 'email') email_errors.push(errors[i][1]);
+            if (errors[i][0] == 'pin') pin_errors.push(errors[i][1]);
         }
 
         if (name_errors.length > 0) {
@@ -310,72 +325,10 @@ UserDetailManager.prototype.validate_and_save = function() {
             this.getItem("#email_plate_error").slideDown();
             this.getItem("#email_plate_error").html(email_errors[0]);
         }
-    }
-}
-
-// ========================================
-// = UserPinManager - Change a user's PIN =
-// ========================================
-UserPinManager.prototype = new BaseManager();
-UserPinManager.prototype.constructor = UserPinManager;
-UserPinManager.prototype.parent = BaseManager.prototype;
-function UserPinManager(manager, canvas_id) {
-    this.parent.constructor.call(this, manager, canvas_id);
-    this.notify_name = "user_pin"; // Used when notifying others of changes
-    this.draw_view();
-}
-UserPinManager.prototype.draw_view = function() {
-    var self = this;
-    this.getItem().html('<a href="javascript:void(0);" id="change_pin_button" class="button">Change Pin</a>');
-    this.getItem("#change_pin_button").click(function(){ self.draw_edit(); });
-}
-UserPinManager.prototype.draw_edit = function() {
-    var self = this;
-    this.getItem().html(getPinEditForm() +
-                        '<div id="edit_actions">'+
-                            '<a href="javascript:void(0);" id="save_button">Save</a> ' +
-                            '<a href="javascript:void(0);" id="cancel_button">Cancel</a>' +
-                        '</div>');
-
-    this.getItem("#cancel_button").click(function(){ self.draw_view(); });
-    this.getItem("#save_button").click(function(){ self.validate_and_save(); });
-}
-
-function validate_pin(pin_val) {
-    if (pin_val.length < 3) {
-        return "PIN must be at least 3 digits";
-    } else if (pin_val[0] == 0) {
-        return "PIN can not start with '0'";
-    } else if (!(/^[0-9]+$/).test(pin_val)) {
-        return "PIN may only contain numbers";
-    }
-}
-
-UserPinManager.prototype.validate_and_save = function() {
-    var self = this;
-    var pin_val = this.getItem("input#pin_input").val();
-
-    var error = validate_pin(pin_val);
-
-    // No Errors so save the user
-    if (error == undefined) {
-        $.getJSON("/json_api/", {"id": 1,
-                                 "method": "update_user",
-                                 "params" : JSON.stringify([{'user_name': this.manager.user_name,
-                                                             'password': pin_val }])
-                                 },
-                                 function(result, status) {
-                                     // Then draw the view screen
-                                     self.draw_view();
-
-                                     // Notify others of the change
-                                     self.manager.notify_change(self.notify_name);
-                                 });
-
-    // Validation Errors. Show the user the problems
-    } else {
-        this.getItem("#pin_error").slideDown();
-        this.getItem("#pin_error").html(error);
+        if (pin_errors.length > 0) {
+            this.getItem("#pin_error").slideDown();
+            this.getItem("#pin_error").html(pin_errors[0]);
+        }
     }
 }
 
