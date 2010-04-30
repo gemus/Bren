@@ -41,6 +41,7 @@ TopManager.prototype.notify_change = function(section) {
         var name_tag = this.userDetailManager.user_obj['first_name'] + " " +
                             this.userDetailManager.user_obj['last_name'];
         $('#'+this.user_name+'').html(name_tag);
+        this.reportManager.draw_view();
     } else if (section == this.deleteUserManager.notify_name) {
         $('#'+this.user_name+'').slideUp(); // Remove the user from the scroller
     }
