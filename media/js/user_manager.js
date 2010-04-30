@@ -426,17 +426,20 @@ ReportManager.prototype.draw_no_email = function() {
 }
 ReportManager.prototype.draw_has_permission = function() {
     var self = this;
-    this.getItem("#reports_status").html('<span>[YES]</span><a href="javascript:void(0);" id="unsubscribe_perm_request_button">Unsubscribe</a>');
+    var first_name = this.manager.userDetailManager.user_obj['first_name'];
+    this.getItem("#reports_status").html('<span>Yes, weekly reports are being sent.</span><br>'+
+                                         '<div id="permission_action_bar">'+
+                                         '<a href="javascript:void(0);" id="unsubscribe_perm_request_button">Unsubscribe '+first_name+'</a>'+
+                                         '</div>');
     this.getItem("#unsubscribe_perm_request_button").click(function() {
-        if (confirm("Really remove permission?")) self.remove_permission_request();
+        if (confirm("Really stop sending reports to "+first_name+"?")) self.remove_permission_request();
     });
 }
 ReportManager.prototype.draw_no_permission = function() {
     var self = this;
-    var first_name = this.manager.userDetailManager.user_obj['first_name'];
-    this.getItem("#reports_status").html('<span>'+first_name+' is not receiving a weekly workout report</span><br>'+
+    this.getItem("#reports_status").html('<span>No, reports are not being sent.</span><br>'+
                                          '<div id="permission_action_bar">'+
-                                         '<a href="javascript:void(0);" id="send_perm_request_button">Send Permission Request</a>'+
+                                         '<a href="javascript:void(0);" id="send_perm_request_button">Ask To Send Reports</a>'+
                                          '</div>');
     this.getItem("#send_perm_request_button").click(function() {
         self.send_permission_request();
@@ -469,5 +472,5 @@ ReportManager.prototype.remove_permission_request = function() {
 
 }
 ReportManager.prototype.draw_remove_success = function() {
-    this.getItem("div#permission_action_bar").html('<span>Permission Removed</span>');
+    this.getItem("div#reports_status").html('<span>Reports Will No Longer Be Sent</span>');
 }
