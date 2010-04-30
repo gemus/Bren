@@ -459,7 +459,7 @@ ReportManager.prototype.draw_no_permission = function() {
 }
 ReportManager.prototype.send_permission_request = function() {
     var self = this;
-    this.getItem("div#permission_action_bar").html('<span>Sending Email...</span>');
+    this.getItem("div#reports_status").html('<span>Sending Permission Request...</span>');
     $.getJSON("/json_api/", {"id": 1,
                              "method": "send_permission_request",
                              "params" : JSON.stringify([{'user_name': this.manager.user_name}])
@@ -469,7 +469,8 @@ ReportManager.prototype.send_permission_request = function() {
                              });
 }
 ReportManager.prototype.draw_sent_success = function() {
-    this.getItem("div#permission_action_bar").html('<span>Sent</span>');
+    var first_name = this.manager.userDetailManager.user_obj['first_name'];
+    this.getItem("div#reports_status").html('<span>Sent. '+first_name+' will receive a confirmation email.</span>');
 }
 ReportManager.prototype.remove_permission_request = function() {
     var self = this;
