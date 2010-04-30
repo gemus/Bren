@@ -47,6 +47,12 @@ TopManager.prototype.notify_change = function(section) {
     }
 }
 
+TopManager.prototype.notify_load = function(section) {
+    if (section == this.userDetailManager.notify_name) {
+        this.reportManager.draw_view();
+    }
+}
+
 TopManager.prototype.hide_others = function(section) {
     $(this.dom_container).children(":not(#"+section+")").hide();
 }
@@ -219,6 +225,7 @@ function UserDetailManager(manager, canvas_id) {
                              function(result, status) {
                                   self.user_obj = result.result;
                                   self.draw_view();
+                                  self.manager.notify_load(self.notify_name);
                              });
 }
 
@@ -389,7 +396,8 @@ ReportManager.prototype.parent = BaseManager.prototype;
 function ReportManager(manager, canvas_id) {
     this.parent.constructor.call(this, manager, canvas_id);
     this.notify_name = "report_manager"; // Used when notifying others of changes
-    this.draw_view();
+
+    // Do not load yourself. Have to wait for the UserManager to finish loading
 }
 ReportManager.prototype.draw_view = function() {
     this.getItem().html('<h2>Weekly Report Manager</h2>'+
@@ -413,7 +421,8 @@ ReportManager.prototype.get_permission = function() {
                              });
 }
 ReportManager.prototype.draw_no_email = function() {
-    this.getItem("#reports_status").html("<div>Can not send reports. User does not have an email address.");
+    var first_name = this.manager.userDetailManager.user_obj['first_name'];
+    this.getItem("#reports_status").html("<div>Can not send reports. "+first_name+" does not have an email address.");
 }
 ReportManager.prototype.draw_has_permission = function() {
     var self = this;
