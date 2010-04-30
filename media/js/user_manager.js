@@ -167,6 +167,9 @@ CreateUserManager.prototype.validate_and_save = function() {
 
     // Validation Errors. Show the user the problems
     } else {
+        // Clear out the old errors.
+        this.getItem(".error_plate").hide();
+
         var name_errors  = new Array();
         var email_errors = new Array();
         var pin_errors   = new Array();
@@ -310,6 +313,9 @@ UserDetailManager.prototype.validate_and_save = function() {
 
     // Validation Errors. Show the user the problems
     } else {
+        // Clear out the old errors.
+        this.getItem(".error_plate").hide();
+
         var name_errors = new Array();
         var email_errors = new Array();
         var pin_errors = new Array();
