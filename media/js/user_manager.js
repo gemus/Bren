@@ -120,7 +120,9 @@ CreateUserManager.prototype.draw_form = function() {
                             '<a href="javascript:void(0);" id="save_button" class="button">Save</a> ' +
                             '<a href="javascript:void(0);" id="cancel_button" class="button">Cancel</a>' +
                         '</div>';
+    this.getItem().hide();
     this.getItem().html(create_canvas);
+    this.getItem().fadeIn();
 
     this.getItem("input").exampleInput({blurClass: 'blur'});
     this.getItem("#save_button").click(function(){ self.validate_and_save(); });
@@ -244,7 +246,9 @@ UserDetailManager.prototype.draw_view = function() {
                       '<div class="action_plate">'+
                           '<a href="javascript:void(0);" id="edit_button" class="button">Edit</a>' +
                       '</div>';
+    this.getItem().hide();
     this.getItem().html(view_canvas);
+    this.getItem().fadeIn();
     this.getItem("#edit_button").click(function(){ self.draw_edit(); });
     this.manager.show_all();
 }
@@ -260,7 +264,9 @@ UserDetailManager.prototype.draw_edit = function() {
                           '<a href="javascript:void(0);" id="cancel_button" class="button">Cancel</a>' +
                       '</div>';
 
+    this.getItem().hide();
     this.getItem().html(edit_canvas);
+    this.getItem().fadeIn();
     this.getItem("input").exampleInput({blurClass: 'blur'});
     this.getItem("#cancel_button").click(function(){ self.draw_view(); });
     this.getItem("#save_button").click(function(){ self.validate_and_save(); });
@@ -363,7 +369,9 @@ function DeleteUserManager(manager, canvas_id) {
 }
 DeleteUserManager.prototype.draw_view = function() {
     var self = this;
+    this.getItem().hide();
     this.getItem().html('<a href="javascript:void(0);" id="delete_user_button" class="button">Delete</a>');
+    this.getItem().fadeIn();
     this.getItem("#delete_user_button").click(function(){
         if (confirm("Really Delete This User?")) self.delete_user();
     });
@@ -402,8 +410,10 @@ function ReportManager(manager, canvas_id) {
     // Do not load yourself. Have to wait for the UserManager to finish loading
 }
 ReportManager.prototype.draw_view = function() {
+    this.getItem().hide();
     this.getItem().html('<h2>Weekly Report Manager</h2>'+
                         '<div id="reports_status"></div>');
+    this.getItem().fadeIn();
     this.get_permission();
 }
 ReportManager.prototype.get_permission = function() {
