@@ -404,10 +404,15 @@ ReportManager.prototype.get_permission = function() {
                              function(result, status) {
                                  if (result.result) {
                                      self.draw_has_permission();
+                                 } else if (self.manager.userDetailManager.user_obj['email'] == ''){
+                                     self.draw_no_email();
                                  } else {
                                      self.draw_no_permission();
                                  }
                              });
+}
+ReportManager.prototype.draw_no_email = function() {
+    this.getItem("#reports_status").html("<div>Can not send reports. User does not have an email address.");
 }
 ReportManager.prototype.draw_has_permission = function() {
     var self = this;
