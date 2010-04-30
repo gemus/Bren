@@ -80,10 +80,11 @@ function getUserEditForm(first_name_val, last_name_val, email_val, pin_example) 
                    '<input example_text="Email Address" type="text" id="email" value="'  + email_val  + '" style="width: 250px;"> '+
                '</div>'+
                '<div id="email_plate_error" class="error_plate" style="display: none;"></div>'+
+
                '<div id="pin_edit_canvas">'+
                    '<input example_text="'+pin_example+'" type="text" id="pin_input" value="" style="width: 90px;"/>'+
-                   '<div id="pin_error" class="error_plate" style="display: none;"></div>'+
                '</div>'+
+               '<div id="pin_error" class="error_plate" style="display: none;"></div>'+
            '</div>';
 }
 
