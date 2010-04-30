@@ -50,6 +50,7 @@ def attendence(start_date, end_date, user):
     """
     Given a start and end date, will generate the attendence for the time period
     """
+    OUTPUT_FORMAT = "%B %d, %Y" # December 1, 2009
     start_date = datetime.datetime.strptime(start_date, DATE_FORMAT)
     end_date = date = datetime.datetime.strptime(end_date, DATE_FORMAT)
     datedelta = datetime.timedelta(days=1)
@@ -81,7 +82,11 @@ def attendence(start_date, end_date, user):
             print workout_class['user_number']
             for user in workout_class['users']:
                 print user  """
-                        
+    start_date = start_date.strftime(OUTPUT_FORMAT).replace(' 0', ' ')
+    end_date = end_date.strftime(OUTPUT_FORMAT).replace(' 0', ' ')
+    for date in attendence:
+        date['date'] = date['date'].strftime(OUTPUT_FORMAT).replace(' 0', ' ')
+
     return_data = {
         'start_date' : start_date,
         'end_date' : end_date,

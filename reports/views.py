@@ -31,3 +31,17 @@ def completed_workouts(request, user):
     data = reports.completed_workouts(start_date, end_date, user)
 
     return render_to_response('reports/completed_workouts.html', data)
+
+def attendence(request, user):
+    """
+    Given a start and end date, will generate the attendence for the time period
+    """
+    start_date = "2010-1-4"
+    end_date = "2010-4-30"
+    
+    #start_date = date_str_to_python(request.GET['start_date'])
+    #end_date = date_str_to_python(request.GET['end_date'])
+
+    data = reports.attendence(start_date, end_date, user)
+
+    return render_to_response('reports/attendence.html', data)
