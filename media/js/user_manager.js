@@ -10,7 +10,7 @@ jQuery.fn.userManager = function(user_name) {
         $(this).html('<div id="basic_details"></div>'+
                      '<div id="delete_user"></div>'+
                      '<div id="manage_pin"></div>'+
-                     '<div id="perm_manager" style="display: none;"></div>'+
+                     '<div style="clear: both; padding-top: 20px;" id="report_manager"></div>'+
                      '<div style="width: 400px;"></div>');
         // Create the manager to get the ball rolling
         topManager = new TopManager(user_name, this);
@@ -30,7 +30,7 @@ TopManager = function(user_name, dom_container) {
     } else {
         this.userDetailManager = new UserDetailManager(this, 'basic_details');
         this.deleteUserManager = new DeleteUserManager(this, 'delete_user');
-        this.permissionManager = new PermissionManager(this, 'perm_manager')
+        this.reportManager = new ReportManager(this, 'report_manager')
     }
 }
 
@@ -379,18 +379,23 @@ DeleteUserManager.prototype.delete_user = function() {
                              });
 }
 
-// ==========================================================
-// = PermissionManager - Manage email permissions for users =
-// ==========================================================
-PermissionManager.prototype = new BaseManager();
-PermissionManager.prototype.constructor = PermissionManager;
-PermissionManager.prototype.parent = BaseManager.prototype;
-function PermissionManager(manager, canvas_id) {
+// ============================================================
+// = ReportManager - Manage reports for users : Email reports =
+// ============================================================
+ReportManager.prototype = new BaseManager();
+ReportManager.prototype.constructor = ReportManager;
+ReportManager.prototype.parent = BaseManager.prototype;
+function ReportManager(manager, canvas_id) {
     this.parent.constructor.call(this, manager, canvas_id);
-    this.notify_name = "permission_manager"; // Used when notifying others of changes
+    this.notify_name = "report_manager"; // Used when notifying others of changes
+    this.draw_view();
+}
+ReportManager.prototype.draw_view = function() {
+    this.getItem().html('<h2>Weekly Report Manager</h2>'+
+                        '<div id="reports_status"></div>');
     this.get_permission();
 }
-PermissionManager.prototype.get_permission = function() {
+ReportManager.prototype.get_permission = function() {
     var self = this;
     $.getJSON("/json_api/", {"id": 1,
                              "method": "has_email_permission",
@@ -404,23 +409,27 @@ PermissionManager.prototype.get_permission = function() {
                                  }
                              });
 }
-PermissionManager.prototype.draw_has_permission = function() {
+ReportManager.prototype.draw_has_permission = function() {
     var self = this;
-    this.getItem().html('<span>[YES]</span><a href="javascript:void(0);" id="unsubscribe_perm_request_button">Unsubscribe</a>');
+    this.getItem("#reports_status").html('<span>[YES]</span><a href="javascript:void(0);" id="unsubscribe_perm_request_button">Unsubscribe</a>');
     this.getItem("#unsubscribe_perm_request_button").click(function() {
         if (confirm("Really remove permission?")) self.remove_permission_request();
     });
 }
-PermissionManager.prototype.draw_no_permission = function() {
+ReportManager.prototype.draw_no_permission = function() {
     var self = this;
-    this.getItem().html('<span>[NO]</span><a href="javascript:void(0);" id="send_perm_request_button">Send Permission Request</a>');
+    var first_name = this.manager.userDetailManager.user_obj['first_name'];
+    this.getItem("#reports_status").html('<span>'+first_name+' is not receiving a weekly workout report</span><br>'+
+                                         '<div id="permission_action_bar">'+
+                                         '<a href="javascript:void(0);" id="send_perm_request_button">Send Permission Request</a>'+
+                                         '</div>');
     this.getItem("#send_perm_request_button").click(function() {
         self.send_permission_request();
     });
 }
-PermissionManager.prototype.send_permission_request = function() {
+ReportManager.prototype.send_permission_request = function() {
     var self = this;
-    this.getItem().html('<span>Sending Email...</span>');
+    this.getItem("div#permission_action_bar").html('<span>Sending Email...</span>');
     $.getJSON("/json_api/", {"id": 1,
                              "method": "send_permission_request",
                              "params" : JSON.stringify([{'user_name': this.manager.user_name}])
@@ -429,10 +438,10 @@ PermissionManager.prototype.send_permission_request = function() {
                                  self.draw_sent_success();
                              });
 }
-PermissionManager.prototype.draw_sent_success = function() {
-    this.getItem().html('<span>Sent</span>');
+ReportManager.prototype.draw_sent_success = function() {
+    this.getItem("div#permission_action_bar").html('<span>Sent</span>');
 }
-PermissionManager.prototype.remove_permission_request = function() {
+ReportManager.prototype.remove_permission_request = function() {
     var self = this;
     $.getJSON("/json_api/", {"id": 1,
                              "method": "remove_permission_request",
@@ -444,6 +453,6 @@ PermissionManager.prototype.remove_permission_request = function() {
                              });
 
 }
-PermissionManager.prototype.draw_remove_success = function() {
-    this.getItem().html('<span>Permission Removed</span>');
+ReportManager.prototype.draw_remove_success = function() {
+    this.getItem("div#permission_action_bar").html('<span>Permission Removed</span>');
 }
