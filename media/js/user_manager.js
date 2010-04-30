@@ -50,6 +50,7 @@ TopManager.prototype.notify_change = function(section) {
 TopManager.prototype.notify_load = function(section) {
     if (section == this.userDetailManager.notify_name) {
         this.reportManager.draw_view();
+        this.deleteUserManager.draw_view();
     }
 }
 
@@ -357,7 +358,8 @@ DeleteUserManager.prototype.parent = BaseManager.prototype;
 function DeleteUserManager(manager, canvas_id) {
     this.parent.constructor.call(this, manager, canvas_id);
     this.notify_name = "delete_user"; // Used when notifying others of changes
-    this.draw_view();
+
+    // Wait for the user manager to call us to load. Saves 'flickering' on the screen.
 }
 DeleteUserManager.prototype.draw_view = function() {
     var self = this;
