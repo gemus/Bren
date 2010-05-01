@@ -1,5 +1,6 @@
 from django.shortcuts import render_to_response
 from django.contrib.auth.models import User
+from django.http import Http404
 
 from crossfit.bren.models import *
 from crossfit.reports import reports
@@ -8,7 +9,11 @@ from crossfit.reports import date_str_to_python
 # Instead of getting a user_id get a User object as the 2nd param
 def report_user(func):
     def new_func(*args, **kw):
-        user = User.objects.get(pk=int(args[1]))
+        try:
+            user = User.objects.get(username__exact=args[1])
+        except User.DoesNotExist:
+            raise Http404
+
         return func(args[0], user, *args[2:], **kw)
     new_func.__name__ = func.__name__
     new_func.__doc__ = func.__doc__
