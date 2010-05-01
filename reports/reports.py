@@ -93,3 +93,42 @@ def attendence(start_date, end_date, user):
         'attendence' : attendence
         }
     return (return_data)
+
+def ranking(workout_id, date):
+    """
+    Purpose : Given a workout ID and date rank users
+    Params:
+        "workout.id" : ID of the workout we are ranking (INT)
+        "date" : The date of the workout in YYYY-MM-DD format (STRING)
+    Returns:
+        "workout_name" : The name of the workout(STRING)
+        "workout_ranking": A list or the completed workouts in order(LIST)
+    """
+    workout_ranking = []
+    date = datetime.datetime.strptime(date, DATE_FORMAT)
+    workout = Workout.objects.get(id=workout_id)  
+    
+    if  workout.workout_type == 'Timed' :
+        completed_workouts = Completed_workout.objects.filter(workout_class__workout__id = workout_id, workout_class__date = date).order_by('secs')
+    if  workout.workout_type == 'AMRAP' :
+        completed_workouts = Completed_workout.objects.filter(workout_class__workout__id = workout_id, workout_class__date = date).order_by('rounds')
+    if  workout.workout_type == 'DONE' :
+        completed_workouts = Completed_workout.objects.filter(workout_class__workout__id = workout_id, workout_class__date = date).order_by('user__first_name')
+
+    for co in completed_workouts:
+        workout_ranking.append(get_completed_workout_info(co.id))
+    
+    """ TEST
+    for co in workout_ranking:
+        print co['user_name']
+        for var in co['variations']:
+            print var
+    """
+    
+    return_data = {
+    "workout_name" : workout.name,
+    "workout_date" : date,
+    "workout_ranking" : workout_ranking,
+    }
+    return (return_data)
+ 
