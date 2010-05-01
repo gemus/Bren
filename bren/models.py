@@ -5,6 +5,7 @@ from django.contrib import admin
 from django.contrib.auth.models import User
 from django.utils import simplejson
 from django.db.models import Count
+from django.db.models import Q
 
 
 DATE_FORMAT = "%Y-%m-%d"
@@ -134,7 +135,7 @@ class UserProfile(models.Model):
 # =============================================
 # = Model Methods =============================
 # =============================================
-def get_users(search_str, num_results):
+def get_users(search_str, num_results, search_type = "contains"):
     """
     Purpose: Searches users based on first name using "strats_with" logic
     Params: search_str <string>
@@ -144,10 +145,20 @@ def get_users(search_str, num_results):
     # ordered by display_name
     """
 
-    user_query = User.objects.filter(
-                    first_name__istartswith=search_str
-                ).order_by("first_name")
+    print search_type
+            
+    if search_type == "starts_with":
+        user_query = User.objects.filter(
+                        first_name__istartswith=search_str
+                    ).order_by("first_name")
 
+    if search_type == "contains":
+        user_query = User.objects.filter(
+            Q(first_name__istartswith=search_str) | 
+            Q(last_name__istartswith=search_str)
+            ).order_by("first_name")
+    
+   
     # Are we limiting results?
     if num_results > 0:
         user_query = user_query[:num_results]
