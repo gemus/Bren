@@ -4,24 +4,79 @@
 	<script type="text/javascript" src="/site_media/js/user_scroller.js"></script>
 	<script type="text/javascript" src="/site_media/js/json2.js"></script>
 	<style type="text/css" media="screen">
+		h1#topHeader {
+			padding: 33px 0px 15px 15px;
+			font-size: 175%;
+			background-color: #3C5F7F;
+			color: #FFF;
+			font-weight: normal;
+			text-align: center;
+		}
+
+		h2 {
+			padding: 5px 0pt 5px 10px;
+			font-size: 1em;
+			background-color: #3C5F7F;
+			color: #FFF;
+		}
+
+		a {
+			color: #3C5F7F;
+		}
+
+		a.button {
+			border: 2px solid #3C5F7F;
+			padding: 3px 25px;
+			font-size: 90%;
+			text-decoration: none;
+			margin: 0pt;
+		}
+
+		input.blur {
+			color: #999;
+		}
+
+		div.error_plate {
+			color: #F00;
+			background-color: #FDD;
+			padding: 3px;
+			font-size: 80%;
+			font-weight: bold;
+		}
+
+		/* ----------------------------------------------------------------- */
+		/* ---- User Scroller ---------------------------------------------- */
+		/* ----------------------------------------------------------------- */
+
 		div#user_scroller_container {
 			float: left;
-			width: 300px;
+			width: 33%;
 		}
 		div#userScrollerCanvas {
 			border: 1px solid #000;
 			overflow: auto;
-			height: 500px;
+			height: 10px;
 		}
 		div#user_scroller_container div.user_button {
 			border-bottom: 1px solid #ccc;
 			padding: 4px;
 			height: 20px;
 			cursor: pointer;
+			overflow: hidden;
+			white-space: nowrap;
 		}
 		div#user_scroller_container div.user_button:hover {
 			background-color: #eee;
 		}
+		div#user_scroller_container div.user_button[is_selected=true] {
+			background-color: #DEEEF9;
+			font-weight: bold;
+		}
+		div#user_scroller_container div.no_results {
+			padding: 5px;
+			color: #333;
+		}
+
 		input#userScroller_searchBox.empty_search {
 			color: #999;
 		}
@@ -29,7 +84,7 @@
 			border: 1px solid #3C5F7F;
 			padding: 2px;
 			margin-bottom: 5px;
-			color: #000;
+			width: 98%;
 		}
 
 		/* ----------------------------------------------------------------- */
@@ -37,69 +92,112 @@
 		/* ----------------------------------------------------------------- */
 		div#user_viewer_container {
 			float: left;
-			margin-left: 20px;
+			margin-left: 15px;
 		}
 
-		input.blur {
-			color: #999;
-		}
-
-		/*
-
-		div#user_viewer_container input {
-			border: 1px solid #000;
-		}
-		div.error_plate {
-			background-color: #fcc;
-			font-weight: bold;
-			color: #F00;
-			padding: 0.4em;
-			margin-bottom: 0.5em;
-			font-size: 0.8em;
-		}*/
-		/* ---- Name Plate ------------------------------------------------- */
-		/*
-		div.name_plate, div.name_plate_edit {
-			height: 30px;
-		}
-		div.name_plate span, div.name_plate_edit input {
-			font-size: 1.5em;
+		div#user_viewer_container div.name_plate {
+			font-size: 150%;
+			color: #3C5F7F;
 			font-weight: bold;
 		}
 
-		div.email_plate_edit, div.email_plate {
-			height: 20px;
-		}*/
-		/* ---- Dates ------------------------------------------------------ */
-		/*
-		div#user_viewer_container div.dates {
-			margin-top: 0.5em;
+		div#user_viewer_container div.email_plate a {
+			color: #3C5F7F;
+			text-decoration: none;
+			margin-top: 2px;
+			display: block;
 		}
-		div#user_viewer_container div.dates label {
-			margin-right: 5px;
-			color: #666;
-			font-size: 0.75em;
+		div#user_viewer_container div.email_plate a:hover {
+			text-decoration: underline;
+		}
+
+		div#user_viewer_container a.button {
+			padding: 3px 10px;
+			margin: 5px 10px 0pt 0pt;
+		}
+
+		div.action_plate, div#delete_user, div#manage_pin, div#perm_manager {
+			float: left;
+			margin-top: 10px;
+		}
+
+		/* ----------------------------------------------------------------- */
+		/* ---- User Editor ------------------------------------------------ */
+		/* ----------------------------------------------------------------- */
+		div.name_plate_edit input {
+			font-size: 150%;
+			border: none;
+			border-bottom: 2px solid #3C5F7F;
+			height: 28px;
 			font-weight: bold;
-		}*/
+		}
+
+		div.name_plate_edit input.blur {
+			font-weight: normal;
+		}
+
+		div.email_plate_edit {
+			margin-top: 7px;
+		}
+
+		div.email_plate_edit input {
+			border: none;
+			border-bottom: 2px solid #3C5F7F;
+			height: 18px;
+		}
+
+		div#edit_actions {
+			margin-top: 15px;
+		}
+
+		div#pin_edit_canvas {
+			margin-top: 7px;
+		}
+
+		div#pin_edit_canvas input {
+			border: none;
+			border-bottom: 2px solid #3C5F7F;
+			height: 18px;
+		}
+
+		/* ----------------------------------------------------------------- */
+		/* ---- Report Manager --------------------------------------------- */
+		/* ----------------------------------------------------------------- */
+		div#report_manager div#reports_status {
+			padding: 5px;
+		}
+
+		div#permission_action_bar { margin-top: 3px;}
+		div#permission_action_bar a { font-size: 90%; }
+
 	</style>
 	<script type="text/javascript" charset="utf-8">
+		function on_window_resize() {
+			var height = $(window).height() - 180;
+			height = height < 150 ? 150 : height;
+			$("div#userScrollerCanvas").height(height);
+		}
+
 		$(document).ready(function() {
 			$("#user_scroller_container").userScroller("user_viewer_container");
-			$("#user_viewer_container").userManager("DPL_Amanda");
 
 			$("#create_user_button").click(function(e) {
 				$("#user_viewer_container").userManager("_CREATE_USER");
 			});
 
+			$(window).resize(on_window_resize);
+			on_window_resize();
 		});
 	</script>
 {% endblock %}
 {% block content %}
+	<h1 id="topHeader">Vancouver Island Crossfit Manager</h1>
+
 	<div style="padding: 20px;">
 		<div id="user_scroller_container"></div>
 		<div id="user_viewer_container"></div>
-		<div style="clear: left">
-			<a href="javascript:void(0);" id="create_user_button">Create User</a>
+		<div style="clear: left; padding-top: 10px;">
+			<a href="javascript:void(0);" id="create_user_button" class="button">Add User</a>
 		</div>
 	</div>
 {% endblock %}

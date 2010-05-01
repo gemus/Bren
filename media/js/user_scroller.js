@@ -4,9 +4,11 @@ jQuery.fn.userScroller = function(viewer_container_id) {
 
     var user_click = function() {
         $("#"+viewer_container_id+"").userManager(this.id);
+        $("div#userScrollerCanvas div.user_button").removeAttr('is_selected');
+        $(this).attr({'is_selected':'true'});
     }
 
-    var performSearch = function(search_term) {
+    var performSearch = function(search_term, done_loading_callback) {
         var search_callback = function(result, status) {
             var user_results = result.result;
             var collect = "";
@@ -16,8 +18,13 @@ jQuery.fn.userScroller = function(viewer_container_id) {
                                 user_results[i]['display_name']+
                            '</div>';
             }
+            if (user_results.length == 0) {
+                collect = '<div class="no_results">We did not find results for: <strong>'+search_term+'</strong></div>';
+            }
             $("#userScrollerCanvas").html(collect);
             $("#userScrollerCanvas div").click(user_click);
+
+            if (done_loading_callback != undefined) done_loading_callback();
         }
 
         $.getJSON("/json_api/", {"id": 1,
@@ -29,23 +36,20 @@ jQuery.fn.userScroller = function(viewer_container_id) {
 
     // Create a user picker
     return this.each(function() {
-        var search_default = "Search Users";
-
         $(this).html('<div>'+
-                       '<input class="empty_search" type="text" value="'+search_default+'" id="userScroller_searchBox">'+
+                       '<input example_text="Search Users" type="text" value="" id="userScroller_searchBox">'+
                      '</div>'+
                      '<div id="userScrollerCanvas">Loading Users...</div>');
 
+        // After scroller has loaded, 'click' the first person on the list
+        var done_loading_callback = function() {
+            $("div#userScrollerCanvas div.user_button:first").click();
+        }
         // Start By Showing Everyone
-        performSearch("");
+        performSearch("", done_loading_callback);
 
-        // Clear Search Box When Focused
-        $("#userScroller_searchBox").focus(function() {
-            if (this.value == search_default) {
-                this.value = "";
-                $(this).removeClass("empty_search");
-            }
-        });
+        $("input#userScroller_searchBox").exampleInput({blurClass: 'blur'});
+
         // Search when typing in the search box
         $("#userScroller_searchBox").keyup(function() {
             performSearch(this.value);

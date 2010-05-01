@@ -1,4 +1,4 @@
-from crossfit.reports import date_str_to_python, get_day_of_week_str
+from crossfit.reports import date_str_to_python, get_day_of_week_str, python_date_to_short_display_str
 from crossfit.bren.models import *
 
 """
@@ -42,5 +42,8 @@ def completed_workouts(start_date, end_date, user):
         display_name += "'"
     else:
         display_name += "'s"
-        
-    return {'workouts': the_workouts, 'display_name': display_name}
+
+    return {'workouts'     : the_workouts,
+            'display_name' : display_name,
+            'start_date'   : python_date_to_short_display_str(start_date),
+            'end_date'     : python_date_to_short_display_str(end_date) }
