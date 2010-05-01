@@ -297,6 +297,25 @@ def get_workout(workout_date_str, class_id):
         return return_dict
     return {"error": "No Class Found"}
 
+def get_workouts(date):
+    """
+    Purpose: Given a date return the workouts that happened that day
+    Params:
+            "date"      : The date of the workout in YYYY-MM-DD format (STRING)
+    Returns:
+            "workouts"  : A list of the workouts that happened that day(LIST)
+    """
+    date = datetime.datetime.strptime(date, DATE_FORMAT)
+    workout_index = {}
+    workouts = []
+    for workout_class in Workout_class.objects.filter(date = date):
+        if not workout_class.workout.id in workout_index:
+            workout_index.update({workout_class.workout.id : 2})
+            workouts.append({"workout" : workout_class.workout.name})
+        
+    return workouts
+    
+
 def get_element_history(user_id, element_id):
     """
     Purpose: Given a user and element return the users history with the element in list form
