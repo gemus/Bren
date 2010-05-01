@@ -11,6 +11,7 @@ jQuery.fn.userManager = function(user_name) {
                      '<div id="delete_user"></div>'+
                      '<div id="manage_pin"></div>'+
                      '<div style="clear: both; padding-top: 20px;" id="report_manager"></div>'+
+                     '<div style="margin-top: 1em" id="recent_workouts"></div>'+
                      '<div style="width: 400px;"></div>');
         // Create the manager to get the ball rolling
         topManager = new TopManager(user_name, this);
@@ -31,6 +32,7 @@ TopManager = function(user_name, dom_container) {
         this.userDetailManager = new UserDetailManager(this, 'basic_details');
         this.deleteUserManager = new DeleteUserManager(this, 'delete_user');
         this.reportManager = new ReportManager(this, 'report_manager')
+        this.recentWorkoutManager = new RecentWorkoutManager(this, 'recent_workouts')
     }
 }
 
@@ -486,4 +488,24 @@ ReportManager.prototype.remove_permission_request = function() {
 }
 ReportManager.prototype.draw_remove_success = function() {
     this.getItem("div#reports_status").html('<span>Reports Will No Longer Be Sent</span>');
+}
+
+// ============================================================
+// = RecentWorkoutManager - Show recent workouts for the user =
+// ============================================================
+RecentWorkoutManager.prototype = new BaseManager();
+RecentWorkoutManager.prototype.constructor = RecentWorkoutManager;
+RecentWorkoutManager.prototype.parent = BaseManager.prototype;
+function RecentWorkoutManager(manager, canvas_id) {
+    this.parent.constructor.call(this, manager, canvas_id);
+    this.notify_name = "recent_workout"; // Used when notifying others of changes
+
+    this.draw_view();
+}
+RecentWorkoutManager.prototype.draw_view = function() {
+    var self = this;
+    this.getItem().hide();
+    this.getItem().html('<h2>Recent Workouts</h2>'+
+                        '<div>'+this.manager.user_name+'</div>');
+    this.getItem().fadeIn();
 }
