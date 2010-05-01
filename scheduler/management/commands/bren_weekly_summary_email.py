@@ -12,8 +12,8 @@ class Command(NoArgsCommand):
 
     def handle_noargs(self, **options):
         # Date range of the last 7 days
-        start_date = datetime.datetime.combine(datetime.date.today(), datetime.time())
-        end_date = start_date - datetime.timedelta(days=7)
+        end_date = datetime.datetime.combine(datetime.date.today(), datetime.time())
+        start_date = end_date - datetime.timedelta(days=7)
 
         for user in get_subscribed_users():
             print "USER", user
