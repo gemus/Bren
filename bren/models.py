@@ -94,9 +94,6 @@ class Element_used(models.Model):
     element = models.ForeignKey(Element)
     reps = models.IntegerField()
     order = models.IntegerField()
-    def __unicode__(self):
-        return self.workout.name+ ", "+ self.element.name
-
 class Variation(models.Model):
     """
     Purpose : A Variation to a workout
@@ -433,8 +430,12 @@ def get_completed_workout_info(completed_workout_id):
 
     variations = []
     for completed_element in Completed_element.objects.filter(completed_workout__id = completed_workout_id).order_by('element_used__order'):
+            if completed_element.variation.element.weighted == True:
+                variation = str (completed_element.variation.name) + " lbs."
+            else :
+                variation = completed_element.variation.name
             variations.append({"element": completed_element.variation.element.name,
-                               "variation": completed_element.variation.name,
+                               "variation": variation,
                                "rounds":    completed_element.element_used.reps})
 
     data = {

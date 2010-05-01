@@ -45,3 +45,14 @@ def attendence(request, user):
     data = reports.attendence(start_date, end_date, user)
 
     return render_to_response('reports/attendence.html', data)
+
+def ranking(request, user):
+    """
+    Given a start and end date, will generate the attendence for the time period
+    """
+    date = "2010-02-13"
+    workout_id = "68"
+    #workout_id = request.GET['workout_id']
+    #date = date_str_to_python(request.GET['end_date'])
+    data = reports.ranking(workout_id, date)
+    return render_to_response('reports/rankings.html', data)

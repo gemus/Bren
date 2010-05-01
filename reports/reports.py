@@ -75,13 +75,6 @@ def attendence(start_date, end_date, user):
                 'users': users,
                 'user_number' : user_number,
                 })
-    """ TEST
-    for day in attendence:
-        for workout_class in day['workout_classes']:
-            print workout_class['class_name']
-            print workout_class['user_number']
-            for user in workout_class['users']:
-                print user  """
     start_date = start_date.strftime(OUTPUT_FORMAT).replace(' 0', ' ')
     end_date = end_date.strftime(OUTPUT_FORMAT).replace(' 0', ' ')
     for date in attendence:
@@ -104,31 +97,35 @@ def ranking(workout_id, date):
         "workout_name" : The name of the workout(STRING)
         "workout_ranking": A list or the completed workouts in order(LIST)
     """
+    OUTPUT_FORMAT = "%B %d, %Y" # December 1, 2009
     workout_ranking = []
     date = datetime.datetime.strptime(date, DATE_FORMAT)
     workout = Workout.objects.get(id=workout_id)  
     
+    workout_elements = Element_used.objects.filter(workout__id = workout_id)   
     if  workout.workout_type == 'Timed' :
         completed_workouts = Completed_workout.objects.filter(workout_class__workout__id = workout_id, workout_class__date = date).order_by('secs')
     if  workout.workout_type == 'AMRAP' :
-        completed_workouts = Completed_workout.objects.filter(workout_class__workout__id = workout_id, workout_class__date = date).order_by('rounds')
-    if  workout.workout_type == 'DONE' :
+        completed_workouts = Completed_workout.objects.filter(workout_class__workout__id = workout_id, workout_class__date = date).order_by('-rounds')
+    if  workout.workout_type == 'Done' :
         completed_workouts = Completed_workout.objects.filter(workout_class__workout__id = workout_id, workout_class__date = date).order_by('user__first_name')
-
+    
     for co in completed_workouts:
         workout_ranking.append(get_completed_workout_info(co.id))
+    if  workout.workout_type == 'Timed' :
+        for co in workout_ranking:
+            mins = co['info']['time'] / 60
+            secs = co['info']['time'] % 60
+            co['info']['time'] = "%d:%02d" % (mins, secs)
     
-    """ TEST
-    for co in workout_ranking:
-        print co['user_name']
-        for var in co['variations']:
-            print var
-    """
-    
+    date = date.strftime(OUTPUT_FORMAT).replace(' 0', ' ')
     return_data = {
     "workout_name" : workout.name,
+    "workout_elements": workout_elements,
+    "workout_type" : workout.workout_type,
     "workout_date" : date,
     "workout_ranking" : workout_ranking,
     }
+    
     return (return_data)
  

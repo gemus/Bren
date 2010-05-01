@@ -1,0 +1,27 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<body style="font-family: 'lucida grande',tahoma,verdana,arial,sans-serif; color: #333;">
+	<h1 style="margin-left: 25px; font-size: 16pt;">Rankings for {{workout_name}} on {{workout_date}}</h1>
+
+
+
+<table>
+<tr><th></th>
+{%for element in workout_elements %}
+    <th>{{element.element}}</th>
+{% endfor %}
+<th>{% ifequal workout_type 'Timed' %} Time {%endifequal%}</th>
+<th>{% ifequal workout_type 'AMRAP' %} Rounds {%endifequal%}</th>
+
+</tr>
+{% for workout in workout_ranking %}
+    <tr>
+    <td>{{workout.user_name}}</td>
+    {% for variation in workout.variations %}
+        <td>{{variation.variation}}</td>
+    {% endfor %}
+    <td>{% ifequal workout_type 'Timed' %} {{workout.info.time}} {%endifequal%} </td>
+    <td>{% ifequal workout_type 'AMRAP' %} {{workout.info.rounds}} {%endifequal%} </td>
+    </tr>
+{% endfor %}
+</table>
