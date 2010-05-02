@@ -1,5 +1,6 @@
 {% extends "bren/base.html" %}
 {% block head_content %}
+	<link type="text/css" href="/site_media/css/redmond/jquery-ui-1.7.2.custom.css" rel="stylesheet" />
 	<script type="text/javascript" src="/site_media/js/user_manager.js"></script>
 	<script type="text/javascript" src="/site_media/js/user_scroller.js"></script>
 	<script type="text/javascript" src="/site_media/js/json2.js"></script>
@@ -46,6 +47,11 @@
 
 		iframe {
 			border: none;
+		}
+
+		label {
+			font-size: 90%;
+			font-weight: bold;
 		}
 
 		/* ----------------------------------------------------------------- */
@@ -173,6 +179,18 @@
 
 		div#permission_action_bar { margin-top: 3px;}
 		div#permission_action_bar a { font-size: 90%; }
+
+		/* ----------------------------------------------------------------- */
+		/* ---- Workout Explorer ------------------------------------------- */
+		/* ----------------------------------------------------------------- */
+		div#recent_workouts input {
+			border: 1px solid #3C5F7F;
+			width: 100px;
+		}
+		div#recent_workouts div#reports_action_bar {
+			padding: 5px;
+			background-color: #ccc;
+		}
 
 	</style>
 	<script type="text/javascript" charset="utf-8">

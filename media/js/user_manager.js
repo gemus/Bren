@@ -518,17 +518,17 @@ RecentWorkoutManager.prototype.draw_view = function() {
                       "/completed_workouts/?start_date="+start_date+
                       "&end_date="+end_date;
 
-    console.log(workout_url);
-
-    //var today=new Date()
-    //today.setDate(today.getDate()+3) //today now is set to be 3 days into the future
-
     this.getItem().hide();
     this.getItem().html('<h2>Recent Workouts</h2>'+
+                        '<div id="reports_action_bar">'+
+                        '<label>Start Date</label>'+
+                        '<input id="start_date_picker" type="text" value="'+start_date+'">' +
+                        '<label style="margin-left: 1em;">End Date</label>'+
+                        '<input id="end_date_picker" type="text" value="'+end_date+'">' +
+                        '</div>'+
                         '<iframe src ="'+workout_url+'" width="600" height="300">'+
                         '  <p>Your browser does not support iframes.</p>'+
                         '</iframe>');
     this.getItem().fadeIn();
-
-    //
+    this.getItem("input").datepicker({ dateFormat: 'yy-mm-dd' });
 }
