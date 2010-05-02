@@ -413,7 +413,7 @@ function ReportManager(manager, canvas_id) {
 }
 ReportManager.prototype.draw_view = function() {
     this.getItem().hide();
-    this.getItem().html('<h2>Weekly Report Manager</h2>'+
+    this.getItem().html('<h2>Weekly Report Sender</h2>'+
                         '<div id="reports_status"></div>');
     this.getItem().fadeIn();
     this.get_permission();
