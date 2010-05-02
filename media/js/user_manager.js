@@ -514,9 +514,15 @@ RecentWorkoutManager.prototype.draw_view = function() {
     now.setDate(now.getDate()-7);
     var start_date = date_to_str(now);
 
-    var workout_url = "/reports/"+this.manager.user_name+
-                      "/completed_workouts/?start_date="+start_date+
-                      "&end_date="+end_date;
+    var set_workout_url = function() {
+        var start_date = self.getItem('input#start_date_picker').val();
+        var end_date   = self.getItem('input#end_date_picker').val();
+
+        var iframe_url = "/reports/"+self.manager.user_name+
+                         "/completed_workouts/?start_date="+start_date+
+                         "&end_date="+end_date;
+        self.getItem('iframe#recent_workout_iframe').attr('src', iframe_url);
+    }
 
     this.getItem().hide();
     this.getItem().html('<h2>Recent Workouts</h2>'+
@@ -526,9 +532,11 @@ RecentWorkoutManager.prototype.draw_view = function() {
                         '<label style="margin-left: 1em;">End Date</label>'+
                         '<input id="end_date_picker" type="text" value="'+end_date+'">' +
                         '</div>'+
-                        '<iframe src ="'+workout_url+'" width="600" height="300">'+
+                        '<iframe width="600" height="300" id="recent_workout_iframe">'+
                         '  <p>Your browser does not support iframes.</p>'+
                         '</iframe>');
+    set_workout_url();
     this.getItem().fadeIn();
     this.getItem("input").datepicker({ dateFormat: 'yy-mm-dd' });
+    this.getItem("input").change(set_workout_url);
 }
