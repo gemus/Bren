@@ -490,6 +490,10 @@ ReportManager.prototype.draw_remove_success = function() {
     this.getItem("div#reports_status").html('<span>Reports Will No Longer Be Sent</span>');
 }
 
+function date_to_str(date) {
+    return [date.getFullYear(), date.getMonth()+1, date.getDate()].join('-');
+}
+
 // ============================================================
 // = RecentWorkoutManager - Show recent workouts for the user =
 // ============================================================
@@ -504,8 +508,27 @@ function RecentWorkoutManager(manager, canvas_id) {
 }
 RecentWorkoutManager.prototype.draw_view = function() {
     var self = this;
+
+    var now = new Date();
+    var end_date = date_to_str(now);
+    now.setDate(now.getDate()-7);
+    var start_date = date_to_str(now);
+
+    var workout_url = "/reports/"+this.manager.user_name+
+                      "/completed_workouts/?start_date="+start_date+
+                      "&end_date="+end_date;
+
+    console.log(workout_url);
+
+    //var today=new Date()
+    //today.setDate(today.getDate()+3) //today now is set to be 3 days into the future
+
     this.getItem().hide();
     this.getItem().html('<h2>Recent Workouts</h2>'+
-                        '<div>'+this.manager.user_name+'</div>');
+                        '<iframe src ="'+workout_url+'" width="600" height="300">'+
+                        '  <p>Your browser does not support iframes.</p>'+
+                        '</iframe>');
     this.getItem().fadeIn();
+
+    //
 }
