@@ -50,8 +50,8 @@ def ranking(request, user):
     """
     Given a start and end date, will generate the attendence for the time period
     """
-    date = "2010-02-13"
-    workout_id = "68"
+    date = "2010-01-29"
+    workout_id = "10"
     #workout_id = request.GET['workout_id']
     #date = date_str_to_python(request.GET['end_date'])
     data = reports.ranking(workout_id, date)
