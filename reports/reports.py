@@ -53,25 +53,25 @@ def completed_workouts(start_date, end_date, user):
             'start_date'   : python_date_to_short_display_str(start_date),
             'end_date'     : python_date_to_short_display_str(end_date) }
 
-def attendence(start_date, end_date):
+def attendance(start_date, end_date):
     """
-    Given a start and end date, will generate the attendence for the time period
+    Given a start and end date, will generate the attendance for the time period
     """
     datedelta = datetime.timedelta(days=1)
     date = start_date
-    attendence = []
+    attendance = []
     
     number_of_days = (end_date - start_date).days
     
     while number_of_days >= 0:
         number_of_days = number_of_days - 1
-        attendence.append ({
+        attendance.append ({
             'date': date,
             'workout_classes' : []
         })
         date = date + datedelta
         
-    for day in attendence:
+    for day in attendance:
         workout_classes = []
         for workout_class in Workout_class.objects.filter(date = day['date']):
             users = []
@@ -85,13 +85,13 @@ def attendence(start_date, end_date):
                 'user_number' : user_number,
                 })
                 
-    for date in attendence:
+    for date in attendance:
         date['date'] = python_date_to_display_str(date['date'])
            
     return_data = {
         'start_date' : python_date_to_display_str(start_date),
         'end_date' : python_date_to_display_str(end_date),
-        'attendence' : attendence
+        'attendance' : attendance
         }
     return return_data
 

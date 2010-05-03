@@ -37,20 +37,19 @@ def completed_workouts(request, user):
 
     return render_to_response('reports/completed_workouts.html', data)
 
-def attendence(request):
+def attendance(request):
     """
-    Given a start and end date, will generate the attendence for the time period
+    Given a start and end date, will generate the attendance for the time period
     """
-  
     start_date = date_str_to_python(request.GET['start_date'])
     end_date = date_str_to_python(request.GET['end_date'])
-    data = reports.attendence(start_date, end_date)
+    data = reports.attendance(start_date, end_date)
 
-    return render_to_response('reports/attendence.html', data)
+    return render_to_response('reports/attendance.html', data)
 
 def ranking(request):
     """
-    Given a start and end date, will generate the attendence for the time period
+    Given a start and end date, will generate the attendance for the time period
     """
     workout_id = request.GET['workout_id']
     date = date_str_to_python(request.GET['end_date'])

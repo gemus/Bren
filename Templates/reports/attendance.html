@@ -1,9 +1,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html lang="en">
 <body style="font-family: 'lucida grande',tahoma,verdana,arial,sans-serif; color: #333;">
-	<h1 style="margin-left: 25px; font-size: 16pt;">Attendence from {{start_date}} to {{end_date}}</h1>
+	<h1 style="margin-left: 25px; font-size: 16pt;">attendance from {{start_date}} to {{end_date}}</h1>
 
-    {% for days in attendence %}
+    {% for days in attendance %}
         <b>{{days.date}}<br></b>
         {% for class in days.workout_classes %}
             {{class.class_name}}  ({{class.user_number}}) : 
