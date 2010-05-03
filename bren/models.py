@@ -145,8 +145,6 @@ def get_users(search_str, num_results, search_type = "contains"):
     # ordered by display_name
     """
 
-    print search_type
-            
     if search_type == "starts_with":
         user_query = User.objects.filter(
                         first_name__istartswith=search_str

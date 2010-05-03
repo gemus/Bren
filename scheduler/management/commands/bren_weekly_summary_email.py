@@ -16,9 +16,7 @@ class Command(NoArgsCommand):
         start_date = end_date - datetime.timedelta(days=7)
 
         for user in get_subscribed_users():
-            print "USER", user
             data = reports.completed_workouts(start_date, end_date, user)
             email_user(user, 'Workout Report', 'reports/completed_workouts.html', data)
 
-        print "GET TO DA EMAIL!"
         #raise CommandError("I'm an error that something went wrong")
