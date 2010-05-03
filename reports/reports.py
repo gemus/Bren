@@ -48,17 +48,18 @@ def completed_workouts(start_date, end_date, user):
             'start_date'   : python_date_to_short_display_str(start_date),
             'end_date'     : python_date_to_short_display_str(end_date) }
 
-def attendence(start_date, end_date, user):
+def attendence(start_date, end_date):
     """
     Given a start and end date, will generate the attendence for the time period
     """
-    start_date = date_str_to_python(start_date)
-    end_date = date_str_to_python(end_date)
     datedelta = datetime.timedelta(days=1)
     date = start_date
     attendence = []
     
-    while date != end_date + datedelta:
+    number_of_days = (end_date - start_date).days
+    
+    while number_of_days >= 0:
+        number_of_days = number_of_days - 1
         attendence.append ({
             'date': date,
             'workout_classes' : []

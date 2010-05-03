@@ -8,7 +8,7 @@ urlpatterns = patterns('crossfit.reports.views',
 
     # /<user_name>/completed_workouts/?start_date=2010-01-01&end_date=2010-01-07
     (r'^(\w+)/completed_workouts/$', 'completed_workouts'),
-    (r'^attendence/(\d{4}-\d{2}-\d{2})/$', 'attendence'),
-    (r'^ranking/(\d+)/$', 'ranking'),
+    (r'^attendence/$', 'attendence'),
+    (r'^ranking/$', 'ranking'),
 
 )
