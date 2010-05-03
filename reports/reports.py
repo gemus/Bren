@@ -21,6 +21,7 @@ def completed_workouts(start_date, end_date, user):
                 .filter(workout_class__date__range=(start_date, end_date))\
                 .order_by("workout_class__date"):
         workout_info = get_completed_workout_info(i.id)
+      
 
         # Make a user friendly version of the date
         workout_date = date_str_to_python(workout_info['date'])
@@ -31,10 +32,14 @@ def completed_workouts(start_date, end_date, user):
             time_val = workout_info['info']['time']
             minutes = time_val / 60
             seconds = time_val % 60
-            time_display = "%d:%d" % (minutes, seconds)
+            time_display = "%d:%02d" % (minutes, seconds)
             workout_info['info']['time_display'] = time_display
 
-        the_workouts.append(workout_info)
+        the_workouts.append ({
+            'workout_info'      : workout_info,
+            'workout_rounds'    : i.workout_class.workout.rounds,
+            'workout_time'      : i.workout_class.workout.time,         
+            })
 
     display_name = "%s" % (user.first_name)
 

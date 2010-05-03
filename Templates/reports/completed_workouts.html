@@ -10,22 +10,21 @@
 			</div>
 			<div style="float: left;">
 				<div style="font-weight: bold; font-size: 12pt; margin-right: 10px;">
-					{{workout.name}} -
-
-					{% ifequal workout.info.type "Done" %}
+					{{workout.workout_info.name}} -
+					{% ifequal workout.workout_info.info.type "Done" %}
 					<i>Completed</i>
 					{% endifequal %}
-					{% ifequal workout.info.type "AMRAP" %}
-					<i>{{workout.info.rounds}} Rounds Completed</i>
+					{% ifequal workout.workout_info.info.type "AMRAP" %}
+					<i>{{workout.workout_info.info.rounds}} Rounds Completed in {{workout.workout_time}}mins. of</i>
 					{% endifequal %}
-					{% ifequal workout.info.type "Timed" %}
-					<i>Completed In {{workout.info.time_display}}</i>
+					{% ifequal workout.workout_info.info.type "Timed" %}
+					<i>Completed {{workout.rounds}} {% ifnotequal workout.workout_rounds 1 %} {{workout.workout_rounds}} rounds {%endifnotequal%} in {{workout.workout_info.info.time_display}}</i>
 					{% endifequal %}
 				</div>
 				{% if workout.comments %}<div style="font-weight: bold; font-size: 10pt; margin: 5px 0pt 2px;">{{workout.comments}}</div>{% endif %}
 
 				<table style="font-size: 10pt; line-height: 10pt;">
-				{% for variation in workout.variations %}
+				{% for variation in workout.workout_info.variations %}
 					<tr>
 						<td style="width: 35pt; text-align: right; padding-right: 5pt;">{% ifnotequal variation.rounds 1 %}{{variation.rounds}}x{% endifnotequal %}</td>
 						<td style="width: 145pt;">{{variation.element}}</td>
