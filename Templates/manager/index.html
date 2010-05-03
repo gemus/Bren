@@ -55,6 +55,34 @@
 		}
 
 		/* ----------------------------------------------------------------- */
+		/* ---- Top Navigation --------------------------------------------- */
+		/* ----------------------------------------------------------------- */
+		ul#topNav {
+			display: block;
+			background-color: #ccc;
+			padding: 10px;
+		}
+
+		ul#topNav li {
+			display: inline;
+			border: 2px solid #3C5F7F;
+			padding: 3px 25px;
+			color: #3C5F7F;
+			font-weight: bold;
+			background-color: #FFF;
+			cursor: pointer;
+		}
+
+		ul#topNav li:hover {
+			background-color: #DEEEF9;
+		}
+
+		ul#topNav li.selected {
+			background-color: #3C5F7F;
+			color: #FFF;
+		}
+
+		/* ----------------------------------------------------------------- */
 		/* ---- User Scroller ---------------------------------------------- */
 		/* ----------------------------------------------------------------- */
 
@@ -209,12 +237,21 @@
 
 			$(window).resize(on_window_resize);
 			on_window_resize();
+
+			$('ul#topNav li').click(function() {
+				$('ul#topNav li').removeClass("selected");
+				$(this).addClass("selected");
+			});
 		});
 	</script>
 {% endblock %}
 {% block content %}
 	<h1 id="topHeader">Vancouver Island Crossfit Manager</h1>
-
+	<ul id="topNav">
+		<li class="selected">User Manager</li>
+		<li>Attendance</li>
+		<li>Workout Rankings</li>
+	</ul>
 	<div style="padding: 20px;">
 		<div id="user_scroller_container"></div>
 		<div id="user_viewer_container"></div>
