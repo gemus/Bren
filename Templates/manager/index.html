@@ -54,6 +54,10 @@
 			font-weight: bold;
 		}
 
+		.hidden {
+			display: none;
+		}
+
 		/* ----------------------------------------------------------------- */
 		/* ---- Top Navigation --------------------------------------------- */
 		/* ----------------------------------------------------------------- */
@@ -220,27 +224,61 @@
 			background-color: #ccc;
 		}
 
+		/* ----------------------------------------------------------------- */
+		/* ---- Attendance Report ------------------------------------------ */
+		/* ----------------------------------------------------------------- */
+		div#attendance_actions {
+			padding: 5px;
+		}
+		div#attendance_actions input {
+			border: 1px solid #3C5F7F;
+			width: 120px;
+		}
+
+
 	</style>
 	<script type="text/javascript" charset="utf-8">
-		function on_window_resize() {
-			var height = $(window).height() - 180;
-			height = height < 150 ? 150 : height;
-			$("div#userScrollerCanvas").height(height);
+		Navigation = function() {
+			this.current_view = 'user_manager';
+			this.change_view('user_manager');
+		}
+		Navigation.prototype.change_view = function(new_view) {
+			this.current_view = new_view;
+
+			$("div#user_manager_canvas").addClass('hidden');
+			$("div#attendance_canvas").addClass('hidden');
+			$("div#"+new_view+"_canvas").removeClass('hidden');
+
+			if (new_view == 'user_manager') {
+				$("#user_scroller_container").userScroller("user_viewer_container");
+
+				$("#create_user_button").click(function(e) {
+					$("#user_viewer_container").userManager("_CREATE_USER");
+				});
+			} else if (this.current_view == 'user_manager') {
+				$('div#attendance_actions input').datepicker({ dateFormat: 'yy-mm-dd' });
+			}
+		}
+		Navigation.prototype.do_resize = function() {
+			if (this.current_view == 'user_manager') {
+				var height = $(window).height() - 180;
+				height = height < 150 ? 150 : height;
+				$("div#userScrollerCanvas").height(height);
+			}
 		}
 
 		$(document).ready(function() {
-			$("#user_scroller_container").userScroller("user_viewer_container");
+			// Create our navigation controller
+			var navigation = new Navigation()
 
-			$("#create_user_button").click(function(e) {
-				$("#user_viewer_container").userManager("_CREATE_USER");
-			});
+			// Hook up the resize event
+			$(window).resize(navigation.do_resize);
 
-			$(window).resize(on_window_resize);
-			on_window_resize();
-
+			// Setup the navigation buttons
 			$('ul#topNav li').click(function() {
 				$('ul#topNav li').removeClass("selected");
 				$(this).addClass("selected");
+				navigation.change_view($(this).attr('navigation'));
 			});
 		});
 	</script>
@@ -248,15 +286,24 @@
 {% block content %}
 	<h1 id="topHeader">Vancouver Island Crossfit Manager</h1>
 	<ul id="topNav">
-		<li class="selected">User Manager</li>
-		<li>Attendance</li>
-		<li>Workout Rankings</li>
+		<li class="selected" navigation="user_manager">User Manager</li>
+		<li navigation="attendance">Attendance</li>
+		<li navigation="rankings">Workout Rankings</li>
 	</ul>
-	<div style="padding: 20px;">
+
+	<div id="user_manager_canvas" class="hidden" style="padding: 20px;">
 		<div id="user_scroller_container"></div>
 		<div id="user_viewer_container"></div>
 		<div style="clear: left; padding-top: 10px;">
 			<a href="javascript:void(0);" id="create_user_button" class="button">Add User</a>
 		</div>
+	</div>
+
+	<div id="attendance_canvas" class="hidden">
+		<div id="attendance_actions">
+			<label for="attendance_start">Start Date</label><input type="text" name="attendance_start" value="" id="attendance_start">
+			<label for="attendance_end">End Date</label><input type="text" name="attendance_end" value="" id="attendance_end">
+		</div>
+		<iframe id="attendance_iframe" width="100%" height="300px" src="/reports/attendance/2010-05-01/">
 	</div>
 {% endblock %}
