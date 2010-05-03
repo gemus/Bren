@@ -18,10 +18,6 @@ DATABASE_PASSWORD = 'crossfit'           # Not used with sqlite3.
 DATABASE_HOST = ''             # Set to empty string for localhost. Not used with sqlite3.
 DATABASE_PORT = ''             # Set to empty string for default. Not used with sqlite3.
 
-# Used when sending permission requests. <value>/email/confirm/<hash>/
-# Eg: 'http://localhost:8000/'   BE SURE TO INCLUDE TRAILING SLASH
-CONFIRM_EMAIL_PERM_BASE_URL = 'http://localhost:8000/'
-
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
@@ -52,22 +48,6 @@ MEDIA_URL = 'http://127.0.0.1:8000/media/'
 # trailing slash.
 # Examples: "http://foo.com/media/", "/media/".
 ADMIN_MEDIA_PREFIX = '/mediass/'
-
-# URL to direct users to if the need to login.
-# Using the built in Django auth modules
-LOGIN_URL = '/login/'
-LOGIN_REDIRECT_URL = '/'
-
-# Email settings for sending emails
-EMAIL_HOST = "opriusmail.com"
-EMAIL_PORT = 587
-EMAIL_HOST_USER = "owen"
-EMAIL_HOST_PASSWORD = "bl0wM3!"
-# Specify if we want to actually send it, output it, or just ignore it
-#EMAIL_BACKEND = "django.core.mail.backends.smtp"
-EMAIL_BACKEND = "django.core.mail.backends.console"
-#EMAIL_BACKEND = "django.core.mail.backends.dummy"
-
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = '!_osfgf^saypyx=w21k+s1&(bci2c9nghi74(&ne*!!t*z)tf%'
@@ -106,3 +86,27 @@ INSTALLED_APPS = (
     'crossfit.scheduler',
 )
 AUTH_PROFILE_MODULE = 'bren.UserProfile'
+
+
+# ===================
+# = CUSTOM SETTINGS =
+# ===================
+
+# Used when sending permission requests. <value>/email/confirm/<hash>/
+# Eg: 'http://localhost:8000/'   BE SURE TO INCLUDE TRAILING SLASH
+CONFIRM_EMAIL_PERM_BASE_URL = 'http://localhost:8000/'
+
+# URL to direct users to if the need to login.
+# Using the built in Django auth modules
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/'
+
+# Email settings for sending emails
+EMAIL_HOST = "opriusmail.com"
+EMAIL_PORT = 587
+EMAIL_HOST_USER = "owen"
+EMAIL_HOST_PASSWORD = "bl0wM3!"
+# Specify if we want to actually send it, output it, or just ignore it
+#EMAIL_BACKEND = "django.core.mail.backends.smtp"
+EMAIL_BACKEND = "django.core.mail.backends.console"
+#EMAIL_BACKEND = "django.core.mail.backends.dummy"
