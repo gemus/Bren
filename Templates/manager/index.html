@@ -239,12 +239,9 @@
 	</style>
 	<script type="text/javascript" charset="utf-8">
 		Navigation = function() {
-			this.current_view = 'user_manager';
 			this.change_view('user_manager');
 		}
 		Navigation.prototype.change_view = function(new_view) {
-			this.current_view = new_view;
-
 			$("div#user_manager_canvas").addClass('hidden');
 			$("div#attendance_canvas").addClass('hidden');
 			$("div#"+new_view+"_canvas").removeClass('hidden');
@@ -258,13 +255,13 @@
 			} else if (this.current_view == 'user_manager') {
 				$('div#attendance_actions input').datepicker({ dateFormat: 'yy-mm-dd' });
 			}
+
+			this.do_resize();
 		}
 		Navigation.prototype.do_resize = function() {
-			if (this.current_view == 'user_manager') {
-				var height = $(window).height() - 180;
-				height = height < 150 ? 150 : height;
-				$("div#userScrollerCanvas").height(height);
-			}
+			var height = $(window).height() - 180;
+			height = height < 150 ? 150 : height;
+			$("div#userScrollerCanvas").height(height);
 		}
 
 		$(document).ready(function() {
