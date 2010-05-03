@@ -95,9 +95,6 @@ class Element_used(models.Model):
     element = models.ForeignKey(Element)
     reps = models.IntegerField()
     order = models.IntegerField()
-    def __unicode__(self):
-        return self.workout.name+ ", "+ self.element.name
-
 class Variation(models.Model):
     """
     Purpose : A Variation to a workout
@@ -306,6 +303,25 @@ def get_workout(workout_date_str, class_id):
         return return_dict
     return {"error": "No Class Found"}
 
+def get_workouts(date):
+    """
+    Purpose: Given a date return the workouts that happened that day
+    Params:
+            "date"      : The date of the workout in YYYY-MM-DD format (STRING)
+    Returns:
+            "workouts"  : A list of the workouts that happened that day(LIST)
+    """
+    date = datetime.datetime.strptime(date, DATE_FORMAT)
+    workout_index = {}
+    workouts = []
+    for workout_class in Workout_class.objects.filter(date = date):
+        if not workout_class.workout.id in workout_index:
+            workout_index.update({workout_class.workout.id : 2})
+            workouts.append({"workout" : workout_class.workout.name})
+        
+    return workouts
+    
+
 def get_element_history(user_id, element_id):
     """
     Purpose: Given a user and element return the users history with the element in list form
@@ -423,12 +439,17 @@ def get_completed_workout_info(completed_workout_id):
 
     variations = []
     for completed_element in Completed_element.objects.filter(completed_workout__id = completed_workout_id).order_by('element_used__order'):
+            if completed_element.variation.element.weighted == True:
+                variation = str (completed_element.variation.name) + " lbs."
+            else :
+                variation = completed_element.variation.name
             variations.append({"element": completed_element.variation.element.name,
-                               "variation": completed_element.variation.name,
+                               "variation": variation,
                                "rounds":    completed_element.element_used.reps})
 
     data = {
         "name" : completed_workout.workout_class.workout.name,
+        "user_name" : completed_workout.user.first_name,
         "comments" : completed_workout.workout_class.workout.comments,
         "date" : completed_workout.workout_class.date.isoformat(),
         "info" : type_value,
@@ -662,4 +683,4 @@ def get_workout_with_date_class(date, class_id):
         "time"              : time,
         "rounds"            : rounds,
         }
-    return return_dict
+    return return_dict   
