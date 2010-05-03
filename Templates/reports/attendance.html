@@ -14,4 +14,13 @@
         {% endfor %}
         <br>
     {% endfor %}
-	
+    <br><br>
+    
+    <table>
+    <th> User </th> <th># Of workouts</th>
+        {% for user in users_attendance %}
+            <tr>
+            <td>{{user.name}}</td><td>{{user.num}}</td>
+            </tr>
+        {%endfor %}
+    </table>
