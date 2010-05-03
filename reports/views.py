@@ -37,7 +37,7 @@ def attendence(request, user):
     Given a start and end date, will generate the attendence for the time period
     """
     start_date = "2010-1-4"
-    end_date = "2010-4-30"
+    end_date = "2010-1-15"
     
     #start_date = date_str_to_python(request.GET['start_date'])
     #end_date = date_str_to_python(request.GET['end_date'])

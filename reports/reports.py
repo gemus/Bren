@@ -1,4 +1,4 @@
-from crossfit.reports import date_str_to_python, get_day_of_week_str
+from crossfit.reports import date_str_to_python, get_day_of_week_str, python_date_to_display_str
 from crossfit.bren.models import *
 
 """
@@ -50,12 +50,12 @@ def attendence(start_date, end_date, user):
     """
     Given a start and end date, will generate the attendence for the time period
     """
-    OUTPUT_FORMAT = "%B %d, %Y" # December 1, 2009
-    start_date = datetime.datetime.strptime(start_date, DATE_FORMAT)
-    end_date = date = datetime.datetime.strptime(end_date, DATE_FORMAT)
+    start_date = date_str_to_python(start_date)
+    end_date = date_str_to_python(end_date)
     datedelta = datetime.timedelta(days=1)
     date = start_date
     attendence = []
+    
     while date != end_date + datedelta:
         attendence.append ({
             'date': date,
@@ -70,22 +70,22 @@ def attendence(start_date, end_date, user):
             for co in Completed_workout.objects.filter(workout_class__id = workout_class.id):
                 users.append (co.user.first_name)
             user_number = len(users)
+            
             day['workout_classes'].append({
                 'class_name' : workout_class.class_info.title,
                 'users': users,
                 'user_number' : user_number,
                 })
-    start_date = start_date.strftime(OUTPUT_FORMAT).replace(' 0', ' ')
-    end_date = end_date.strftime(OUTPUT_FORMAT).replace(' 0', ' ')
+                
     for date in attendence:
-        date['date'] = date['date'].strftime(OUTPUT_FORMAT).replace(' 0', ' ')
-
+        date['date'] = python_date_to_display_str(date['date'])
+           
     return_data = {
-        'start_date' : start_date,
-        'end_date' : end_date,
+        'start_date' : python_date_to_display_str(start_date),
+        'end_date' : python_date_to_display_str(end_date),
         'attendence' : attendence
         }
-    return (return_data)
+    return return_data
 
 def ranking(workout_id, date):
     """
@@ -97,19 +97,14 @@ def ranking(workout_id, date):
         "workout_name" : The name of the workout(STRING)
         "workout_ranking": A list or the completed workouts in order(LIST)
     """
-    OUTPUT_FORMAT = "%B %d, %Y" # December 1, 2009
     workout_ranking = []
     date = datetime.datetime.strptime(date, DATE_FORMAT)
-    workout = Workout.objects.get(id=workout_id)  
-    
-    workout_elements = Element_used.objects.filter(workout__id = workout_id)   
-    if  workout.workout_type == 'Timed' :
-        completed_workouts = Completed_workout.objects.filter(workout_class__workout__id = workout_id, workout_class__date = date).order_by('secs')
-    if  workout.workout_type == 'AMRAP' :
-        completed_workouts = Completed_workout.objects.filter(workout_class__workout__id = workout_id, workout_class__date = date).order_by('-rounds')
-    if  workout.workout_type == 'Done' :
-        completed_workouts = Completed_workout.objects.filter(workout_class__workout__id = workout_id, workout_class__date = date).order_by('user__first_name')
-    
+    workout = Workout.objects.get(id=workout_id)    
+    workout_elements = Element_used.objects.filter(workout__id = workout_id)  
+    if  workout.workout_type == 'Timed': order_by = "secs"
+    elif  workout.workout_type == 'AMRAP': order_by = "-rounds"
+    elif  workout.workout_type == 'Done': order_by = "user__first_name"
+    completed_workouts = Completed_workout.objects.filter(workout_class__workout__id = workout_id, workout_class__date = date).order_by(order_by)
     for co in completed_workouts:
         workout_ranking.append(get_completed_workout_info(co.id))
     if  workout.workout_type == 'Timed' :
@@ -117,15 +112,13 @@ def ranking(workout_id, date):
             mins = co['info']['time'] / 60
             secs = co['info']['time'] % 60
             co['info']['time'] = "%d:%02d" % (mins, secs)
-    
-    date = date.strftime(OUTPUT_FORMAT).replace(' 0', ' ')
     return_data = {
     "workout_name" : workout.name,
     "workout_elements": workout_elements,
     "workout_type" : workout.workout_type,
-    "workout_date" : date,
+    "workout_date" : python_date_to_display_str(date),
     "workout_ranking" : workout_ranking,
     }
     
-    return (return_data)
+    return return_data
  
