@@ -14,6 +14,12 @@ def confirm(request, given_code):
     except UserEmailPermissions.DoesNotExist:
         data = dict(given_code=given_code)
         return render_to_response('email_sender/bad_confirm_code.html')
+    
+def unsubscribe(request, given_code):
+    email_perm = UserEmailPermissions.objects.get(pk=given_code)
+    email_perm.has_permission = False
+    email_perm.save()
+    return render_to_response('email_sender/unsubscribe.html', {'email': email_perm.user.email})
 
 def send_perm_request(user):
     # Grab existing hash, or generate one

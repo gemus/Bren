@@ -20,7 +20,6 @@ def get_subscribed_users():
 
 class UserEmailPermissions(models.Model):
     subscribe_hash = models.CharField(max_length=20, primary_key=True, default=gen_subscribe_hash)
-
     user = models.ForeignKey(User, unique=True)
     has_permission = models.BooleanField(default=False)
 

@@ -1,5 +1,6 @@
 from crossfit.reports import *
 from crossfit.bren.models import *
+from crossfit.email_sender.models import*
 
 """
 === Design Philosophy =========================================================
@@ -47,11 +48,16 @@ def completed_workouts(start_date, end_date, user):
         display_name += "'"
     else:
         display_name += "'s"
-
+    try:
+        unsubscribe_hash = UserEmailPermissions.objects.get(user=user).subscribe_hash
+    except UserEmailPermissions.DoesNotExist:
+        unsubscribe_hash = ''       
     return {'workouts'     : the_workouts,
             'display_name' : display_name,
+            'unsubscribe_hash' : unsubscribe_hash,
             'start_date'   : python_date_to_short_display_str(start_date),
-            'end_date'     : python_date_to_short_display_str(end_date) }
+            'end_date'     : python_date_to_short_display_str(end_date) 
+            }
 
 def attendance(start_date, end_date):
     """
