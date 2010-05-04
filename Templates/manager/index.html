@@ -7,7 +7,6 @@
 	<script type="text/javascript" src="/site_media/js/json2.js"></script>
 	<script type="text/javascript" charset="utf-8">
 		Navigation = function() {
-			this.change_view('user_manager');
 		}
 		Navigation.prototype.change_view = function(new_view) {
 			$("div#user_manager_canvas").addClass('hidden');
@@ -35,6 +34,9 @@
 				$(this).addClass("selected");
 				navigation.change_view($(this).attr('navigation'));
 			});
+
+			// 'Click' the first one to setup a default view
+			$('ul#topNav li:first').click();
 		});
 	</script>
 {% endblock %}
@@ -42,8 +44,8 @@
 	<div id="top_content">
 		<h1 id="topHeader">Vancouver Island Crossfit Manager</h1>
 		<ul id="topNav">
-			<li class="selected" navigation="user_manager">User Manager</li>
 			<li navigation="attendance">Attendance</li>
+			<li navigation="user_manager">User Manager</li>
 			<li navigation="rankings">Workout Rankings</li>
 		</ul>
 	</div>
