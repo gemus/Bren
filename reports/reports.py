@@ -22,7 +22,7 @@ def completed_workouts(start_date, end_date, user):
                 .filter(workout_class__date__range=(start_date, end_date))\
                 .order_by("workout_class__date"):
         workout_info = get_completed_workout_info(i.id)
-      
+
 
         # Make a user friendly version of the date
         workout_date = date_str_to_python(workout_info['date'])
@@ -39,7 +39,7 @@ def completed_workouts(start_date, end_date, user):
         the_workouts.append ({
             'workout_info'      : workout_info,
             'workout_rounds'    : i.workout_class.workout.rounds,
-            'workout_time'      : i.workout_class.workout.time,         
+            'workout_time'      : i.workout_class.workout.time,
             })
 
     display_name = "%s" % (user.first_name)
@@ -51,12 +51,12 @@ def completed_workouts(start_date, end_date, user):
     try:
         unsubscribe_hash = UserEmailPermissions.objects.get(user=user).subscribe_hash
     except UserEmailPermissions.DoesNotExist:
-        unsubscribe_hash = ''       
+        unsubscribe_hash = ''
     return {'workouts'     : the_workouts,
             'display_name' : display_name,
             'unsubscribe_hash' : unsubscribe_hash,
             'start_date'   : python_date_to_short_display_str(start_date),
-            'end_date'     : python_date_to_short_display_str(end_date) 
+            'end_date'     : python_date_to_short_display_str(end_date)
             }
 
 def attendance(start_date, end_date):
@@ -85,8 +85,9 @@ def attendance(start_date, end_date):
                 if not name_key in user_count :
                     user_count.update({ name_key : 1})
                 else:
-                    user_count[name_key] = user_count[name_key] + 1 
-            user_number = len(users)          
+                    user_count[name_key] = user_count[name_key] + 1
+            user_number = len(users)
+
             day['workout_classes'].append({
                 'class_name' : workout_class.class_info.title,
                 'users': users,
@@ -95,6 +96,7 @@ def attendance(start_date, end_date):
     users_attendance = []
     for key in  user_count.keys():
         users_attendance.append({'name': key, 'num': user_count[key]})
+
     for date in attendance:
         date['date'] = python_date_to_display_str(date['date'])
     return_data = {
@@ -116,8 +118,8 @@ def ranking(workout_id, date):
         "workout_ranking": A list or the completed workouts in order(LIST)
     """
     workout_ranking = []
-    workout = Workout.objects.get(id=workout_id)    
-    workout_elements = Element_used.objects.filter(workout__id = workout_id)  
+    workout = Workout.objects.get(id=workout_id)
+    workout_elements = Element_used.objects.filter(workout__id = workout_id)
     if  workout.workout_type == 'Timed': order_by = "secs"
     elif  workout.workout_type == 'AMRAP': order_by = "-rounds"
     elif  workout.workout_type == 'Done': order_by = "user__first_name"
@@ -136,5 +138,5 @@ def ranking(workout_id, date):
     "workout_date" : python_date_to_display_str(date),
     "workout_ranking" : workout_ranking,
     }
-    
+
     return return_data

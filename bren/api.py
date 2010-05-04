@@ -35,13 +35,21 @@ def json_api(request):
             "result" : result,
             "error"  : None
         }
+    elif method == 'get_workouts':
+        json_params = simplejson.loads(request.GET['params'])
+        result = model.get_workouts(json_params[0])
+        to_return = {
+            "id"     : request.GET['id'],
+            "result" : result,
+            "error"  : None
+        }
     elif method == 'get_users':
         json_params = simplejson.loads(request.GET['params'])
         if len(json_params) == 2:
             result = model.get_users(json_params[0], json_params[1])
         if len(json_params) == 3:
-            result = model.get_users(json_params[0], json_params[1], json_params[2])    
-            
+            result = model.get_users(json_params[0], json_params[1], json_params[2])
+
         to_return = {
             "id"     : request.GET['id'],
             "result" : result,
