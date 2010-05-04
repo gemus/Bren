@@ -1,245 +1,13 @@
 {% extends "bren/base.html" %}
 {% block head_content %}
 	<link type="text/css" href="/site_media/css/redmond/jquery-ui-1.7.2.custom.css" rel="stylesheet" />
+	<link type="text/css" href="/site_media/css/manager.css" rel="stylesheet" />
+	<script type="text/javascript" src="/site_media/js/util.js"></script>
 	<script type="text/javascript" src="/site_media/js/user_manager.js"></script>
 	<script type="text/javascript" src="/site_media/js/user_scroller.js"></script>
 	<script type="text/javascript" src="/site_media/js/json2.js"></script>
-	<style type="text/css" media="screen">
-		h1#topHeader {
-			padding: 33px 0px 15px 15px;
-			font-size: 175%;
-			background-color: #3C5F7F;
-			color: #FFF;
-			font-weight: normal;
-			text-align: center;
-		}
-
-		h2 {
-			padding: 5px 0pt 5px 10px;
-			font-size: 1em;
-			background-color: #3C5F7F;
-			color: #FFF;
-		}
-
-		a {
-			color: #3C5F7F;
-		}
-
-		a.button {
-			border: 2px solid #3C5F7F;
-			padding: 3px 25px;
-			font-size: 90%;
-			text-decoration: none;
-			margin: 0pt;
-		}
-
-		input.blur {
-			color: #999;
-		}
-
-		div.error_plate {
-			color: #F00;
-			background-color: #FDD;
-			padding: 3px;
-			font-size: 80%;
-			font-weight: bold;
-		}
-
-		iframe {
-			border: none;
-		}
-
-		label {
-			font-size: 90%;
-			font-weight: bold;
-		}
-
-		.hidden {
-			display: none;
-		}
-
-		/* ----------------------------------------------------------------- */
-		/* ---- Top Navigation --------------------------------------------- */
-		/* ----------------------------------------------------------------- */
-		ul#topNav {
-			display: block;
-			background-color: #ccc;
-			padding: 10px;
-		}
-
-		ul#topNav li {
-			display: inline;
-			border: 2px solid #3C5F7F;
-			padding: 3px 25px;
-			color: #3C5F7F;
-			font-weight: bold;
-			background-color: #FFF;
-			cursor: pointer;
-		}
-
-		ul#topNav li:hover {
-			background-color: #DEEEF9;
-		}
-
-		ul#topNav li.selected {
-			background-color: #3C5F7F;
-			color: #FFF;
-		}
-
-		/* ----------------------------------------------------------------- */
-		/* ---- User Scroller ---------------------------------------------- */
-		/* ----------------------------------------------------------------- */
-
-		div#user_scroller_container {
-			float: left;
-			width: 33%;
-		}
-		div#userScrollerCanvas {
-			border: 1px solid #000;
-			overflow: auto;
-			height: 10px;
-		}
-		div#user_scroller_container div.user_button {
-			border-bottom: 1px solid #ccc;
-			padding: 4px;
-			height: 20px;
-			cursor: pointer;
-			overflow: hidden;
-			white-space: nowrap;
-		}
-		div#user_scroller_container div.user_button:hover {
-			background-color: #eee;
-		}
-		div#user_scroller_container div.user_button[is_selected=true] {
-			background-color: #DEEEF9;
-			font-weight: bold;
-		}
-		div#user_scroller_container div.no_results {
-			padding: 5px;
-			color: #333;
-		}
-
-		input#userScroller_searchBox.empty_search {
-			color: #999;
-		}
-		input#userScroller_searchBox {
-			border: 1px solid #3C5F7F;
-			padding: 2px;
-			margin-bottom: 5px;
-			width: 98%;
-		}
-
-		/* ----------------------------------------------------------------- */
-		/* ---- User Viewer ------------------------------------------------ */
-		/* ----------------------------------------------------------------- */
-		div#user_viewer_container {
-			float: left;
-			margin-left: 15px;
-		}
-
-		div#user_viewer_container div.name_plate {
-			font-size: 150%;
-			color: #3C5F7F;
-			font-weight: bold;
-		}
-
-		div#user_viewer_container div.email_plate a {
-			color: #3C5F7F;
-			text-decoration: none;
-			margin-top: 2px;
-			display: block;
-		}
-		div#user_viewer_container div.email_plate a:hover {
-			text-decoration: underline;
-		}
-
-		div#user_viewer_container a.button {
-			padding: 3px 10px;
-			margin: 5px 10px 0pt 0pt;
-		}
-
-		div.action_plate, div#delete_user, div#manage_pin, div#perm_manager {
-			float: left;
-			margin-top: 10px;
-		}
-
-		/* ----------------------------------------------------------------- */
-		/* ---- User Editor ------------------------------------------------ */
-		/* ----------------------------------------------------------------- */
-		div.name_plate_edit input {
-			font-size: 150%;
-			border: none;
-			border-bottom: 2px solid #3C5F7F;
-			height: 28px;
-			font-weight: bold;
-		}
-
-		div.name_plate_edit input.blur {
-			font-weight: normal;
-		}
-
-		div.email_plate_edit {
-			margin-top: 7px;
-		}
-
-		div.email_plate_edit input {
-			border: none;
-			border-bottom: 2px solid #3C5F7F;
-			height: 18px;
-		}
-
-		div#edit_actions {
-			margin-top: 15px;
-		}
-
-		div#pin_edit_canvas {
-			margin-top: 7px;
-		}
-
-		div#pin_edit_canvas input {
-			border: none;
-			border-bottom: 2px solid #3C5F7F;
-			height: 18px;
-		}
-
-		/* ----------------------------------------------------------------- */
-		/* ---- Report Manager --------------------------------------------- */
-		/* ----------------------------------------------------------------- */
-		div#report_manager div#reports_status {
-			padding: 5px;
-		}
-
-		div#permission_action_bar { margin-top: 3px;}
-		div#permission_action_bar a { font-size: 90%; }
-
-		/* ----------------------------------------------------------------- */
-		/* ---- Workout Explorer ------------------------------------------- */
-		/* ----------------------------------------------------------------- */
-		div#recent_workouts input {
-			border: 1px solid #3C5F7F;
-			width: 120px;
-		}
-		div#recent_workouts div#reports_action_bar {
-			padding: 5px;
-			background-color: #ccc;
-		}
-
-		/* ----------------------------------------------------------------- */
-		/* ---- Attendance Report ------------------------------------------ */
-		/* ----------------------------------------------------------------- */
-		div#attendance_actions {
-			padding: 5px;
-		}
-		div#attendance_actions input {
-			border: 1px solid #3C5F7F;
-			width: 120px;
-		}
-
-
-	</style>
 	<script type="text/javascript" charset="utf-8">
 		Navigation = function() {
-			this.change_view('user_manager');
 		}
 		Navigation.prototype.change_view = function(new_view) {
 			$("div#user_manager_canvas").addClass('hidden');
@@ -252,24 +20,30 @@
 				$("#create_user_button").click(function(e) {
 					$("#user_viewer_container").userManager("_CREATE_USER");
 				});
-			} else if (this.current_view == 'user_manager') {
+			} else if (new_view == 'attendance') {
 				$('div#attendance_actions input').datepicker({ dateFormat: 'yy-mm-dd' });
-			}
 
-			this.do_resize();
-		}
-		Navigation.prototype.do_resize = function() {
-			var height = $(window).height() - 180;
-			height = height < 150 ? 150 : height;
-			$("div#userScrollerCanvas").height(height);
+				var now = new Date();
+			    var end_date = date_to_str(now);
+			    now.setDate(now.getDate()-7);
+			    var start_date = date_to_str(now);
+
+				$('div#attendance_actions input#attendance_start').val(start_date);
+				$('div#attendance_actions input#attendance_end').val(end_date);
+
+				$('div#attendance_actions input').change(function() {
+					$("iframe#attendance_iframe").attr('src', 'http://localhost:8000/reports/attendance/?start_date='+
+														$('div#attendance_actions input#attendance_start').val()+
+														'&end_date='+
+														$('div#attendance_actions input#attendance_end').val());
+				});
+				$('div#attendance_actions input#attendance_start').change();
+			}
 		}
 
 		$(document).ready(function() {
 			// Create our navigation controller
 			var navigation = new Navigation()
-
-			// Hook up the resize event
-			$(window).resize(navigation.do_resize);
 
 			// Setup the navigation buttons
 			$('ul#topNav li').click(function() {
@@ -277,30 +51,36 @@
 				$(this).addClass("selected");
 				navigation.change_view($(this).attr('navigation'));
 			});
+
+			// 'Click' the first one to setup a default view
+			$('ul#topNav li:first').click();
 		});
 	</script>
 {% endblock %}
 {% block content %}
-	<h1 id="topHeader">Vancouver Island Crossfit Manager</h1>
-	<ul id="topNav">
-		<li class="selected" navigation="user_manager">User Manager</li>
-		<li navigation="attendance">Attendance</li>
-		<li navigation="rankings">Workout Rankings</li>
-	</ul>
-
-	<div id="user_manager_canvas" class="hidden" style="padding: 20px;">
-		<div id="user_scroller_container"></div>
-		<div id="user_viewer_container"></div>
-		<div style="clear: left; padding-top: 10px;">
-			<a href="javascript:void(0);" id="create_user_button" class="button">Add User</a>
-		</div>
+	<div id="top_content">
+		<h1 id="topHeader">Vancouver Island Crossfit Manager</h1>
+		<ul id="topNav">
+			<li navigation="attendance">Attendance</li>
+			<li navigation="user_manager">User Manager</li>
+			<li navigation="rankings">Workout Rankings</li>
+		</ul>
 	</div>
-
-	<div id="attendance_canvas" class="hidden">
-		<div id="attendance_actions">
-			<label for="attendance_start">Start Date</label><input type="text" name="attendance_start" value="" id="attendance_start">
-			<label for="attendance_end">End Date</label><input type="text" name="attendance_end" value="" id="attendance_end">
+	<div id="main_content">
+		<div id="user_manager_canvas" class="hidden" style="padding: 20px;">
+			<div id="user_scroller_container"></div>
+			<a href="javascript:void(0);" id="create_user_button" class="button">Add User</a>
+			<div id="user_viewer_container"></div>
 		</div>
-		<iframe id="attendance_iframe" width="100%" height="300px" src="/reports/attendance/2010-05-01/">
+
+		<div id="attendance_canvas" class="hidden">
+			<div id="attendance_actions">
+				<label for="attendance_start">Start Date</label><input type="text" name="attendance_start" value="" id="attendance_start">
+				<label for="attendance_end">End Date</label><input type="text" name="attendance_end" value="" id="attendance_end">
+			</div>
+			<div id="attendance_iframe_container">
+				<iframe id="attendance_iframe" width="100%">
+			</div>
+		</div>
 	</div>
 {% endblock %}
