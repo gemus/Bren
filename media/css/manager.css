@@ -52,6 +52,21 @@ label {
 }
 
 /* ----------------------------------------------------------------- */
+/* ---- Main Content Layout ---------------------------------------- */
+/* ----------------------------------------------------------------- */
+
+div#top_content {
+	position: absolute;
+	top: 0px; left: 0px; right: 0px;
+}
+
+div#main_content {
+	position: absolute;
+	top: 130px; left: 10px; right: 10px; bottom: 10px;
+	overflow-y: auto;
+}
+
+/* ----------------------------------------------------------------- */
 /* ---- Top Navigation --------------------------------------------- */
 /* ----------------------------------------------------------------- */
 ul#topNav {
@@ -82,16 +97,32 @@ ul#topNav li.selected {
 /* ----------------------------------------------------------------- */
 /* ---- User Scroller ---------------------------------------------- */
 /* ----------------------------------------------------------------- */
-
 div#user_scroller_container {
-	float: left;
-	width: 33%;
+	position: absolute;
+	left: 0px; top: 0px; bottom: 0px;
+	overflow-y: auto;
+	width: 30%;
 }
+
+div#user_viewer_container {
+	position: absolute;
+	left: 30%; top: 0px; bottom: 0px;
+	overflow-y: auto;
+}
+
 div#userScrollerCanvas {
-	border: 1px solid #000;
-	overflow: auto;
-	height: 10px;
+	position: absolute;
+	top: 30px; left: 5px; right: 5px; bottom: 40px;
+	overflow-y: auto;
+	border: 1px solid #3C5F7F;
 }
+
+a#create_user_button {
+	position: absolute;
+	bottom: 5px;
+	left: 5px;
+}
+
 div#user_scroller_container div.user_button {
 	border-bottom: 1px solid #ccc;
 	padding: 4px;
@@ -100,6 +131,18 @@ div#user_scroller_container div.user_button {
 	overflow: hidden;
 	white-space: nowrap;
 }
+
+input#userScroller_searchBox {
+	border: 1px solid #3C5F7F;
+	padding: 2px;
+	margin-bottom: 5px;
+
+	position: absolute;
+	top: 2px; left: 5px; right: 5px;
+}
+
+
+/*
 div#user_scroller_container div.user_button:hover {
 	background-color: #eee;
 }
@@ -121,10 +164,12 @@ input#userScroller_searchBox {
 	margin-bottom: 5px;
 	width: 98%;
 }
-
+*/
 /* ----------------------------------------------------------------- */
 /* ---- User Viewer ------------------------------------------------ */
 /* ----------------------------------------------------------------- */
+/*
+
 div#user_viewer_container {
 	float: left;
 	margin-left: 15px;
@@ -155,11 +200,11 @@ div.action_plate, div#delete_user, div#manage_pin, div#perm_manager {
 	float: left;
 	margin-top: 10px;
 }
-
+*/
 /* ----------------------------------------------------------------- */
 /* ---- User Editor ------------------------------------------------ */
 /* ----------------------------------------------------------------- */
-div.name_plate_edit input {
+/*div.name_plate_edit input {
 	font-size: 150%;
 	border: none;
 	border-bottom: 2px solid #3C5F7F;
@@ -194,20 +239,22 @@ div#pin_edit_canvas input {
 	border-bottom: 2px solid #3C5F7F;
 	height: 18px;
 }
-
+*/
 /* ----------------------------------------------------------------- */
 /* ---- Report Manager --------------------------------------------- */
 /* ----------------------------------------------------------------- */
+/*
 div#report_manager div#reports_status {
 	padding: 5px;
 }
 
 div#permission_action_bar { margin-top: 3px;}
 div#permission_action_bar a { font-size: 90%; }
-
+*/
 /* ----------------------------------------------------------------- */
 /* ---- Workout Explorer ------------------------------------------- */
 /* ----------------------------------------------------------------- */
+/*
 div#recent_workouts input {
 	border: 1px solid #3C5F7F;
 	width: 120px;
@@ -216,10 +263,11 @@ div#recent_workouts div#reports_action_bar {
 	padding: 5px;
 	background-color: #ccc;
 }
-
+*/
 /* ----------------------------------------------------------------- */
 /* ---- Attendance Report ------------------------------------------ */
 /* ----------------------------------------------------------------- */
+/*
 div#attendance_actions {
 	padding: 5px;
 }
@@ -227,3 +275,4 @@ div#attendance_actions input {
 	border: 1px solid #3C5F7F;
 	width: 120px;
 }
+*/

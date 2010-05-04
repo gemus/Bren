@@ -23,21 +23,11 @@
 			} else if (this.current_view == 'user_manager') {
 				$('div#attendance_actions input').datepicker({ dateFormat: 'yy-mm-dd' });
 			}
-
-			this.do_resize();
-		}
-		Navigation.prototype.do_resize = function() {
-			var height = $(window).height() - 180;
-			height = height < 150 ? 150 : height;
-			$("div#userScrollerCanvas").height(height);
 		}
 
 		$(document).ready(function() {
 			// Create our navigation controller
 			var navigation = new Navigation()
-
-			// Hook up the resize event
-			$(window).resize(navigation.do_resize);
 
 			// Setup the navigation buttons
 			$('ul#topNav li').click(function() {
@@ -49,26 +39,27 @@
 	</script>
 {% endblock %}
 {% block content %}
-	<h1 id="topHeader">Vancouver Island Crossfit Manager</h1>
-	<ul id="topNav">
-		<li class="selected" navigation="user_manager">User Manager</li>
-		<li navigation="attendance">Attendance</li>
-		<li navigation="rankings">Workout Rankings</li>
-	</ul>
-
-	<div id="user_manager_canvas" class="hidden" style="padding: 20px;">
-		<div id="user_scroller_container"></div>
-		<div id="user_viewer_container"></div>
-		<div style="clear: left; padding-top: 10px;">
-			<a href="javascript:void(0);" id="create_user_button" class="button">Add User</a>
-		</div>
+	<div id="top_content">
+		<h1 id="topHeader">Vancouver Island Crossfit Manager</h1>
+		<ul id="topNav">
+			<li class="selected" navigation="user_manager">User Manager</li>
+			<li navigation="attendance">Attendance</li>
+			<li navigation="rankings">Workout Rankings</li>
+		</ul>
 	</div>
-
-	<div id="attendance_canvas" class="hidden">
-		<div id="attendance_actions">
-			<label for="attendance_start">Start Date</label><input type="text" name="attendance_start" value="" id="attendance_start">
-			<label for="attendance_end">End Date</label><input type="text" name="attendance_end" value="" id="attendance_end">
+	<div id="main_content">
+		<div id="user_manager_canvas" class="hidden" style="padding: 20px;">
+			<div id="user_scroller_container"></div>
+			<a href="javascript:void(0);" id="create_user_button" class="button">Add User</a>
+			<div id="user_viewer_container"></div>
 		</div>
-		<iframe id="attendance_iframe" width="100%" height="300px" src="/reports/attendance/2010-05-01/">
+
+		<div id="attendance_canvas" class="hidden">
+			<div id="attendance_actions">
+				<label for="attendance_start">Start Date</label><input type="text" name="attendance_start" value="" id="attendance_start">
+				<label for="attendance_end">End Date</label><input type="text" name="attendance_end" value="" id="attendance_end">
+			</div>
+			<iframe id="attendance_iframe" width="100%" height="300px" src="/reports/attendance/2010-05-01/">
+		</div>
 	</div>
 {% endblock %}
