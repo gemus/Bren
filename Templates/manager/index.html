@@ -34,7 +34,7 @@
 				$('div#attendance_actions input#attendance_end').val(end_date);
 
 				$('div#attendance_actions input').change(function() {
-					$("iframe#attendance_iframe").attr('src', 'http://localhost:8000/reports/attendance/?start_date='+
+					$("iframe#attendance_iframe").attr('src', '/reports/attendance/?start_date='+
 														$('div#attendance_actions input#attendance_start').val()+
 														'&end_date='+
 														$('div#attendance_actions input#attendance_end').val());
