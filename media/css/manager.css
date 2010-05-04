@@ -256,10 +256,18 @@ div#recent_workouts iframe {
 /* ----------------------------------------------------------------- */
 /* ---- Attendance Report ------------------------------------------ */
 /* ----------------------------------------------------------------- */
-div#attendance_actions {
-	padding: 5px;
-}
 div#attendance_actions input {
 	border: 1px solid #3C5F7F;
 	width: 120px;
+	margin-left: 3px;
+	margin-right: 1em;
+}
+div#attendance_canvas div#attendance_iframe_container {
+	position: absolute;
+	top: 30px; left: 0px; right: 0px; bottom: 10px;
+	border: 2px solid #ccc;
+}
+div#attendance_canvas div#attendance_iframe_container iframe {
+	height: 100%;
+	width: 100%;
 }

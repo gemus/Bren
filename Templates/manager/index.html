@@ -19,7 +19,7 @@
 				$("#create_user_button").click(function(e) {
 					$("#user_viewer_container").userManager("_CREATE_USER");
 				});
-			} else if (this.current_view == 'user_manager') {
+			} else if (new_view == 'attendance') {
 				$('div#attendance_actions input').datepicker({ dateFormat: 'yy-mm-dd' });
 			}
 		}
@@ -61,7 +61,9 @@
 				<label for="attendance_start">Start Date</label><input type="text" name="attendance_start" value="" id="attendance_start">
 				<label for="attendance_end">End Date</label><input type="text" name="attendance_end" value="" id="attendance_end">
 			</div>
-			<iframe id="attendance_iframe" width="100%" src="/reports/attendance/2010-05-01/">
+			<div id="attendance_iframe_container">
+				<iframe id="attendance_iframe" width="100%" src="/reports/attendance/2010-05-01/">
+			</div>
 		</div>
 	</div>
 {% endblock %}
