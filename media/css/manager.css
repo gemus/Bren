@@ -1,0 +1,229 @@
+h1#topHeader {
+	padding: 33px 0px 15px 15px;
+	font-size: 175%;
+	background-color: #3C5F7F;
+	color: #FFF;
+	font-weight: normal;
+	text-align: center;
+}
+
+h2 {
+	padding: 5px 0pt 5px 10px;
+	font-size: 1em;
+	background-color: #3C5F7F;
+	color: #FFF;
+}
+
+a {
+	color: #3C5F7F;
+}
+
+a.button {
+	border: 2px solid #3C5F7F;
+	padding: 3px 25px;
+	font-size: 90%;
+	text-decoration: none;
+	margin: 0pt;
+}
+
+input.blur {
+	color: #999;
+}
+
+div.error_plate {
+	color: #F00;
+	background-color: #FDD;
+	padding: 3px;
+	font-size: 80%;
+	font-weight: bold;
+}
+
+iframe {
+	border: none;
+}
+
+label {
+	font-size: 90%;
+	font-weight: bold;
+}
+
+.hidden {
+	display: none;
+}
+
+/* ----------------------------------------------------------------- */
+/* ---- Top Navigation --------------------------------------------- */
+/* ----------------------------------------------------------------- */
+ul#topNav {
+	display: block;
+	background-color: #ccc;
+	padding: 10px;
+}
+
+ul#topNav li {
+	display: inline;
+	border: 2px solid #3C5F7F;
+	padding: 3px 25px;
+	color: #3C5F7F;
+	font-weight: bold;
+	background-color: #FFF;
+	cursor: pointer;
+}
+
+ul#topNav li:hover {
+	background-color: #DEEEF9;
+}
+
+ul#topNav li.selected {
+	background-color: #3C5F7F;
+	color: #FFF;
+}
+
+/* ----------------------------------------------------------------- */
+/* ---- User Scroller ---------------------------------------------- */
+/* ----------------------------------------------------------------- */
+
+div#user_scroller_container {
+	float: left;
+	width: 33%;
+}
+div#userScrollerCanvas {
+	border: 1px solid #000;
+	overflow: auto;
+	height: 10px;
+}
+div#user_scroller_container div.user_button {
+	border-bottom: 1px solid #ccc;
+	padding: 4px;
+	height: 20px;
+	cursor: pointer;
+	overflow: hidden;
+	white-space: nowrap;
+}
+div#user_scroller_container div.user_button:hover {
+	background-color: #eee;
+}
+div#user_scroller_container div.user_button[is_selected=true] {
+	background-color: #DEEEF9;
+	font-weight: bold;
+}
+div#user_scroller_container div.no_results {
+	padding: 5px;
+	color: #333;
+}
+
+input#userScroller_searchBox.empty_search {
+	color: #999;
+}
+input#userScroller_searchBox {
+	border: 1px solid #3C5F7F;
+	padding: 2px;
+	margin-bottom: 5px;
+	width: 98%;
+}
+
+/* ----------------------------------------------------------------- */
+/* ---- User Viewer ------------------------------------------------ */
+/* ----------------------------------------------------------------- */
+div#user_viewer_container {
+	float: left;
+	margin-left: 15px;
+}
+
+div#user_viewer_container div.name_plate {
+	font-size: 150%;
+	color: #3C5F7F;
+	font-weight: bold;
+}
+
+div#user_viewer_container div.email_plate a {
+	color: #3C5F7F;
+	text-decoration: none;
+	margin-top: 2px;
+	display: block;
+}
+div#user_viewer_container div.email_plate a:hover {
+	text-decoration: underline;
+}
+
+div#user_viewer_container a.button {
+	padding: 3px 10px;
+	margin: 5px 10px 0pt 0pt;
+}
+
+div.action_plate, div#delete_user, div#manage_pin, div#perm_manager {
+	float: left;
+	margin-top: 10px;
+}
+
+/* ----------------------------------------------------------------- */
+/* ---- User Editor ------------------------------------------------ */
+/* ----------------------------------------------------------------- */
+div.name_plate_edit input {
+	font-size: 150%;
+	border: none;
+	border-bottom: 2px solid #3C5F7F;
+	height: 28px;
+	font-weight: bold;
+}
+
+div.name_plate_edit input.blur {
+	font-weight: normal;
+}
+
+div.email_plate_edit {
+	margin-top: 7px;
+}
+
+div.email_plate_edit input {
+	border: none;
+	border-bottom: 2px solid #3C5F7F;
+	height: 18px;
+}
+
+div#edit_actions {
+	margin-top: 15px;
+}
+
+div#pin_edit_canvas {
+	margin-top: 7px;
+}
+
+div#pin_edit_canvas input {
+	border: none;
+	border-bottom: 2px solid #3C5F7F;
+	height: 18px;
+}
+
+/* ----------------------------------------------------------------- */
+/* ---- Report Manager --------------------------------------------- */
+/* ----------------------------------------------------------------- */
+div#report_manager div#reports_status {
+	padding: 5px;
+}
+
+div#permission_action_bar { margin-top: 3px;}
+div#permission_action_bar a { font-size: 90%; }
+
+/* ----------------------------------------------------------------- */
+/* ---- Workout Explorer ------------------------------------------- */
+/* ----------------------------------------------------------------- */
+div#recent_workouts input {
+	border: 1px solid #3C5F7F;
+	width: 120px;
+}
+div#recent_workouts div#reports_action_bar {
+	padding: 5px;
+	background-color: #ccc;
+}
+
+/* ----------------------------------------------------------------- */
+/* ---- Attendance Report ------------------------------------------ */
+/* ----------------------------------------------------------------- */
+div#attendance_actions {
+	padding: 5px;
+}
+div#attendance_actions input {
+	border: 1px solid #3C5F7F;
+	width: 120px;
+}
