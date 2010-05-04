@@ -1,3 +1,6 @@
+html,body {
+	overflow: hidden;
+}
 h1#topHeader {
 	padding: 33px 0px 15px 15px;
 	font-size: 175%;
@@ -58,12 +61,15 @@ label {
 div#top_content {
 	position: absolute;
 	top: 0px; left: 0px; right: 0px;
+	min-width: 600px;
 }
 
 div#main_content {
 	position: absolute;
 	top: 130px; left: 10px; right: 10px; bottom: 10px;
 	overflow-y: auto;
+	min-width: 600px;
+	min-height: 400px;
 }
 
 /* ----------------------------------------------------------------- */
@@ -108,18 +114,18 @@ input#userScroller_searchBox {
 	padding: 2px;
 
 	position: absolute;
-	top: 2px; left: 5px; right: 5px;
+	top: 2px; left: 0px; right: 0px;
 }
 div#userScrollerCanvas {
 	position: absolute;
-	top: 30px; left: 5px; right: 5px; bottom: 40px;
+	top: 30px; left: 0px; right: 0px; bottom: 40px;
 	overflow-y: auto;
 	border: 1px solid #3C5F7F;
 }
 a#create_user_button {
 	position: absolute;
 	bottom: 5px;
-	left: 5px;
+	left: 0px;
 }
 div#user_scroller_container div.user_button {
 	border-bottom: 1px solid #ccc;
@@ -140,29 +146,20 @@ div#user_scroller_container div.no_results {
 	padding: 5px;
 	color: #333;
 }
+
 /* ----------------------------------------------------------------- */
 /* ---- User Viewer ------------------------------------------------ */
 /* ----------------------------------------------------------------- */
-
 div#user_viewer_container {
 	position: absolute;
-	left: 30%; top: 0px; bottom: 0px;
+	left: 31%; top: 0px; bottom: 0px; right: 0px;
 	overflow-y: auto;
 }
-
-/*
-
-div#user_viewer_container {
-	float: left;
-	margin-left: 15px;
-}
-
 div#user_viewer_container div.name_plate {
 	font-size: 150%;
 	color: #3C5F7F;
 	font-weight: bold;
 }
-
 div#user_viewer_container div.email_plate a {
 	color: #3C5F7F;
 	text-decoration: none;
@@ -172,71 +169,61 @@ div#user_viewer_container div.email_plate a {
 div#user_viewer_container div.email_plate a:hover {
 	text-decoration: underline;
 }
-
 div#user_viewer_container a.button {
 	padding: 3px 10px;
 	margin: 5px 10px 0pt 0pt;
 }
-
 div.action_plate, div#delete_user, div#manage_pin, div#perm_manager {
 	float: left;
 	margin-top: 10px;
 }
-*/
+
 /* ----------------------------------------------------------------- */
 /* ---- User Editor ------------------------------------------------ */
 /* ----------------------------------------------------------------- */
-/*div.name_plate_edit input {
+div.name_plate_edit input {
 	font-size: 150%;
 	border: none;
 	border-bottom: 2px solid #3C5F7F;
 	height: 28px;
 	font-weight: bold;
 }
-
 div.name_plate_edit input.blur {
 	font-weight: normal;
 }
-
 div.email_plate_edit {
 	margin-top: 7px;
 }
-
 div.email_plate_edit input {
 	border: none;
 	border-bottom: 2px solid #3C5F7F;
 	height: 18px;
 }
-
 div#edit_actions {
 	margin-top: 15px;
 }
-
 div#pin_edit_canvas {
 	margin-top: 7px;
 }
-
 div#pin_edit_canvas input {
 	border: none;
 	border-bottom: 2px solid #3C5F7F;
 	height: 18px;
 }
-*/
+
 /* ----------------------------------------------------------------- */
 /* ---- Report Manager --------------------------------------------- */
 /* ----------------------------------------------------------------- */
-/*
 div#report_manager div#reports_status {
 	padding: 5px;
 }
 
 div#permission_action_bar { margin-top: 3px;}
 div#permission_action_bar a { font-size: 90%; }
-*/
+
 /* ----------------------------------------------------------------- */
 /* ---- Workout Explorer ------------------------------------------- */
 /* ----------------------------------------------------------------- */
-/*
 div#recent_workouts input {
 	border: 1px solid #3C5F7F;
 	width: 120px;
@@ -245,7 +232,9 @@ div#recent_workouts div#reports_action_bar {
 	padding: 5px;
 	background-color: #ccc;
 }
-*/
+div#recent_workouts iframe {
+	width: 100%;
+}
 /* ----------------------------------------------------------------- */
 /* ---- Attendance Report ------------------------------------------ */
 /* ----------------------------------------------------------------- */

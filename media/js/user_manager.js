@@ -11,8 +11,7 @@ jQuery.fn.userManager = function(user_name) {
                      '<div id="delete_user"></div>'+
                      '<div id="manage_pin"></div>'+
                      '<div style="clear: both; padding-top: 20px;" id="report_manager"></div>'+
-                     '<div style="margin-top: 1em" id="recent_workouts"></div>'+
-                     '<div style="width: 400px;"></div>');
+                     '<div style="margin-top: 1em" id="recent_workouts"></div>');
         // Create the manager to get the ball rolling
         topManager = new TopManager(user_name, this);
     });
@@ -532,7 +531,7 @@ RecentWorkoutManager.prototype.draw_view = function() {
                         '<label style="margin-left: 1em;">End Date</label>'+
                         '<input id="end_date_picker" type="text" value="'+end_date+'">' +
                         '</div>'+
-                        '<iframe width="600" height="300" id="recent_workout_iframe">'+
+                        '<iframe width="600" id="recent_workout_iframe">'+
                         '  <p>Your browser does not support iframes.</p>'+
                         '</iframe>');
     set_workout_url();
