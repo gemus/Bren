@@ -119,7 +119,7 @@ def ranking(workout_id, date):
     """
     workout_ranking = []
     workout = Workout.objects.get(id=workout_id)
-    workout_elements = Element_used.objects.filter(workout__id = workout_id)
+    workout_elements = Element_used.objects.filter(workout__id = workout_id).order_by('order')
     if  workout.workout_type == 'Timed': order_by = "secs"
     elif  workout.workout_type == 'AMRAP': order_by = "-rounds"
     elif  workout.workout_type == 'Done': order_by = "user__first_name"
