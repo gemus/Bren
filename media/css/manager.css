@@ -103,26 +103,24 @@ div#user_scroller_container {
 	overflow-y: auto;
 	width: 30%;
 }
+input#userScroller_searchBox {
+	border: 1px solid #3C5F7F;
+	padding: 2px;
 
-div#user_viewer_container {
 	position: absolute;
-	left: 30%; top: 0px; bottom: 0px;
-	overflow-y: auto;
+	top: 2px; left: 5px; right: 5px;
 }
-
 div#userScrollerCanvas {
 	position: absolute;
 	top: 30px; left: 5px; right: 5px; bottom: 40px;
 	overflow-y: auto;
 	border: 1px solid #3C5F7F;
 }
-
 a#create_user_button {
 	position: absolute;
 	bottom: 5px;
 	left: 5px;
 }
-
 div#user_scroller_container div.user_button {
 	border-bottom: 1px solid #ccc;
 	padding: 4px;
@@ -131,18 +129,6 @@ div#user_scroller_container div.user_button {
 	overflow: hidden;
 	white-space: nowrap;
 }
-
-input#userScroller_searchBox {
-	border: 1px solid #3C5F7F;
-	padding: 2px;
-	margin-bottom: 5px;
-
-	position: absolute;
-	top: 2px; left: 5px; right: 5px;
-}
-
-
-/*
 div#user_scroller_container div.user_button:hover {
 	background-color: #eee;
 }
@@ -154,20 +140,16 @@ div#user_scroller_container div.no_results {
 	padding: 5px;
 	color: #333;
 }
-
-input#userScroller_searchBox.empty_search {
-	color: #999;
-}
-input#userScroller_searchBox {
-	border: 1px solid #3C5F7F;
-	padding: 2px;
-	margin-bottom: 5px;
-	width: 98%;
-}
-*/
 /* ----------------------------------------------------------------- */
 /* ---- User Viewer ------------------------------------------------ */
 /* ----------------------------------------------------------------- */
+
+div#user_viewer_container {
+	position: absolute;
+	left: 30%; top: 0px; bottom: 0px;
+	overflow-y: auto;
+}
+
 /*
 
 div#user_viewer_container {
