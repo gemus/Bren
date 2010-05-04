@@ -22,7 +22,7 @@
 					<i>Completed {{workout.rounds}} {% ifnotequal workout.workout_rounds 1 %} {{workout.workout_rounds}} rounds {%endifnotequal%} in {{workout.workout_info.info.time_display}}</i>
 					{% endifequal %}
 				</div>
-				{% if workout.comments %}<div style="font-weight: bold; font-size: 10pt; margin: 5px 0pt 2px;">{{workout.comments}}</div>{% endif %}
+				{% if workout.workout_info.comments %}<div style="font-weight: bold; font-size: 10pt; margin: 5px 0pt 2px;">{{workout.workout_info.comments}}</div>{% endif %}
 
 				<table style="font-size: 10pt; line-height: 10pt;">
 				{% for variation in workout.workout_info.variations %}

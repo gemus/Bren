@@ -310,6 +310,8 @@ def get_workouts(date):
             "date"      : The date of the workout in YYYY-MM-DD format (STRING)
     Returns:
             "workouts"  : A list of the workouts that happened that day(LIST)
+                        "workout_name" : the workout name,
+                        "orkout_id"    : The id of the workout,
     """
     date = datetime.datetime.strptime(date, DATE_FORMAT)
     workout_index = {}
