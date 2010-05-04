@@ -214,6 +214,11 @@ div#pin_edit_canvas input {
 /* ----------------------------------------------------------------- */
 /* ---- Report Manager --------------------------------------------- */
 /* ----------------------------------------------------------------- */
+div#report_manager {
+	position: absolute;
+	top: 75px; left: 0px; right: 0px;
+}
+
 div#report_manager div#reports_status {
 	padding: 5px;
 }
@@ -224,6 +229,11 @@ div#permission_action_bar a { font-size: 90%; }
 /* ----------------------------------------------------------------- */
 /* ---- Workout Explorer ------------------------------------------- */
 /* ----------------------------------------------------------------- */
+div#recent_workouts {
+	position: absolute;
+	top: 165px; left: 0px; right: 0px; bottom: 0px;
+}
+
 div#recent_workouts input {
 	border: 1px solid #3C5F7F;
 	width: 120px;
@@ -232,7 +242,15 @@ div#recent_workouts div#reports_action_bar {
 	padding: 5px;
 	background-color: #ccc;
 }
+div#recent_workouts div#reports_iframe_container {
+	position: absolute;
+	top: 58px; left: 0px; right: 0px; bottom: 40px;
+	border-left: 2px solid #ccc;
+	border-bottom: 2px solid #ccc;
+	border-right: 2px solid #ccc;
+}
 div#recent_workouts iframe {
+	height: 100%;
 	width: 100%;
 }
 /* ----------------------------------------------------------------- */

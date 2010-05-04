@@ -531,9 +531,11 @@ RecentWorkoutManager.prototype.draw_view = function() {
                         '<label style="margin-left: 1em;">End Date</label>'+
                         '<input id="end_date_picker" type="text" value="'+end_date+'">' +
                         '</div>'+
+                        '<div id="reports_iframe_container">'+
                         '<iframe width="600" id="recent_workout_iframe">'+
                         '  <p>Your browser does not support iframes.</p>'+
-                        '</iframe>');
+                        '</iframe>'+
+                        '</div>');
     set_workout_url();
     this.getItem().fadeIn();
     this.getItem("input").datepicker({ dateFormat: 'yy-mm-dd' });
