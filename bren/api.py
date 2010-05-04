@@ -47,6 +47,7 @@ def json_api(request):
             "result" : result,
             "error"  : None
         }
+       
     elif method == 'get_user':
         json_params = simplejson.loads(request.GET['params'])
         result = model.get_user(json_params[0])

@@ -66,9 +66,7 @@ def attendance(start_date, end_date):
     datedelta = datetime.timedelta(days=1)
     date = start_date
     attendance = []
-    
     number_of_days = (end_date - start_date).days
-    
     while number_of_days >= 0:
         number_of_days = number_of_days - 1
         attendance.append ({
@@ -76,22 +74,19 @@ def attendance(start_date, end_date):
             'workout_classes' : []
         })
         date = date + datedelta
-   
     user_count = {}
     for day in attendance:
         workout_classes = []
         for workout_class in Workout_class.objects.filter(date = day['date']):
             users = []
-            
             for co in Completed_workout.objects.filter(workout_class__id = workout_class.id):
                 users.append (co.user.first_name)
-                if not co.user.first_name in user_count :
-                    user_count.update({ co.user.first_name : 1})
+                name_key = co.user.first_name + " " + co.user.last_name
+                if not name_key in user_count :
+                    user_count.update({ name_key : 1})
                 else:
-                    user_count[co.user.first_name] = user_count[co.user.first_name] + 1 
-                    
-            user_number = len(users)
-            
+                    user_count[name_key] = user_count[name_key] + 1 
+            user_number = len(users)          
             day['workout_classes'].append({
                 'class_name' : workout_class.class_info.title,
                 'users': users,
@@ -100,10 +95,8 @@ def attendance(start_date, end_date):
     users_attendance = []
     for key in  user_count.keys():
         users_attendance.append({'name': key, 'num': user_count[key]})
-        
     for date in attendance:
         date['date'] = python_date_to_display_str(date['date'])
-    
     return_data = {
         'start_date' : python_date_to_display_str(start_date),
         'end_date' : python_date_to_display_str(end_date),

@@ -17,10 +17,11 @@
     <br><br>
     
     <table>
-    <th> User </th> <th># Of workouts</th>
+    <h2> Table of number of workouts </h2>
+    <th>#</th><th>User</th>
         {% for user in users_attendance %}
             <tr>
-            <td>{{user.name}}</td><td>{{user.num}}</td>
+            <td>{{user.num}}</td><td>{{user.name}}</td>
             </tr>
         {%endfor %}
     </table>
