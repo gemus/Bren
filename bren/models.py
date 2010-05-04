@@ -317,7 +317,10 @@ def get_workouts(date):
     for workout_class in Workout_class.objects.filter(date = date):
         if not workout_class.workout.id in workout_index:
             workout_index.update({workout_class.workout.id : 2})
-            workouts.append({"workout" : workout_class.workout.name})
+            workouts.append({
+            "workout_name" : workout_class.workout.name,
+            "workout_id" : workout_class.workout.id,
+            })
         
     return workouts
     
