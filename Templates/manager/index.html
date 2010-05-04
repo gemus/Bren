@@ -5,6 +5,7 @@
 	<script type="text/javascript" src="/site_media/js/util.js"></script>
 	<script type="text/javascript" src="/site_media/js/user_manager.js"></script>
 	<script type="text/javascript" src="/site_media/js/user_scroller.js"></script>
+	<script type="text/javascript" src="/site_media/js/workout_rankings.js"></script>
 	<script type="text/javascript" src="/site_media/js/json2.js"></script>
 	<script type="text/javascript" charset="utf-8">
 		Navigation = function() {
@@ -12,6 +13,7 @@
 		Navigation.prototype.change_view = function(new_view) {
 			$("div#user_manager_canvas").addClass('hidden');
 			$("div#attendance_canvas").addClass('hidden');
+			$("div#rankings_canvas").addClass('hidden');
 			$("div#"+new_view+"_canvas").removeClass('hidden');
 
 			if (new_view == 'user_manager') {
@@ -38,6 +40,8 @@
 														$('div#attendance_actions input#attendance_end').val());
 				});
 				$('div#attendance_actions input#attendance_start').change();
+			} else if (new_view == 'rankings') {
+				$('div#rankings_canvas').rankingManager();
 			}
 		}
 
@@ -61,9 +65,9 @@
 	<div id="top_content">
 		<h1 id="topHeader">Vancouver Island Crossfit Manager</h1>
 		<ul id="topNav">
+			<li navigation="rankings">Workout Rankings</li>
 			<li navigation="attendance">Attendance</li>
 			<li navigation="user_manager">User Manager</li>
-			<li navigation="rankings">Workout Rankings</li>
 		</ul>
 	</div>
 	<div id="main_content">
@@ -79,8 +83,11 @@
 				<label for="attendance_end">End Date</label><input type="text" name="attendance_end" value="" id="attendance_end">
 			</div>
 			<div id="attendance_iframe_container">
-				<iframe id="attendance_iframe" width="100%">
+				<iframe id="attendance_iframe" width="100%"></iframe>
 			</div>
+		</div>
+
+		<div id="rankings_canvas" class="hidden">
 		</div>
 	</div>
 {% endblock %}

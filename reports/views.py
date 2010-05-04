@@ -49,9 +49,9 @@ def attendance(request):
 
 def ranking(request):
     """
-    Given a start and end date, will generate the attendance for the time period
+    Given a workout and a date, will generate the rankings for that workout on that date
     """
     workout_id = request.GET['workout_id']
-    date = date_str_to_python(request.GET['end_date'])
+    date = date_str_to_python(request.GET['date'])
     data = reports.ranking(workout_id, date)
     return render_to_response('reports/rankings.html', data)

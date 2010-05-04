@@ -116,7 +116,6 @@ def ranking(workout_id, date):
         "workout_ranking": A list or the completed workouts in order(LIST)
     """
     workout_ranking = []
-    date = datetime.datetime.strptime(date, DATE_FORMAT)
     workout = Workout.objects.get(id=workout_id)    
     workout_elements = Element_used.objects.filter(workout__id = workout_id)  
     if  workout.workout_type == 'Timed': order_by = "secs"
