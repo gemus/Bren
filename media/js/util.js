@@ -31,3 +31,8 @@
         }
     });
 })(jQuery);
+
+
+function date_to_str(date) {
+    return [date.getFullYear(), date.getMonth()+1, date.getDate()].join('-');
+}

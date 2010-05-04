@@ -2,6 +2,7 @@
 {% block head_content %}
 	<link type="text/css" href="/site_media/css/redmond/jquery-ui-1.7.2.custom.css" rel="stylesheet" />
 	<link type="text/css" href="/site_media/css/manager.css" rel="stylesheet" />
+	<script type="text/javascript" src="/site_media/js/util.js"></script>
 	<script type="text/javascript" src="/site_media/js/user_manager.js"></script>
 	<script type="text/javascript" src="/site_media/js/user_scroller.js"></script>
 	<script type="text/javascript" src="/site_media/js/json2.js"></script>
@@ -21,6 +22,22 @@
 				});
 			} else if (new_view == 'attendance') {
 				$('div#attendance_actions input').datepicker({ dateFormat: 'yy-mm-dd' });
+
+				var now = new Date();
+			    var end_date = date_to_str(now);
+			    now.setDate(now.getDate()-7);
+			    var start_date = date_to_str(now);
+
+				$('div#attendance_actions input#attendance_start').val(start_date);
+				$('div#attendance_actions input#attendance_end').val(end_date);
+
+				$('div#attendance_actions input').change(function() {
+					$("iframe#attendance_iframe").attr('src', 'http://localhost:8000/reports/attendance/?start_date='+
+														$('div#attendance_actions input#attendance_start').val()+
+														'&end_date='+
+														$('div#attendance_actions input#attendance_end').val());
+				});
+				$('div#attendance_actions input#attendance_start').change();
 			}
 		}
 
@@ -62,7 +79,7 @@
 				<label for="attendance_end">End Date</label><input type="text" name="attendance_end" value="" id="attendance_end">
 			</div>
 			<div id="attendance_iframe_container">
-				<iframe id="attendance_iframe" width="100%" src="/reports/attendance/2010-05-01/">
+				<iframe id="attendance_iframe" width="100%">
 			</div>
 		</div>
 	</div>

@@ -489,10 +489,6 @@ ReportManager.prototype.draw_remove_success = function() {
     this.getItem("div#reports_status").html('<span>Reports Will No Longer Be Sent</span>');
 }
 
-function date_to_str(date) {
-    return [date.getFullYear(), date.getMonth()+1, date.getDate()].join('-');
-}
-
 // ============================================================
 // = RecentWorkoutManager - Show recent workouts for the user =
 // ============================================================
