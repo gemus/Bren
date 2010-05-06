@@ -126,17 +126,50 @@ def ranking(workout_id, date):
     completed_workouts = Completed_workout.objects.filter(workout_class__workout__id = workout_id, workout_class__date = date).order_by(order_by)
     for co in completed_workouts:
         workout_ranking.append(get_completed_workout_info(co.id))
+    total = 0
+    number = 0
+    for co in completed_workouts:
+        number = number + 1 
+        if  workout.workout_type == 'Timed': total = total + co.secs
+        elif  workout.workout_type == 'AMRAP': total = total + co.rounds
+    if not number == 0:
+        workout_average = total / number
+    elif number == 0:
+        workout_average = 0
+
+    for co in workout_ranking:
+        if workout.workout_type == 'Timed': 
+            plus_minus = co['info']['time'] - workout_average
+            mins = plus_minus / 60
+            secs = plus_minus % 60
+            plus_minus = "%d:%02d" % (mins, secs)            
+        if workout.workout_type == 'AMRAP': plus_minus = co['info']['rounds'] - workout_average
+        co.update({"plus_minus": plus_minus})
+
     if  workout.workout_type == 'Timed' :
+        mins = workout_average / 60
+        secs = workout_average % 60
+        workout_average = "%d:%02d" % (mins, secs)
+        
         for co in workout_ranking:
             mins = co['info']['time'] / 60
             secs = co['info']['time'] % 60
             co['info']['time'] = "%d:%02d" % (mins, secs)
+    
+    workout_info = {
+        "name"          :workout.name,
+        "elements"      :workout_elements,
+        "comments"      :workout.comments,
+        "rounds"        :workout.rounds,
+        "time"          :workout.time,
+        }
+    
     return_data = {
-    "workout_name" : workout.name,
-    "workout_elements": workout_elements,
+    "workout_info" : workout_info,
     "workout_type" : workout.workout_type,
     "workout_date" : python_date_to_display_str(date),
     "workout_ranking" : workout_ranking,
+    "workout_average" : workout_average,
     }
 
     return return_data
