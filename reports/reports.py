@@ -96,7 +96,7 @@ def attendance(start_date, end_date):
     users_attendance = []
     for key in  user_count.keys():
         users_attendance.append({'name': key, 'num': user_count[key]})
-
+    users_attendance.sort()
     for date in attendance:
         date['date'] = python_date_to_display_str(date['date'])
     return_data = {
