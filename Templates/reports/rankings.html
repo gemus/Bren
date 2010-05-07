@@ -2,43 +2,48 @@
 <html lang="en">
 <body style="font-family: 'lucida grande',tahoma,verdana,arial,sans-serif; color: #333;">
 	<h1 style="margin-left: 25px; font-size: 16pt;">Rankings for {{workout_info.name}} on {{workout_date}}</h1>
-        
-         <h2> Workout info: </h2>
-        {% ifnotequal workout_info.comments ''%} {{workout_info.comments}} <br> {% endifnotequal %} 
-        
+
+         <h2 style="margin: 0pt 25px; font-size: 12pt;"> Workout -
+        {% ifnotequal workout_info.comments ''%} {{workout_info.comments}} <br> {% endifnotequal %}
+
         {% ifnotequal workout_info.rounds 1%}
-            {% ifequal workout_type 'Timed' %} 
-                {{workout_info.rounds}} Rounds of <br>
+            {% ifequal workout_type 'Timed' %}
+                {{workout_info.rounds}} Rounds of
             {%endifequal%}
         {% endifnotequal %}
-    
-        {% ifequal workout_type 'AMRAP' %} 
-            AMRAP in {{workout_info.time}}mins. of<br>
+
+        {% ifequal workout_type 'AMRAP' %}
+            AMRAP in {{workout_info.time}}mins. of
         {%endifequal%}
-    
+		:</h2>
+
+		<div style="margin-left: 50px;">
         {% for element in workout_info.elements %}
             {% ifnotequal element.reps 1%} {{element.reps}} {%endifnotequal%} {{element.element}}<br>
         {%endfor%}
 
-        <h2 style="margin-left: 25px; font-size: 14pt;">Average {% ifequal workout_type 'Timed' %} time was {%endifequal%} {% ifequal workout_type 'AMRAP' %} rounds were : {%endifequal%} {{workout_average}}</h2>
+        <div style="font-weight: bold">Average {% ifequal workout_type 'Timed' %} time was {%endifequal%} {% ifequal workout_type 'AMRAP' %} rounds were : {%endifequal%} {{workout_average}}</div>
+		</div>
 
-<table>
-<tr><th></th>
+<br>
+
+<table cellspacing="0" cellpadding="5" style="margin-left: 25px; border: 3px solid #ccc;">
+<tr style="font-size: 10pt;"><th style="border-bottom: 2px solid #aaa;"></th>
 {%for element in workout_info.elements %}
-    <th>{{element.element}}</th>
+    <th style="border-bottom: 2px solid #aaa;">{{element.element}}</th>
 {% endfor %}
-{% ifequal workout_type 'Timed' %} <th> Time </th> <th> Plus minus </th> {%endifequal%}
-{% ifequal workout_type 'AMRAP' %} <th> Rounds </th> <th> Plus minus </th> {%endifequal%}
+{% ifequal workout_type 'Timed' %} <th style="border-bottom: 2px solid #aaa;"> Time </th> <th style="border-bottom: 2px solid #aaa;"> Plus minus </th> {%endifequal%}
+{% ifequal workout_type 'AMRAP' %} <th style="border-bottom: 2px solid #aaa;"> Rounds </th> <th style="border-bottom: 2px solid #aaa;"> Plus minus </th> {%endifequal%}
 
 </tr>
 {% for workout in workout_ranking %}
     <tr>
-    <td>{{workout.user_name}}</td>
+    <td style="border-bottom: 1px solid #ccc;">{{workout.user_name}}</td>
     {% for variation in workout.variations %}
-        <td>{{variation.variation}}</td>
+        <td style="border-bottom: 1px solid #ccc;">{{variation.variation}}</td>
     {% endfor %}
-    {% ifequal workout_type 'Timed' %} <td> {{workout.info.time}} </td> <td> {{workout.plus_minus}} </td> {%endifequal%} </td>
-    {% ifequal workout_type 'AMRAP' %} <td> {{workout.info.rounds}} </td> <td> {{workout.plus_minus}} </td> {%endifequal%} </td>
+    {% ifequal workout_type 'Timed' %} <td style="border-bottom: 1px solid #ccc;"> {{workout.info.time}} </td> <td style="border-bottom: 1px solid #ccc;"> {{workout.plus_minus}} </td> {%endifequal%} </td>
+    {% ifequal workout_type 'AMRAP' %} <td style="border-bottom: 1px solid #ccc;"> {{workout.info.rounds}} </td> <td style="border-bottom: 1px solid #ccc;"> {{workout.plus_minus}} </td> {%endifequal%} </td>
     </tr>
 {% endfor %}
 </table>
