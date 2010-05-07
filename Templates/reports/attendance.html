@@ -19,23 +19,25 @@
 		            {% endfor %}
 					</td>
 	            </tr>
+		    {% empty %}
+				<div style="margin: 5px 0pt 0px 25px; font-size: 90%;">No classes today.</div>
 	        {% endfor %}
 		</table>
 		<br>
-    {% endfor %}
+	{% endfor %}
 
-<br>
+<hr>
 <br>
     
-    <table>
-    <h2> Table of number of workouts </h2>
-    <th>#</th><th>User</th>
-        {% for user in users_attendance %}
-            <tr>
-            <td>{{user.num}}</td><td>{{user.name}}</td>
-            </tr>
-        {%endfor %}
-    </table>
-	</div>
+		<span style="font-weight: bold; font-size: 120%; border-bottom: 1px solid #333;">Workout Attendance</span>
+	    <table style="margin-top: 5px;">
+	    <th width="40px;" align="left">#</th><th align="left">User</th>
+	        {% for user in users_attendance %}
+	            <tr>
+	            <td>{{user.num}}</td><td>{{user.name}}</td>
+	            </tr>
+	        {%endfor %}
+	    </table>
+		</div>
 </body>
 </html>
