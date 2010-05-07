@@ -2,9 +2,7 @@
 <html lang="en">
 <body style="font-family: 'lucida grande',tahoma,verdana,arial,sans-serif; color: #333;">
 	<h1 style="margin-left: 25px; font-size: 16pt;">{{display_name}} Completed Workouts [{{ start_date }} - {{ end_date }}]</h1>
-
 	<div style="clear: left;">
-         
 		{% for workout in workouts %}
 			<div style="float: left; width: 150px; text-align: right; font-weight: bold; font-size: 12pt; margin-right: 20px;">
 				{{workout.workout_info.date_display}}
@@ -44,7 +42,7 @@
    
 	<div style="border-top: 1px solid #666; font-size: 80%; margin: 15px 0pt 0pt 25px; color: #666; width: 80%; padding-top: 2px;">
 		Workout Report Brought To You By <a href="http://www.crossfitvancouverisland.com/">CrossFit Vancouver Island</a><br>
-                Please stop sending these reports <a href="http://localhost:8000/email/unsubscribe/{{unsubscribe_hash}}">Unsubscribe</a> 
+                Please stop sending these reports <a href="http://localhost:8000/email/unsubscribe/{{unsubscribe_hash}}">Unsubscribe</a>
 	</div>
 </body>
 </html>
