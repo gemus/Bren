@@ -1,20 +1,31 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html lang="en">
 <body style="font-family: 'lucida grande',tahoma,verdana,arial,sans-serif; color: #333;">
-	<h1 style="margin-left: 25px; font-size: 16pt;">Attendance from {{start_date}} to {{end_date}}</h1>
+	<h1 style="margin-left: 25px; font-size: 16pt;">Attendance: {{start_date}} - {{end_date}}</h1>
 
+	<div style="margin-left: 25px;">
     {% for days in attendance %}
-        <b>{{days.date}}<br></b>
-        {% for class in days.workout_classes %}
-            {{class.class_name}}  ({{class.user_number}}) : 
-            {% for user in class.users%}
-                {{user}},
-            {% endfor %}
-            <br>
-        {% endfor %}
-        <br>
+		<div style="font-weight: bold;">{{days.date}}</div>
+		<table style="margin-left: 20px" cellspacing="0" cellpadding="3">
+	        {% for class in days.workout_classes %}
+				<tr>
+					<td>{{class.class_name}}:</td>
+					<td style="font-weight: bold;">[{{class.user_number}}]</td>
+					<td>
+		            {% for user in class.users%}
+		                {{user}},
+					{% empty %}
+						<span style=" color: #D00;">Empty Class</span>
+		            {% endfor %}
+					</td>
+	            </tr>
+	        {% endfor %}
+		</table>
+		<br>
     {% endfor %}
-    <br><br>
+
+<br>
+<br>
     
     <table>
     <h2> Table of number of workouts </h2>
@@ -25,3 +36,6 @@
             </tr>
         {%endfor %}
     </table>
+	</div>
+</body>
+</html>
