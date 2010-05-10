@@ -1,5 +1,6 @@
 from django.template import loader, Context
 from django.core.mail import EmailMessage
+from django.conf import settings
 
 from crossfit.email_sender.models import UserEmailPermissions
 
@@ -10,7 +11,7 @@ def email_user(user, subject, email_template, data_dict):
     html_content = t.render(c)
 
     # TODO : Register a better username
-    from_email   = "owen@opriusmail.com"
+    from_email = settings.EMAIL_FROM_ADDRESS
     to_address = [user.email]
 
     # Create the actual message

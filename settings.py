@@ -95,6 +95,7 @@ AUTH_PROFILE_MODULE = 'bren.UserProfile'
 # Used when sending permission requests. <value>/email/confirm/<hash>/
 # Eg: 'http://localhost:8000/'   BE SURE TO INCLUDE TRAILING SLASH
 CONFIRM_EMAIL_PERM_BASE_URL = 'http://localhost:8000/'
+EMAIL_FROM_ADDRESS = "Vancouver Island CrossFit <owenmead_server@owenmead.webfactional.com>"
 
 # URL to direct users to if the need to login.
 # Using the built in Django auth modules
