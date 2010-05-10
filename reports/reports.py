@@ -50,13 +50,16 @@ def completed_workouts(start_date, end_date, user):
         display_name += "'s"
     try:
         unsubscribe_hash = UserEmailPermissions.objects.get(user=user).subscribe_hash
+        unsubscribe_url = "%semail/unsubscribe/%s/" % (settings.CONFIRM_EMAIL_PERM_BASE_URL,
+                                                       unsubscribe_hash)
     except UserEmailPermissions.DoesNotExist:
-        unsubscribe_hash = ''
-    return {'workouts'     : the_workouts,
-            'display_name' : display_name,
-            'unsubscribe_hash' : unsubscribe_hash,
-            'start_date'   : python_date_to_short_display_str(start_date),
-            'end_date'     : python_date_to_short_display_str(end_date)
+        unsubscribe_url = '#'
+
+    return {'workouts'        : the_workouts,
+            'display_name'    : display_name,
+            'unsubscribe_url' : unsubscribe_url,
+            'start_date'      : python_date_to_short_display_str(start_date),
+            'end_date'        : python_date_to_short_display_str(end_date)
             }
 
 def attendance(start_date, end_date):
@@ -129,7 +132,7 @@ def ranking(workout_id, date):
     total = 0
     number = 0
     for co in completed_workouts:
-        number = number + 1 
+        number = number + 1
         if  workout.workout_type == 'Timed': total = total + co.secs
         elif  workout.workout_type == 'AMRAP': total = total + co.rounds
     if not number == 0:
@@ -138,11 +141,11 @@ def ranking(workout_id, date):
         workout_average = 0
 
     for co in workout_ranking:
-        if workout.workout_type == 'Timed': 
+        if workout.workout_type == 'Timed':
             plus_minus = co['info']['time'] - workout_average
             mins = plus_minus / 60
             secs = plus_minus % 60
-            plus_minus = "%d:%02d" % (mins, secs)            
+            plus_minus = "%d:%02d" % (mins, secs)
         if workout.workout_type == 'AMRAP': plus_minus = co['info']['rounds'] - workout_average
         co.update({"plus_minus": plus_minus})
 
@@ -150,12 +153,12 @@ def ranking(workout_id, date):
         mins = workout_average / 60
         secs = workout_average % 60
         workout_average = "%d:%02d" % (mins, secs)
-        
+
         for co in workout_ranking:
             mins = co['info']['time'] / 60
             secs = co['info']['time'] % 60
             co['info']['time'] = "%d:%02d" % (mins, secs)
-    
+
     workout_info = {
         "name"          :workout.name,
         "elements"      :workout_elements,
@@ -163,7 +166,7 @@ def ranking(workout_id, date):
         "rounds"        :workout.rounds,
         "time"          :workout.time,
         }
-    
+
     return_data = {
     "workout_info" : workout_info,
     "workout_type" : workout.workout_type,
