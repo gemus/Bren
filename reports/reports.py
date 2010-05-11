@@ -1,6 +1,7 @@
 from crossfit.reports import *
 from crossfit.bren.models import *
 from crossfit.email_sender.models import*
+from django.conf import settings
 
 """
 === Design Philosophy =========================================================
