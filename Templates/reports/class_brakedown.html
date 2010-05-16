@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<body style="font-family: 'lucida grande',tahoma,verdana,arial,sans-serif; color: #333;">
+	<h1 style="margin-left: 25px; font-size: 16pt;">Rankings for {{workout_info.name}} on {{workout_date}}</h1>
+        
+         <h2> Workout info: </h2>
+        {% ifnotequal workout_info.comments ''%} {{workout_info.comments}} <br> {% endifnotequal %} 
+        
+        {% ifnotequal workout_info.rounds 1%}
+            {% ifequal workout_type 'Timed' %} 
+                {{workout_info.rounds}} Rounds of <br>
+            {%endifequal%}
+        {% endifnotequal %}
+    
+        {% ifequal workout_type 'AMRAP' %} 
+            AMRAP in {{workout_info.time}}mins. of<br>
+        {%endifequal%}
+    
+        {% for element in workout_info.elements %}
+            {% ifnotequal element.reps 1%} {{element.reps}} {%endifnotequal%} {{element.element}}<br>
+        {%endfor%}
+
+        <h2 style="margin-left: 25px; font-size: 14pt;">Average {% ifequal workout_type 'Timed' %} time was {%endifequal%} {% ifequal workout_type 'AMRAP' %} rounds were : {%endifequal%} {{workout_average}}</h2>
+
+<table>
+<tr><th></th>
+{%for element in workout_info.elements %}
+    <th>{{element.element}}</th>
+{% endfor %}
+{% ifequal workout_type 'Timed' %} <th> Time </th> <th> Plus minus </th> {%endifequal%}
+{% ifequal workout_type 'AMRAP' %} <th> Rounds </th> <th> Plus minus </th> {%endifequal%}
+
+</tr>
+{% for workout in workout_ranking %}
+    <tr>
+    <td>{{workout.user_name}}</td>
+    {% for variation in workout.variations %}
+        <td>{{variation.variation}}</td>
+    {% endfor %}
+    {% ifequal workout_type 'Timed' %} <td> {{workout.info.time}} </td> <td> {{workout.plus_minus}} </td> {%endifequal%} </td>
+    {% ifequal workout_type 'AMRAP' %} <td> {{workout.info.rounds}} </td> <td> {{workout.plus_minus}} </td> {%endifequal%} </td>
+    </tr>
+{% endfor %}
+</table>

@@ -55,3 +55,12 @@ def ranking(request):
     date = date_str_to_python(request.GET['date'])
     data = reports.ranking(workout_id, date)
     return render_to_response('reports/rankings.html', data)
+
+def class_brakedown(request):
+    """
+    Given a workout and a date, will generate the rankings for that workout on that date
+    """
+    start_date = date_str_to_python(request.GET['start_date'])
+    end_date = date_str_to_python(request.GET['end_date'])
+    data = reports.class_brakedown(start_date, end_date)
+    return render_to_response('reports/class_brakedown.html', data)

@@ -10,4 +10,5 @@ urlpatterns = patterns('crossfit.reports.views',
     (r'^(\w+)/completed_workouts/$', 'completed_workouts'),
     (r'^attendance/$', 'attendance'),
     (r'^ranking/$', 'ranking'),
+    (r'^class_brakedown/$', 'class_brakedown'),
 )

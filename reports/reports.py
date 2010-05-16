@@ -126,6 +126,7 @@ def ranking(workout_id, date):
     completed_workouts = Completed_workout.objects.filter(workout_class__workout__id = workout_id, workout_class__date = date).order_by(order_by)
     for co in completed_workouts:
         workout_ranking.append(get_completed_workout_info(co.id))
+   
     total = 0
     number = 0
     for co in completed_workouts:
@@ -138,11 +139,17 @@ def ranking(workout_id, date):
         workout_average = 0
 
     for co in workout_ranking:
-        if workout.workout_type == 'Timed': 
+        if workout.workout_type == 'Timed':
             plus_minus = co['info']['time'] - workout_average
-            mins = plus_minus / 60
-            secs = plus_minus % 60
+            
+            if plus_minus < 0: mins = plus_minus // 60 + 1
+            elif plus_minus >= 0: mins = plus_minus // 60
+
+            if plus_minus < 0: secs = 60 - (plus_minus % 60)
+            elif plus_minus >= 0: secs = plus_minus % 60
+                
             plus_minus = "%d:%02d" % (mins, secs)            
+            
         if workout.workout_type == 'AMRAP': plus_minus = co['info']['rounds'] - workout_average
         co.update({"plus_minus": plus_minus})
 
@@ -150,7 +157,6 @@ def ranking(workout_id, date):
         mins = workout_average / 60
         secs = workout_average % 60
         workout_average = "%d:%02d" % (mins, secs)
-        
         for co in workout_ranking:
             mins = co['info']['time'] / 60
             secs = co['info']['time'] % 60
@@ -173,3 +179,41 @@ def ranking(workout_id, date):
     }
 
     return return_data
+
+def class_brakedown(start_date, end_date):
+    datedelta = datetime.timedelta(days=1)
+    date = start_date
+    workout_classes = {}
+    number_of_days = (end_date - start_date).days
+    
+    while number_of_days >= 0:
+        
+        day = get_day_of_week_str(date)
+        
+        for workout_class in Workout_class.objects.filter(date = date):
+            user_number = 0
+            date_class = day + " " + workout_class.class_info.title
+            
+            if not date_class in workout_classes:
+                workout_classes.update({
+                    date_class :  Completed_workout.objects.filter(workout_class = workout_class).count()
+                    })
+    
+            elif date_class in workout_classes:
+                workout_classes[date_class] = workout_classes[date_class] + Completed_workout.objects.filter(workout_class = workout_class).count()
+              
+            
+        number_of_days = number_of_days - 1
+        date = date + datedelta
+
+    class_numbers = []
+    for key in workout_classes.keys():
+        class_numbers.append({
+        'name': key, 
+        'num': workout_classes[key],
+        })
+        
+    class_numbers.sort()
+    for classes in class_numbers :
+        print classes
+        
