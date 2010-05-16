@@ -32,18 +32,18 @@
 {%for element in workout_info.elements %}
     <th style="border-bottom: 2px solid #aaa;">{{element.element}}</th>
 {% endfor %}
-{% ifequal workout_type 'Timed' %} <th style="border-bottom: 2px solid #aaa;"> Time </th> <th style="border-bottom: 2px solid #aaa;"> Plus minus </th> {%endifequal%}
-{% ifequal workout_type 'AMRAP' %} <th style="border-bottom: 2px solid #aaa;"> Rounds </th> <th style="border-bottom: 2px solid #aaa;"> Plus minus </th> {%endifequal%}
+{% ifequal workout_type 'Timed' %} <th style="border-bottom: 2px solid #aaa; padding-left: 20px;"> Time </th> <th style="border-bottom: 2px solid #aaa;"> Plus minus </th> {%endifequal%}
+{% ifequal workout_type 'AMRAP' %} <th style="border-bottom: 2px solid #aaa; padding-left: 20px;"> Rounds </th> <th style="border-bottom: 2px solid #aaa;"> Plus minus </th> {%endifequal%}
 
 </tr>
 {% for workout in workout_ranking %}
     <tr>
     <td style="border-bottom: 1px solid #ccc;">{{workout.user_name}}</td>
     {% for variation in workout.variations %}
-        <td style="border-bottom: 1px solid #ccc;">{{variation.variation}}</td>
+        <td style="border-bottom: 1px solid #ccc; text-align: right;">{{variation.variation}}</td>
     {% endfor %}
-    {% ifequal workout_type 'Timed' %} <td style="border-bottom: 1px solid #ccc;"> {{workout.info.time}} </td> <td style="border-bottom: 1px solid #ccc;"> {{workout.plus_minus}} </td> {%endifequal%} </td>
-    {% ifequal workout_type 'AMRAP' %} <td style="border-bottom: 1px solid #ccc;"> {{workout.info.rounds}} </td> <td style="border-bottom: 1px solid #ccc;"> {{workout.plus_minus}} </td> {%endifequal%} </td>
+    {% ifequal workout_type 'Timed' %} <td style="border-bottom: 1px solid #ccc; text-align: right; padding-left: 30px;"> {{workout.info.time}} </td> <td style="border-bottom: 1px solid #ccc; text-align: right;"> {{workout.plus_minus}} </td> {%endifequal%} </td>
+    {% ifequal workout_type 'AMRAP' %} <td style="border-bottom: 1px solid #ccc; text-align: right; padding-left: 30px;"> {{workout.info.rounds}} </td> <td style="border-bottom: 1px solid #ccc; text-align: right;"> {{workout.plus_minus}} </td> {%endifequal%} </td>
     </tr>
 {% endfor %}
 </table>
