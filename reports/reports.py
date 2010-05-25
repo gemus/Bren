@@ -154,7 +154,7 @@ def ranking(workout_id, date):
         
         try:
             co.update({"plus_minus": plus_minus})
-        except:
+        except NameError:
             continue
         
     if  workout.workout_type == 'Timed' :
