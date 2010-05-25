@@ -151,8 +151,12 @@ def ranking(workout_id, date):
             plus_minus = "%d:%02d" % (mins, secs)            
             
         if workout.workout_type == 'AMRAP': plus_minus = co['info']['rounds'] - workout_average
-        co.update({"plus_minus": plus_minus})
-
+        
+        try:
+            co.update({"plus_minus": plus_minus})
+        except:
+            continue
+        
     if  workout.workout_type == 'Timed' :
         mins = workout_average / 60
         secs = workout_average % 60
